@@ -1,5 +1,5 @@
 
-public class Sphere {
+public class Sphere implements Shape {
     private Vector3 pos;
     private float radius;
     private CColor color;
@@ -16,16 +16,23 @@ public class Sphere {
         radius = 0;
     }
     
-    private boolean intersect(Vector3 orig, Vector3 hitPoint) {
-        float d = 0;
-        a
-        
-        
-        if (d < 0) {
-            return true;
+    @Override
+    public boolean intersects(Ray ray, double dist) {
+        Vector3 origin = ray.orig;
+        Vector3 direction = ray.dir;
+        Vector3 OC = Vector3.sub(origin, pos);
+        float b = 2 * Vector3.dot(OC, direction);
+        float c = Vector3.dot(OC, OC) - (radius * radius);
+        float distanceCenter = (b*b) - (4 * c);
+        if (distanceCenter < 0) {
+            return false;
         }
         else {
-            return false;
+            // måle distance eller sige om den rammer kanten
+            distanceCenter = (float) Math.sqrt(distanceCenter);
+            float t0 = -b - distanceCenter;
+            float t1 = -b + distanceCenter;
+            return (t0 < t1) ? true : false;
         }
     }
 }
