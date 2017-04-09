@@ -20,19 +20,33 @@ public class Sphere implements Shape {
     public boolean intersects(Ray ray, double dist) {
         Vector3 origin = ray.orig;
         Vector3 direction = ray.dir;
-        Vector3 OC = Vector3.sub(origin, pos);
-        float b = 2 * Vector3.dot(OC, direction);
-        float c = Vector3.dot(OC, OC) - (radius * radius);
-        float distanceCenter = (b*b) - (4 * c);
-        if (distanceCenter < 0) {
+        Vector3 OC = Vector3.sub(pos, origin);
+        float tca = Vector3.dot(OC, direction);
+        System.out.println(tca);
+        if (tca < 0) {
             return false;
         }
-        else {
-            // måle distance eller sige om den rammer kanten
-            distanceCenter = (float) Math.sqrt(distanceCenter);
-            float t0 = -b - distanceCenter;
-            float t1 = -b + distanceCenter;
-            return (t0 < t1) ? true : false;
+        float d2 = Vector3.dot(OC, OC) - (tca * tca);
+        if (d2 > radius ) {
+            return false;
         }
+        
+        float thc = (float) Math.sqrt(radius - d2);
+        float t0 = tca - thc;
+        float t1 = tca + thc;
+        if (t0 > t1) {
+            float temp = t0;
+            t0 = t1;
+            t1 = temp;
+        }
+        
+        if (t0 < 0) {
+            t0 = t1;
+            if (t0 < 0) {
+                return false;
+            }
+        }
+        System.out.println(t0);
+        return true;
     }
 }
