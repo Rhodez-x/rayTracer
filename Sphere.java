@@ -22,7 +22,7 @@ public class Sphere implements Shape {
         Vector3 direction = ray.dir;
         Vector3 OC = Vector3.sub(pos, origin);
         float tca = Vector3.dot(OC, direction);
-        System.out.println(tca);
+        //System.out.println(tca);
         if (tca < 0) {
             return false;
         }
@@ -54,7 +54,7 @@ public class Sphere implements Shape {
                 return false;
             }
         }
-        System.out.println(t0);
+        //System.out.println(t0); burde være distance??
         return true;
     }
     
