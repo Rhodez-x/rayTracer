@@ -86,4 +86,26 @@ public class Sphere implements Shape {
         return true;
     }
     
+    public float depth(Ray ray, double dist) {
+        Vector3 origin = ray.orig;
+        Vector3 direction = ray.dir;
+        Vector3 OC = Vector3.sub(pos, origin);
+        float tca = Vector3.dot(OC, direction);
+        float d2 = Vector3.dot(OC, OC) - (tca * tca);
+        float thc = (float) Math.sqrt(radius * radius - d2);
+        float t0 = tca - thc;
+        float t1 = tca + thc;
+        if (t0 > t1) {
+            float temp = t0;
+            t0 = t1;
+            t1 = temp;
+        }
+        
+        if (t0 < 0) {
+            t0 = t1;
+        }
+        //System.out.println(t0); burde være distance??
+        return t0;
+    }
+    
 }
