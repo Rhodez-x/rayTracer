@@ -25,8 +25,8 @@ public class Main {
                 
                 setColor(y, x, 255, 255, 255);
                 if(mySphere2.intersects(myRay, 1)){
-                    int depth = (int) mySphere2.depth(myRay, 1)/3;
-                    setColor(y, x, 0 + depth, 255, 0 + depth);
+                    int depth = (int) mySphere2.depth(myRay, 1)/2;
+                    setColor(y, x, 0, 255 - depth, 0);
                 }
                 if(mySphere3.intersects(myRay, 1)){
                     int depth = (int) mySphere3.depth(myRay, 1);
