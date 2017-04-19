@@ -1,6 +1,6 @@
 package core.shapes;
 
-import core.math.CColor;
+import core.math.Color;
 import core.math.Material;
 import core.math.Vector3;
 import core.world.Ray;
@@ -12,7 +12,7 @@ public class Sphere implements Shape
     public Material mat;
     public float distance;
 
-    public Sphere(float x, float y, float z, float r, CColor color)
+    public Sphere(float x, float y, float z, float r, Color color)
     {
         this.pos = new Vector3(x, y, z);
         this.mat = new Material(color);
@@ -23,7 +23,7 @@ public class Sphere implements Shape
     public Sphere()
     {
         pos = new Vector3();
-        mat = new Material(new CColor());
+        mat = new Material(new Color());
         radius = 0;
     }
 

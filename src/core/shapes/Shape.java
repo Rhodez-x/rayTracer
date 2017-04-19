@@ -5,10 +5,9 @@ import core.world.Ray;
 
 public interface Shape
 {
+    boolean intersects(Ray ray, double dist);
 
-    public boolean intersects(Ray ray, double dist);
+    float getDepth();
 
-    public float getDepth();
-
-    public Material getMaterial();
+    Material getMaterial();
 }

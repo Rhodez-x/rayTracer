@@ -1,6 +1,6 @@
 package core.shapes;
 
-import core.math.CColor;
+import core.math.Color;
 import core.math.Vector3;
 
 public class Triangle
@@ -8,12 +8,12 @@ public class Triangle
     private Vector3 pos;
     private float height;
     private float width;
-    private CColor color;
+    private Color color;
 
     public Triangle()
     {
         pos = new Vector3();
-        color = new CColor();
+        color = new Color();
         height = 0;
         width = 0;
     }
