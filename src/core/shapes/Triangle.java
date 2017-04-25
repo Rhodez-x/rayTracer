@@ -3,11 +3,14 @@ package core.shapes;
 import core.math.Color;
 import core.math.Vector3;
 
+/**
+ * USES CLOCKWISE WINDING ORDER!
+ */
 public class Triangle
 {
     private Vector3 pos;
-    private float height;
-    private float width;
+    private double height;
+    private double width;
     private Color color;
 
     public Triangle()

@@ -51,7 +51,7 @@ public class Color
     }
 
 
-    public Color calcDepth(float depth)
+    public Color calcDepth(double depth)
     {
         int newDepth = (int) depth;
         Color calColor = new Color(0, 0, 0);

@@ -3,7 +3,7 @@ package core.math;
 public class Vector3
 {
 
-    public float x, y, z;
+    public double x, y, z;
 
     public Vector3()
     {
@@ -12,7 +12,7 @@ public class Vector3
         z = 0;
     }
 
-    public Vector3(float x, float y, float z)
+    public Vector3(double x, double y, double z)
     {
         this.x = x;
         this.y = y;
@@ -29,29 +29,29 @@ public class Vector3
         return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
     }
 
-    public static float dot(Vector3 a, Vector3 b)
+    public static double dot(Vector3 a, Vector3 b)
     {
         return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
     }
 
-    public static Vector3 multiplyFloat(Vector3 a, float b)
+    public static Vector3 multiplydouble(Vector3 a, double b)
     {
         return new Vector3(a.x * b, a.y * b, a.z * b);
     }
 
-    public static Vector3 divide(Vector3 vec, float b)
+    public static Vector3 divide(Vector3 vec, double b)
     {
         return new Vector3(vec.x / b, vec.y / b, vec.z / b);
     }
 
-    public float magnitude()
+    public double magnitude()
     {
-        return (float) Math.sqrt((x * x) + (y * y) + (z * z));
+        return (double) Math.sqrt((x * x) + (y * y) + (z * z));
     }
 
     public Vector3 normalize()
     {
-        float mg = magnitude();
+        double mg = magnitude();
         return new Vector3(x / mg, y / mg, z / mg);
     }
 }
