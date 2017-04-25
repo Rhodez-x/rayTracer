@@ -1,9 +1,7 @@
 package core.world;
 
-import core.Globals;
 import core.math.Vector3;
 import core.shapes.Shape;
-import core.world.Ray;
 
 import static core.Globals.*;
 
@@ -13,7 +11,7 @@ import static core.Globals.*;
 public class Light
 {
     private Vector3 position;
-    public float fov;
+    public double fov;
 
     public void Begin()
     {
@@ -21,9 +19,7 @@ public class Light
         {
             for (int x = 0; x < WIDTH; x++)
             {
-                Ray myRay = new Ray(new Vector3((float) x, (float) y, -30.0f), new Vector3(30, 0, 50));
-                //Ray myRay = new Ray(new Vector3( 0, 0, 0.0), Vector3.sub(new Vector3(x-200, y-200, -10), new Vector3(0, 0, 0)));
-
+                Ray myRay = new Ray(new Vector3((double) x, (double) y, -30.0f), new Vector3(50, 50, 50));
                 background.setPaint(x, y, background.color);
                 for (Shape shape : shapeList)
                 {
