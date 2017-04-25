@@ -21,13 +21,15 @@ public class Light
         {
             for (int x = 0; x < WIDTH; x++)
             {
-                Ray myRay = new Ray(new Vector3((float) x, (float) y, -30.0f), new Vector3(50, 50, 50));
+                Ray myRay = new Ray(new Vector3((float) x, (float) y, -30.0f), new Vector3(30, 0, 50));
+                //Ray myRay = new Ray(new Vector3( 0, 0, 0.0), Vector3.sub(new Vector3(x-200, y-200, -10), new Vector3(0, 0, 0)));
+
                 background.setPaint(x, y, background.color);
                 for (Shape shape : shapeList)
                 {
                     if (shape.intersects(myRay, 1))
                     {
-                        System.out.println(shape.getDepth());
+                        //System.out.println(shape.getDepth());
                         shape.getMaterial().setPaint(x, y, shape.getMaterial().getColor().calcDepth(shape.getDepth()));
                     }
                 }

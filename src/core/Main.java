@@ -23,9 +23,12 @@ public class Main
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
         Sphere mySphere2 = new Sphere(200.0f, 200.0f, 100.0f, 100.0f, new Color(0, 255, 0));
-        //core.shapes.Sphere mySphere3 = new core.shapes.Sphere(150.0f, 150.0f, 50.0f, 50.0f, new core.math.CColor(0, 255, 0, 255));
+        Sphere mySphere3 = new Sphere(100.0f, 100.0f, 200.0f, 100.0f, new Color(0, 255, 0));
+        Sphere mySphere4 = new Sphere(400.0f, 400.0f, 100.0f, 30.0f, new Color(0, 255, 0));
+
+        shapeList.add(mySphere3);
         shapeList.add(mySphere2);
-        //shapeList.add(mySphere3);
+        shapeList.add(mySphere4);
 
         Light light = new Light();
         light.Begin();
@@ -34,11 +37,12 @@ public class Main
         {
             for (int x = 0; x < WIDTH; x++)
             {
-                Ray myRay = new Ray(new Vector3((float) x, (float) y, -30.0f), new Vector3(0, 0, 1));
+                Ray myRay = new Ray(new Vector3((float) 200, (float) 200, -300.0f), Vector3.sub(new Vector3(x, y, -10), new Vector3(200, 200, -300)));
                 for(Shape shape : shapeList)
                 {
                     if(shape.intersects(myRay, 1))
                     {
+                        System.out.println(shape.getDepth());
                         shape.getMaterial().paint(x, y, shape.getMaterial().getPaint(x, y));
                     }
                 }

@@ -73,7 +73,7 @@ public class Sphere implements Shape
             }
         }
         this.distance = t0;
-        System.out.println(t1);
+        //System.out.println(t1);
         //System.out.println(t0); burde være distance??
         return true;
     }
