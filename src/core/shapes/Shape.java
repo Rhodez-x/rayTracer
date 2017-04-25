@@ -7,7 +7,7 @@ public interface Shape
 {
     boolean intersects(Ray ray, double dist);
 
-    float getDepth();
+    double getDepth();
 
     Material getMaterial();
 }

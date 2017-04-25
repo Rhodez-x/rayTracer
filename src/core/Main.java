@@ -5,6 +5,7 @@ import core.math.Color;
 import core.math.Vector3;
 import core.shapes.Shape;
 import core.shapes.Sphere;
+import core.world.Camera;
 import core.world.Ray;
 
 import javax.imageio.ImageIO;
@@ -14,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 
 import static core.Globals.*;
-import core.world.Camera;
 
 public class Main
 {
@@ -25,7 +25,7 @@ public class Main
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
         Sphere mySphere2 = new Sphere(200.0f, 200.0f, 100.0f, 100.0f, new Color(0, 255, 0));
-        Camera camera = new Camera(new Vector3((float) WIDTH/2, (float) HEIGHT/2, -300.0f));
+        Camera camera = new Camera(new Vector3((double) WIDTH/2, (double) HEIGHT/2, -300.0f));
 
         //core.shapes.Sphere mySphere3 = new core.shapes.Sphere(150.0f, 150.0f, 50.0f, 50.0f, new core.math.CColor(0, 255, 0, 255));
         shapeList.add(mySphere2);
