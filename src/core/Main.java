@@ -6,6 +6,7 @@ import core.math.Vector3;
 import core.shapes.Shape;
 import core.shapes.Sphere;
 import core.world.Ray;
+import core.world.Light;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,8 +18,6 @@ import static core.Globals.*;
 
 public class Main
 {
-
-
     public static void main(String[] args)
     {
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -28,22 +27,33 @@ public class Main
         shapeList.add(mySphere2);
         //shapeList.add(mySphere3);
 
+        Light light = new Light();
+        light.Begin();
+
         for (int y = 0; y < HEIGHT; y++)
         {
             for (int x = 0; x < WIDTH; x++)
             {
                 Ray myRay = new Ray(new Vector3((float) x, (float) y, -30.0f), new Vector3(0, 0, 1));
-                background.paint(x, y, background.color);
-                for (Shape shape : shapeList)
+                for(Shape shape : shapeList)
                 {
-                    if (shape.intersects(myRay, 1))
+                    if(shape.intersects(myRay, 1))
                     {
-                        System.out.println(shape.getDepth());
-                        shape.getMaterial().paint(x, y, shape.getMaterial().color.calcDepth(shape.getDepth()));
+                        shape.getMaterial().paint(x, y, shape.getMaterial().getPaint(x, y));
                     }
                 }
+                //background.paint(x, y, background.color);
+                //for (Shape shape : shapeList)
+                //{
+                //    if (shape.intersects(myRay, 1))
+                //    {
+                //        System.out.println(shape.getDepth());
+                //        shape.getMaterial().paint(x, y, shape.getMaterial().color.calcDepth(shape.getDepth()));
+                //    }
+                //}
             }
         }
+
         SwingUtilities.invokeLater(() -> new GUI());
     }
 
