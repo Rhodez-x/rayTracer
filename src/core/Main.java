@@ -2,7 +2,6 @@ package core;
 
 import core.gui.GUI;
 import core.math.Color;
-import core.math.Vector3;
 import core.shapes.Shape;
 import core.shapes.Sphere;
 import core.world.Light;
@@ -15,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static core.Globals.*;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Main
 {
@@ -33,12 +33,20 @@ public class Main
         Light light = new Light();
         light.Begin();
 
-        for (int y = 0; y < HEIGHT; y++)
+        for (int y = 0; y < FOV; y++)
         {
-            for (int x = 0; x < WIDTH; x++)
+            for (int x = 0; x < FOV; x++)
             {
-                Ray myRay = new Ray(new Vector3((float) 200, (float) 200, -300.0f), Vector3.sub(new Vector3(x, y, -10), new Vector3(200, 200, -300)));
+                Vector3D startPos = new Vector3D(400, 400, 100);
+                Vector3D direction = startPos.subtract(new Vector3D((double) x , (double) y , -1));
+                System.out.println(startPos.subtract(new Vector3D((double) x , (double) y , 1)).toString());
 
+                Ray myRay = new Ray(startPos, direction);
+
+                //Vector3D startPos = new Vector3D(WIDTH/2, HEIGHT/2, -100);
+                //Vector3D direction = startPos.subtract(new Vector3D((double) x - (WIDTH/2), (double) y - (HEIGHT/2), 1));
+                //Ray myRay = new Ray(new Vector3D(x, y, -30), new Vector3D(0, 0, 1));
+                
                 //Ray myRay = new Ray(new Vector3((double) x, (double) y, -30.0f), new Vector3(0, 0, 1));
                 for(Shape shape : shapeList)
                 {

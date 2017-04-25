@@ -2,19 +2,19 @@ package core.shapes;
 
 import core.math.Color;
 import core.math.Material;
-import core.math.Vector3;
 import core.world.Ray;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Sphere implements Shape
 {
-    private Vector3 pos;
+    private Vector3D pos;
     private double radius;
     public Material mat;
     public double distance;
 
     public Sphere(double x, double y, double z, double r, Color color)
     {
-        this.pos = new Vector3(x, y, z);
+        this.pos = new Vector3D(x, y, z);
         this.mat = new Material(color);
         this.radius = r;
         this.distance = 0;
@@ -22,7 +22,7 @@ public class Sphere implements Shape
 
     public Sphere()
     {
-        pos = new Vector3();
+        pos = new Vector3D(0,0,0);
         mat = new Material(new Color());
         radius = 0;
     }
@@ -30,16 +30,16 @@ public class Sphere implements Shape
     @Override
     public boolean intersects(Ray ray, double dist)
     {
-        Vector3 origin = ray.orig;
-        Vector3 direction = ray.dir;
-        Vector3 OC = Vector3.sub(pos, origin);
-        double tca = Vector3.dot(OC, direction);
+        Vector3D origin = ray.orig;
+        Vector3D direction = ray.dir;
+        Vector3D OC = pos.subtract(origin);
+        double tca = OC.dotProduct(direction);
         //System.out.println(tca);
         if (tca < 0)
         {
             return false;
         }
-        double d2 = Vector3.dot(OC, OC) - (tca * tca);
+        double d2 = OC.dotProduct(OC )- (tca * tca);
         if (d2 > radius * radius)
         {
             return false;
@@ -55,10 +55,10 @@ public class Sphere implements Shape
             t1 = temp;
         }
 
-        Vector3 OC2 = Vector3.sub(origin, pos);
-        double a = Vector3.dot(direction, direction);
-        double b = 2 * Vector3.dot(OC2, direction);
-        double c = Vector3.dot(OC2, OC2) - (radius * radius);
+        Vector3D OC2 = origin.subtract(pos);
+        double a = direction.dotProduct(direction);
+        double b = 2 * OC2.dotProduct(direction);
+        double c = OC2.dotProduct(OC2) - (radius * radius);
         if (!solveQuadratic(a, b, c, t0, t1))
         {
             return false;

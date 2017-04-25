@@ -5,17 +5,17 @@
  */
 package core.world;
 
-import core.math.Vector3;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Camera {
-    public Vector3 startPos;
+    public Vector3D startPos;
     
-    public Camera(Vector3 startPos) {
+    public Camera(Vector3D startPos) {
         this.startPos = startPos;
     }
     
-    public Vector3 calcDir(Vector3 panePoint) {
-        return Vector3.sub(panePoint, startPos);
+    public Vector3D calcDir(Vector3D panePoint) {
+        return panePoint.subtract(startPos);
     }
     
 }

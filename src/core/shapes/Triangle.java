@@ -2,22 +2,22 @@ package core.shapes;
 
 import core.math.Color;
 import core.math.Material;
-import core.math.Vector3;
 import core.world.Ray;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * USES CLOCKWISE WINDING ORDER!
  */
 public class Triangle implements Shape
 {
-    private Vector3 pos;
+    private Vector3D pos;
     private double height;
     private double width;
     private Color color;
 
     public Triangle()
     {
-        pos = new Vector3();
+        pos = new Vector3D(0,0,0);
         color = new Color();
         height = 0;
         width = 0;
