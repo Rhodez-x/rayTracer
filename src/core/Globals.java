@@ -14,6 +14,8 @@ public class Globals
 {
     public static final int WIDTH = 400;
     public static final int HEIGHT = 400;
+    public static final int VIEW_WIDTH = 1;
+    public static final int VIEW_HEIGHT = 1;
     public static final float  FOV = 90;
 
     public static BufferedImage outputRenderedImage;

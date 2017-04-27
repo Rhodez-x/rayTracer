@@ -15,21 +15,17 @@ public class Light
 
     public void Begin()
     {
-        for (int y = 0; y < 360; y++)
+        for (int y = 0; y < HEIGHT; y++)
         {
-            for (int x = 0; x < 360; x++)
+            for (int x = 0; x < WIDTH; x++)
             {
-                if (x > 180) {
-                    x -= 360;
-                }
-                if (y > 180) {
-                    y -= 360;
-                }
-                Vector3D startPos = new Vector3D(0, 200, 100);
-                Vector3D direction = startPos.subtract(new Vector3D((double) x , (double) y , -1));
-                
+                //Vector3D startPos = new Vector3D(0, 200, 100);
+                //Vector3D direction = startPos.subtract(new Vector3D((double) x , (double) y , -1));
+      
+                Vector3D startPos = new Vector3D(0, 2, 0);
+                Vector3D direction = new Vector3D((double) x/WIDTH*VIEW_WIDTH-VIEW_WIDTH/2.0 , (double) y/HEIGHT*VIEW_HEIGHT-VIEW_HEIGHT/2.0  , 1);
+
                 Ray myRay = new Ray(startPos, direction);
-                //Ray myRay = new Ray(new Vector3D((double) x, (double) y, -30.0f), new Vector3D(50, 50, 50));
                 background.setPaint(x, y, background.color);
                 for (Shape shape : shapeList)
                 {

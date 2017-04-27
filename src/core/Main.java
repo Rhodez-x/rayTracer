@@ -22,26 +22,27 @@ public class Main
     {
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         
-        Sphere mySphere2 = new Sphere(200.0f, 200.0f, 100.0f, 100.0f, new Color(0, 255, 0));
-        Sphere mySphere3 = new Sphere(100.0f, 100.0f, 200.0f, 100.0f, new Color(0, 255, 0));
-        Sphere mySphere4 = new Sphere(400.0f, 400.0f, 100.0f, 30.0f, new Color(0, 255, 0));
+        Sphere mySphere2 = new Sphere(0.0f, 0.0f, 2.5f, 1.0f, new Color(0, 255, 0));
+        //Sphere mySphere3 = new Sphere(100.0f, 100.0f, 200.0f, 100.0f, new Color(0, 255, 0));
+        //Sphere mySphere4 = new Sphere(400.0f, 400.0f, 100.0f, 30.0f, new Color(0, 255, 0));
 
-        shapeList.add(mySphere3);
         shapeList.add(mySphere2);
-        shapeList.add(mySphere4);
+        //shapeList.add(mySphere2);
+        //shapeList.add(mySphere4);
 
         Light light = new Light();
         light.Begin();
 
-        for (int y = 0; y < FOV; y++)
+        for (int y = 0; y < HEIGHT; y++)
         {
-            for (int x = 0; x < FOV; x++)
+            for (int x = 0; x < WIDTH; x++)
             {
-                Vector3D startPos = new Vector3D(400, 400, 100);
-                Vector3D direction = startPos.subtract(new Vector3D((double) x , (double) y , -1));
-                System.out.println(startPos.subtract(new Vector3D((double) x , (double) y , 1)).toString());
+                Vector3D startPos = new Vector3D(0, 0, 0);
+                Vector3D direction = new Vector3D((double) x/WIDTH*VIEW_WIDTH-VIEW_WIDTH/2.0 , (double) y/HEIGHT*VIEW_HEIGHT-VIEW_HEIGHT/2.0  , 1);
 
                 Ray myRay = new Ray(startPos, direction);
+                System.out.println(myRay.dir);
+                System.out.println(myRay.orig);
 
                 //Vector3D startPos = new Vector3D(WIDTH/2, HEIGHT/2, -100);
                 //Vector3D direction = startPos.subtract(new Vector3D((double) x - (WIDTH/2), (double) y - (HEIGHT/2), 1));
@@ -56,15 +57,15 @@ public class Main
                         shape.getMaterial().paint(x, y, shape.getMaterial().getPaint(x, y));
                     }
                 }
-                //background.paint(x, y, background.color);
-                //for (Shape shape : shapeList)
-                //{
-                //    if (shape.intersects(myRay, 1))
-                //    {
-                //        System.out.println(shape.getDepth());
-                //        shape.getMaterial().paint(x, y, shape.getMaterial().color.calcDepth(shape.getDepth()));
-                //    }
-                //}
+//                background.paint(x, y, background.color);
+//                for (Shape shape : shapeList)
+//                {
+//                    if (shape.intersects(myRay, 1))
+//                    {
+//                        System.out.println(shape.getDepth());
+//                        shape.getMaterial().paint(x, y, shape.getMaterial().color.calcDepth(shape.getDepth()));
+//                    }
+//                }
             }
         }
 
