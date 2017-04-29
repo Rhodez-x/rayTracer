@@ -1,6 +1,5 @@
 package core.shapes;
 
-import core.math.Color;
 import core.math.Material;
 import core.world.Ray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -8,20 +7,19 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 /**
  * USES CLOCKWISE WINDING ORDER!
  */
-public class Triangle implements Shape
+public class Triangle implements IShape
 {
-    private Vector3D pos;
-    private double height;
-    private double width;
-    private Color color;
 
-    public Triangle()
+    public Vector3D[] points = new Vector3D[3];
+    public int[] vertices = new int[2];
+    public int[] faces = new int[2];
+
+    public Triangle(Vector3D position, Material material)
     {
-        pos = new Vector3D(0,0,0);
-        color = new Color();
-        height = 0;
-        width = 0;
+
+
     }
+
 
     @Override
     public boolean intersects(Ray ray, double dist)
@@ -30,14 +28,28 @@ public class Triangle implements Shape
     }
 
     @Override
-    public double getDepth()
+    public void paint(int x, int y)
     {
-        return 0;
+
     }
 
-    @Override
-    public Material getMaterial()
+    public double calculateArea()
     {
-        return null;
+        //A = 1/2*(||(v2 -v1) cross (v3 - v1)||)
+        return 0.5 * normalize().getNorm();
     }
+
+    public Vector3D normalize()
+    {
+        //N = (P_1 - P_0) X (P_2 - P_0) getting the plane in which the triangle lies within.
+        return ((points[1].subtract(points[0])).crossProduct(points[2].subtract(points[0])));
+    }
+
+    public Vector3D barycentricCoordinates()
+    {
+        //P = w_0*P_0 + w_1*P_1 + w_2*P_2 where w_0 + w_1 + w_2 = 1.
+        return null; //for now
+    }
+
+
 }

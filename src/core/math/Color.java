@@ -51,8 +51,9 @@ public class Color
     }
 
 
-    public Color calcDepth(double depth)
+    public void setDepth(double depth)
     {
+        /*   virker ikke?
         int newDepth = (int) depth;
         Color calColor = new Color(0, 0, 0);
         double x = this.r - newDepth;
@@ -70,9 +71,34 @@ public class Color
         {
             calColor.b = x;
         }
-        return calColor;
+        calColor.r = 0;
+        calColor.g = 0;
+        calColor.b = 0;
+        */
+
+        //I have no idea what i'm doing. using a curve function to generate the alpha of a lerp, stupid..
+        Color color = new Color(r, g, b);
+        Color color1 = new Color(r - depth * depth, g - depth * depth, b - depth * depth);
+        double lerpR = lerp(color.r, color1.r, cubicCurve(depth));
+        double lerpG = lerp(color.g, color1.g, cubicCurve(depth));
+        double lerpB = lerp(color.b, color1.b, cubicCurve(depth));
+        this.r = lerpR;
+        this.g = lerpG;
+        this.b = lerpB;
+        //but it works, no more boring colors.
     }
 
+
+    double cubicCurve(double a)
+    {
+        return a * a * (3.0f - 2.0f * a);
+    }
+
+
+    double lerp(double p1, double p2, double a)
+    {
+        return p1 + a * (p2 - p1);
+    }
 
     /* STATIC */
     public static Color multiply(Color a, double b)

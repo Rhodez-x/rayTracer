@@ -2,10 +2,10 @@ package core;
 
 import core.gui.GUI;
 import core.math.Color;
-import core.shapes.Shape;
+import core.shapes.IShape;
 import core.shapes.Sphere;
-import core.world.Light;
 import core.world.Ray;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,62 +14,57 @@ import java.io.File;
 import java.io.IOException;
 
 import static core.Globals.*;
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Main
 {
     public static void main(String[] args)
     {
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        
-        Sphere mySphere2 = new Sphere(0.0f, 0.0f, 2.5f, 1.0f, new Color(0, 255, 0));
-        //Sphere mySphere3 = new Sphere(100.0f, 100.0f, 200.0f, 100.0f, new Color(0, 255, 0));
-        //Sphere mySphere4 = new Sphere(400.0f, 400.0f, 100.0f, 30.0f, new Color(0, 255, 0));
 
-        shapeList.add(mySphere2);
-        //shapeList.add(mySphere2);
-        //shapeList.add(mySphere4);
+        createAndAddObjects();
+        rayTrace();
 
-        Light light = new Light();
-        light.Begin();
+        SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
+    }
 
+    public static void rayTrace()
+    {
+        // Light light = new Light();
+        // light.Begin();
         for (int y = 0; y < HEIGHT; y++)
         {
             for (int x = 0; x < WIDTH; x++)
             {
-                Vector3D startPos = new Vector3D(0, 0, 0);
-                Vector3D direction = new Vector3D((double) x/WIDTH*VIEW_WIDTH-VIEW_WIDTH/2.0 , (double) y/HEIGHT*VIEW_HEIGHT-VIEW_HEIGHT/2.0  , 1);
+                Vector3D startPos = new Vector3D(0, 0, -8);
+                Vector3D direction = new Vector3D((double) x / WIDTH * VIEW_WIDTH - VIEW_WIDTH / 2.0, (double) y / HEIGHT * VIEW_HEIGHT - VIEW_HEIGHT / 2.0, 1);
 
                 Ray myRay = new Ray(startPos, direction);
-                System.out.println(myRay.dir);
-                System.out.println(myRay.orig);
+                //System.out.println(myRay.dir);
+                //System.out.println(myRay.orig);
 
-                //Vector3D startPos = new Vector3D(WIDTH/2, HEIGHT/2, -100);
-                //Vector3D direction = startPos.subtract(new Vector3D((double) x - (WIDTH/2), (double) y - (HEIGHT/2), 1));
-                //Ray myRay = new Ray(new Vector3D(x, y, -30), new Vector3D(0, 0, 1));
-                
-                //Ray myRay = new Ray(new Vector3((double) x, (double) y, -30.0f), new Vector3(0, 0, 1));
-                for(Shape shape : shapeList)
+
+                for (IShape shape : shapeList)
                 {
-                    if(shape.intersects(myRay, 1))
+                    if (shape.intersects(myRay, 1))
                     {
-                        System.out.println(shape.getDepth());
-                        shape.getMaterial().paint(x, y, shape.getMaterial().getPaint(x, y));
+                        //System.out.println(shape.getDepth());
+                        shape.paint(x, y);
                     }
                 }
-//                background.paint(x, y, background.color);
-//                for (Shape shape : shapeList)
-//                {
-//                    if (shape.intersects(myRay, 1))
-//                    {
-//                        System.out.println(shape.getDepth());
-//                        shape.getMaterial().paint(x, y, shape.getMaterial().color.calcDepth(shape.getDepth()));
-//                    }
-//                }
             }
         }
+    }
 
-        SwingUtilities.invokeLater(() -> new GUI());
+
+    public static void createAndAddObjects()
+    {
+        Sphere mySphere_1 = new Sphere(0.0, 0.0, 2.5, 1.0, new Color(0, 255, 0));
+        Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 1.0, new Color(200, 150, 150));
+        Sphere mySphere_3 = new Sphere(-4.0, 0.0, 2.5, 1.0, new Color(50, 100, 250));
+
+        shapeList.add(mySphere_1);
+        shapeList.add(mySphere_2);
+        shapeList.add(mySphere_3);
     }
 
 
