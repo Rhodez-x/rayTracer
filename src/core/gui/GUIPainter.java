@@ -28,6 +28,7 @@ public class GUIPainter extends JComponent implements ActionListener
         if (Globals.outputRenderedImage != null)
             g2.drawImage(Globals.outputRenderedImage, 0, 0, null);
 
+        repaint();
     }
 
     @Override

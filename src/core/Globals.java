@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class Globals
 {
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 400;
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 600;
     public static final int VIEW_WIDTH = 1;
     public static final int VIEW_HEIGHT = 1;
     public static final float FOV = 90;
@@ -23,7 +23,7 @@ public class Globals
 
     public static ArrayList<IShape> shapeList = new ArrayList<>();
 
-    public static Material background = new Material(new Color(255, 255, 255)); //the material used for bkg
+    public static Material background = new Material(new Color(150, 70, 70)); //the material used for bkg
 
     public static GUI gui;
 }

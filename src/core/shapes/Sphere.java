@@ -71,6 +71,7 @@ public class Sphere implements IShape
             }
         }
         this.distance = Math.min(t0, t1); // this is correct.
+        System.out.println(this.distance);
         return true;
     }
 

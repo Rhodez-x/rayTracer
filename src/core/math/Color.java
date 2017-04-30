@@ -1,5 +1,8 @@
 package core.math;
 
+/**
+ * this class is fucked, needs to be fixed.
+ */
 public class Color
 {
     public double r = 0;
@@ -82,9 +85,13 @@ public class Color
         double lerpR = lerp(color.r, color1.r, cubicCurve(depth));
         double lerpG = lerp(color.g, color1.g, cubicCurve(depth));
         double lerpB = lerp(color.b, color1.b, cubicCurve(depth));
+
+
         this.r = lerpR;
         this.g = lerpG;
         this.b = lerpB;
+
+
         //but it works, no more boring colors.
     }
 
@@ -99,6 +106,77 @@ public class Color
     {
         return p1 + a * (p2 - p1);
     }
+
+    public void interpolate(Color a, Color b, double t)
+    {
+        this.r = a.r * (1 - t) + b.r * t;
+        this.g = a.g * (1 - t) + b.g * t;
+        this.b = a.b * (1 - t) + b.b * t;
+    }
+
+
+    public void scale(Color a)
+    {
+
+        this.r *= a.r;
+        this.g *= a.g;
+        this.b *= a.b;
+    }
+
+    public void scale(double a)
+    {
+
+        this.r *= a;
+        this.g *= a;
+        this.b *= a;
+    }
+
+    public void add(Color a)
+    {
+
+        this.r += a.r;
+        this.g += a.g;
+        this.b += a.b;
+    }
+
+    public void scaleAndAdd(double scale, Color a)
+    {
+
+        this.r += scale * a.r;
+        this.g += scale * a.g;
+        this.b += scale * a.b;
+    }
+
+    public void clamp(double min, double max)
+    {
+
+        r = Math.max(Math.min(r, max), min);
+        g = Math.max(Math.min(g, max), min);
+        b = Math.max(Math.min(b, max), min);
+    }
+
+    public void calculateGammaInterpolation(double gamma)
+    {
+        double inverseGamma = 1.0 / gamma;
+        this.r = Math.pow(r, inverseGamma);
+        this.g = Math.pow(g, inverseGamma);
+        this.b = Math.pow(b, inverseGamma);
+    }
+
+    public void clamp()
+    {
+        r = r / 256;
+        g = g / 256;
+        b = b / 256;
+    }
+
+    public void unclamp()
+    {
+        r = (double) ((int) (r * 255));
+        g = (double) ((int) (g * 255));
+        b = (double) ((int) (b * 255));
+    }
+
 
     /* STATIC */
     public static Color multiply(Color a, double b)

@@ -7,6 +7,8 @@ package core.world;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
+import static core.Globals.*;
+
 public class Camera
 {
     public Vector3D startPos;
@@ -31,6 +33,11 @@ public class Camera
     {
         //TODO: implement this
         return null;
+    }
+
+    public static Vector3D projectToView(Vector3D position)
+    {
+        return new Vector3D(position.getX() / WIDTH * VIEW_WIDTH - VIEW_WIDTH / 2.0, position.getY() / HEIGHT * VIEW_HEIGHT - VIEW_HEIGHT / 2.0, position.getZ());
     }
 
 

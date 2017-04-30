@@ -6,8 +6,6 @@ import core.Main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -39,16 +37,7 @@ public class GUI extends JFrame
                 ShutDown();
             }
         });
-        addKeyListener(new KeyAdapter()
-        {
-            @Override
-            public void keyPressed(KeyEvent e)
-            {
-                super.keyPressed(e);
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-                    ShutDown();
-            }
-        });
+        addKeyListener(new GUIKeyListener());
 
         repaint();
         validate();

@@ -14,12 +14,12 @@ public class Material
         return this.color;
     }
 
-    public int[] getRGBArray()
+    public double[] getRGBArray()
     {
-        int[] rgb = new int[3];
-        rgb[0] = (int) color.r;
-        rgb[1] = (int) color.g;
-        rgb[2] = (int) color.b;
+        double[] rgb = new double[3];
+        rgb[0] = color.r;
+        rgb[1] = color.g;
+        rgb[2] = color.b;
         return rgb;
     }
 

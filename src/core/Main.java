@@ -4,6 +4,7 @@ import core.gui.GUI;
 import core.math.Color;
 import core.shapes.IShape;
 import core.shapes.Sphere;
+import core.world.Camera;
 import core.world.Ray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -21,13 +22,17 @@ public class Main
     {
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        createAndAddObjects();
-        rayTrace();
+        createAndAddObjects(); //creation of all objects happens here
+
+
+        Vector3D startPos = new Vector3D(0, 0, -8);
+        Ray myRay = new Ray(startPos, new Vector3D(0, 0, 0));
+        rayTrace(myRay);
 
         SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
     }
 
-    public static void rayTrace()
+    public static void rayTrace(Ray ray)
     {
         // Light light = new Light();
         // light.Begin();
@@ -35,17 +40,15 @@ public class Main
         {
             for (int x = 0; x < WIDTH; x++)
             {
-                Vector3D startPos = new Vector3D(0, 0, -8);
-                Vector3D direction = new Vector3D((double) x / WIDTH * VIEW_WIDTH - VIEW_WIDTH / 2.0, (double) y / HEIGHT * VIEW_HEIGHT - VIEW_HEIGHT / 2.0, 1);
 
-                Ray myRay = new Ray(startPos, direction);
+                ray.dir = Camera.projectToView(new Vector3D(x, y, 1));
                 //System.out.println(myRay.dir);
                 //System.out.println(myRay.orig);
-
+                Globals.outputRenderedImage.getRaster().setPixel(x, y, background.getRGBArray());
 
                 for (IShape shape : shapeList)
                 {
-                    if (shape.intersects(myRay, 1))
+                    if (shape.intersects(ray, 1))
                     {
                         //System.out.println(shape.getDepth());
                         shape.paint(x, y);
@@ -60,7 +63,7 @@ public class Main
     {
         Sphere mySphere_1 = new Sphere(0.0, 0.0, 2.5, 1.0, new Color(0, 255, 0));
         Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 1.0, new Color(200, 150, 150));
-        Sphere mySphere_3 = new Sphere(-4.0, 0.0, 2.5, 1.0, new Color(50, 100, 250));
+        Sphere mySphere_3 = new Sphere(-4.0, 0.0, 1.5, 1.0, new Color(50, 100, 250));
 
         shapeList.add(mySphere_1);
         shapeList.add(mySphere_2);
