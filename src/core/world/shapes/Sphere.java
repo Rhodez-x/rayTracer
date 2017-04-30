@@ -1,9 +1,9 @@
-package core.shapes;
+package core.world.shapes;
 
 import core.Globals;
-import core.math.Color;
-import core.math.Material;
-import core.world.Ray;
+import core.world.ray.Ray;
+import core.world.shading.Color;
+import core.world.shading.Material;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Sphere implements IShape
@@ -103,9 +103,10 @@ public class Sphere implements IShape
         return true;
     }
 
+    //TODO: UNDERSTAND THEN REFACTOR
     public void paint(int x, int y)
     {
-        material.color.setDepth(distance);
+        material.color.shade(new Vector3D(-5, -1, 1.5), new Vector3D(-1, 6, 1.00), 0.126, 1.747); //fucking hell, it works? hory shit
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
     }
 

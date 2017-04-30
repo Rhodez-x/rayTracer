@@ -1,11 +1,11 @@
 package core;
 
 import core.gui.GUI;
-import core.math.Color;
-import core.shapes.IShape;
-import core.shapes.Sphere;
-import core.world.Camera;
-import core.world.Ray;
+import core.world.shading.Color;
+import core.world.shapes.IShape;
+import core.world.shapes.Sphere;
+import core.world.camera.Camera;
+import core.world.ray.Ray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import javax.imageio.ImageIO;

@@ -1,4 +1,4 @@
-package core.math;
+package core.world.shading;
 
 public class Material
 {

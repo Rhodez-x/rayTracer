@@ -1,6 +1,4 @@
-package core.world;
-
-import core.math.Color;
+package core.world.shading;
 
 /**
  * based on https://mrl.nyu.edu/~perlin/courses/fall2005ugrad/phong.html

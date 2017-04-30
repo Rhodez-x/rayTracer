@@ -1,7 +1,7 @@
-package core.shapes;
+package core.world.shapes;
 
-import core.math.Material;
-import core.world.Ray;
+import core.world.shading.Material;
+import core.world.ray.Ray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**

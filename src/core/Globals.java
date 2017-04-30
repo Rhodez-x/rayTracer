@@ -1,9 +1,9 @@
 package core;
 
 import core.gui.GUI;
-import core.math.Color;
-import core.math.Material;
-import core.shapes.IShape;
+import core.world.shading.Color;
+import core.world.shading.Material;
+import core.world.shapes.IShape;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

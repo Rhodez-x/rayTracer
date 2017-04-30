@@ -1,4 +1,6 @@
-package core.math;
+package core.world.shading;
+
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * this class is fucked, needs to be fixed.
@@ -78,21 +80,14 @@ public class Color
         calColor.g = 0;
         calColor.b = 0;
         */
+    }
 
-        //I have no idea what i'm doing. using a curve function to generate the alpha of a lerp, stupid..
-        Color color = new Color(r, g, b);
-        Color color1 = new Color(r - depth * depth, g - depth * depth, b - depth * depth);
-        double lerpR = lerp(color.r, color1.r, cubicCurve(depth));
-        double lerpG = lerp(color.g, color1.g, cubicCurve(depth));
-        double lerpB = lerp(color.b, color1.b, cubicCurve(depth));
-
-
-        this.r = lerpR;
-        this.g = lerpG;
-        this.b = lerpB;
-
-
-        //but it works, no more boring colors.
+    public void shade(Vector3D light_vector, Vector3D normal_vector, double ambient_coefficient, double diffuse_coefficient)
+    {
+        double shade = light_vector.dotProduct(normal_vector);
+        if (shade < 0)
+            shade = 0;
+        multiply(ambient_coefficient + diffuse_coefficient * shade);
     }
 
 
@@ -114,38 +109,6 @@ public class Color
         this.b = a.b * (1 - t) + b.b * t;
     }
 
-
-    public void scale(Color a)
-    {
-
-        this.r *= a.r;
-        this.g *= a.g;
-        this.b *= a.b;
-    }
-
-    public void scale(double a)
-    {
-
-        this.r *= a;
-        this.g *= a;
-        this.b *= a;
-    }
-
-    public void add(Color a)
-    {
-
-        this.r += a.r;
-        this.g += a.g;
-        this.b += a.b;
-    }
-
-    public void scaleAndAdd(double scale, Color a)
-    {
-
-        this.r += scale * a.r;
-        this.g += scale * a.g;
-        this.b += scale * a.b;
-    }
 
     public void clamp(double min, double max)
     {
@@ -178,25 +141,73 @@ public class Color
     }
 
 
-    /* STATIC */
-    public static Color multiply(Color a, double b)
+    public void multiply(double t)
     {
-        return new Color(a.r * b, a.g * b, a.b * b);
+        r *= t;
+        g *= t;
+        b *= t;
     }
 
-    public static Color divide(Color a, double b)
+    public void divide(double t)
     {
-        return new Color(a.r / b, a.g / b, a.b / b);
+        r /= t;
+        g /= t;
+        b /= t;
     }
 
-    public static Color add(Color a, Color b)
+    public void add(double t)
     {
-        return new Color((a.r + b.r) / 2, (a.g + b.g) / 2, (a.b + b.b) / 2);
+        r += t;
+        g += t;
+        b += t;
     }
 
-    public static Color sub(Color a, Color b)
+    public void add(Color a)
     {
-        return new Color(a.r - b.r, a.g - b.g, a.b - b.b);
+
+        this.r += a.r;
+        this.g += a.g;
+        this.b += a.b;
+    }
+
+    public void sub(double t)
+    {
+        r -= t;
+        g -= t;
+        b -= t;
+    }
+
+    public void sub(Color a)
+    {
+
+        this.r -= a.r;
+        this.g -= a.g;
+        this.b -= a.b;
+    }
+
+
+    public void scale(Color a)
+    {
+
+        this.r *= a.r;
+        this.g *= a.g;
+        this.b *= a.b;
+    }
+
+    public void scale(double a)
+    {
+
+        this.r *= a;
+        this.g *= a;
+        this.b *= a;
+    }
+
+    public void scaleAndAdd(double scale, Color a)
+    {
+
+        this.r += scale * a.r;
+        this.g += scale * a.g;
+        this.b += scale * a.b;
     }
 
 

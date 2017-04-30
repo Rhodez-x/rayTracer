@@ -1,6 +1,7 @@
-package core.world;
+package core.world.light;
 
-import core.shapes.IShape;
+import core.world.ray.Ray;
+import core.world.shapes.IShape;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import static core.Globals.*;

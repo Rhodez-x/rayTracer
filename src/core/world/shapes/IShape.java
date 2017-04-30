@@ -1,6 +1,6 @@
-package core.shapes;
+package core.world.shapes;
 
-import core.world.Ray;
+import core.world.ray.Ray;
 
 public interface IShape
 {

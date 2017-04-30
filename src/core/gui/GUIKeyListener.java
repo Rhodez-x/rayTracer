@@ -2,7 +2,7 @@ package core.gui;
 
 import core.Globals;
 import core.Main;
-import core.world.Ray;
+import core.world.ray.Ray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import java.awt.event.KeyEvent;

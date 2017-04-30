@@ -1,6 +1,6 @@
-package core.world;
+package core.world.light;
 
-import core.math.Color;
+import core.world.shading.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
