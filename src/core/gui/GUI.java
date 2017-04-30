@@ -21,6 +21,7 @@ public class GUI extends JFrame
     {
         if (isReallyHeadless())
             ShutDown();
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(new GUIPainter());
         setPreferredSize(new Dimension(Globals.WIDTH, Globals.HEIGHT));
