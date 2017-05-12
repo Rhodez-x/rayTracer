@@ -31,7 +31,7 @@ public class Light
                 //background.setPaint(x, y, background.color);
                 for (IShape shape : shapeList)
                 {
-                    if (shape.intersects(myRay, 1))
+                    if (shape.intersects(myRay, 1).didIntersect)
                     {
                         //System.out.println(shape.getDepth());
                         //shape.getMaterial().setPaint(x, y, shape.getMaterial().getColor().calcDepth(shape.getDepth()));

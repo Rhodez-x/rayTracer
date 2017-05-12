@@ -1,11 +1,11 @@
 package core;
 
 import core.gui.GUI;
+import core.world.camera.Camera;
+import core.world.ray.Ray;
 import core.world.shading.Color;
 import core.world.shapes.IShape;
 import core.world.shapes.Sphere;
-import core.world.camera.Camera;
-import core.world.ray.Ray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import javax.imageio.ImageIO;
@@ -48,7 +48,7 @@ public class Main
 
                 for (IShape shape : shapeList)
                 {
-                    if (shape.intersects(ray, 1))
+                    if (shape.intersects(ray, 1).didIntersect)
                     {
                         //System.out.println(shape.getDepth());
                         shape.paint(x, y);
@@ -62,7 +62,7 @@ public class Main
     public static void createAndAddObjects()
     {
         Sphere mySphere_1 = new Sphere(0.0, 0.0, 2.5, 1.0, new Color(0, 255, 0));
-        Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 1.0, new Color(200, 150, 150));
+        Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 2.0, new Color(200, 150, 150));
         Sphere mySphere_3 = new Sphere(-4.0, 0.0, 1.5, 1.0, new Color(50, 100, 250));
 
         shapeList.add(mySphere_1);

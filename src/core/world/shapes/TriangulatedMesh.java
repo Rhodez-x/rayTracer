@@ -1,6 +1,7 @@
 package core.world.shapes;
 
 import core.world.ray.Ray;
+import core.world.ray.RayInfo;
 
 /**
  * Created by Gabriel Jadderson on 30-04-2017.
@@ -8,9 +9,9 @@ import core.world.ray.Ray;
 public class TriangulatedMesh implements IShape
 {
     @Override
-    public boolean intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double dist)
     {
-        return false;
+        return null;
     }
 
     @Override

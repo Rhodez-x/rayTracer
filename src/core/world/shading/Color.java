@@ -82,20 +82,31 @@ public class Color
         */
     }
 
-    public void shade(Vector3D light_vector, Vector3D normal_vector, double ambient_coefficient, double diffuse_coefficient)
+    public void shade(Vector3D hitNorm, Vector3D viewDirection)
     {
-        double shade = light_vector.dotProduct(normal_vector);
+        clamp();
+        PhongShader phongShader = new PhongShader();
+        double spec = phongShader.reflect(new Vector3D(0, 1, 0), hitNorm).dotProduct(viewDirection);
+        System.out.println(spec);
+        double dx = spec * 2.909 + 32895.5;
+        System.out.println(dx);
+        add(dx);
+        unclamp();
+    }
+
+    //old shader
+    public void shade(Vector3D L, Vector3D N, double ambient_coefficient, double diffuse_coefficient)
+    {
+        double shade = L.dotProduct(N);
         if (shade < 0)
             shade = 0;
         multiply(ambient_coefficient + diffuse_coefficient * shade);
     }
 
-
     double cubicCurve(double a)
     {
         return a * a * (3.0f - 2.0f * a);
     }
-
 
     double lerp(double p1, double p2, double a)
     {
@@ -108,7 +119,6 @@ public class Color
         this.g = a.g * (1 - t) + b.g * t;
         this.b = a.b * (1 - t) + b.b * t;
     }
-
 
     public void clamp(double min, double max)
     {
@@ -139,7 +149,6 @@ public class Color
         g = (double) ((int) (g * 255));
         b = (double) ((int) (b * 255));
     }
-
 
     public void multiply(double t)
     {

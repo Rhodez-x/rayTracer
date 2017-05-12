@@ -1,7 +1,8 @@
 package core.world.shapes;
 
-import core.world.shading.Material;
 import core.world.ray.Ray;
+import core.world.ray.RayInfo;
+import core.world.shading.Material;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
@@ -22,9 +23,9 @@ public class Triangle implements IShape
 
 
     @Override
-    public boolean intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double dist)
     {
-        return false;
+        return null;
     }
 
     @Override

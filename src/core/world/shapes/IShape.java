@@ -1,10 +1,11 @@
 package core.world.shapes;
 
 import core.world.ray.Ray;
+import core.world.ray.RayInfo;
 
 public interface IShape
 {
-    boolean intersects(Ray ray, double dist);
+    RayInfo intersects(Ray ray, double dist);
 
     void paint(int x, int y);
 
