@@ -1,0 +1,125 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[danish]{babel}
+
+\usepackage{color}
+\usepackage{float}
+\usepackage{fancyvrb}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{comment} 
+
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.png}
+
+\definecolor{dkgreen}{rgb}{0,0.45,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.30,0,0.30}
+
+% Default settings for code listings
+% Default settings for code listings
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\footnotesize,
+  keywordstyle=\color{dkgreen}\bfseries,
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=false
+  tabsize=1
+}
+
+%indsætjeres navn herunder.
+\title{førsteårs projekt\\\rule{10cm}{0.5mm}}
+\author{Jørn Guldberg 
+\\Username: jogul16
+\\Supervisor: Simon Larsen\\ FF501\\\rule{5.5cm}{0.5mm}\\}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+
+\newpage
+\section{Abstract} 
+%Resume af projekt
+Ray-tracing is a method for rendering 3D computer graphics.​ Its render a 3d world into a 2d image. 
+A ray tracer sends a ray for every pixel in the image, and calculate the color and light settings for the pixel.
+Calculation is bassed on intersection with objects in the 3d world.. 
+
+We are implementing a simple ray-tracer in Java and using Vector math for calculation of the world scene. ​
+Our world contains Spheres, triangels and panes. These have an intersect method to check intersects.
+The world is spilt up into volume boxes for faster ​time complexity.
+We futhermore investigate how ray-tracing is different for other methods for rendering graphics and
+the advances of useing voulume boxes. 
+
+** RESULTS / CONCLUSION??**
+\newpage
+\vfill
+\tableofcontents
+%laver forside og indholsfortegnelse
+
+\newpage
+\section{Indledning}
+% Indledning som inkludere problemformulering
+Why does raytracing require a substantial amount of processing power and how efficiently can data structures Improve time complexity for ray-tracing algorithms ​
+\newpage
+
+\section{Teori}
+% tjek med simon hvor meget der skal skrives her.
+
+\newpage
+
+\section{Materialer og metoder} 
+% Igen tjek hvad og hvor meget der skal skrives her. 
+
+\newpage
+
+\section{Results} 
+% Our results
+
+\newpage
+
+\section{Disscussion} 
+
+
+\newpage
+
+\section{Conclusion} 
+
+
+\newpage
+
+\section{Perspektivering} 
+
+
+\newpage
+
+\section{Literaturliste} 
+
+
+\newpage
+
+\section{Processevaluering} 
+
+
+\newpage
+
+\section{Appendix (source code)}
+%Spørg om hvorvid vi skal have apenddix, og om sourcefiler mm. skal afleveres. 
+
+
+\end{document}
