@@ -78,7 +78,7 @@ public class Sphere implements IShape
         rayInfo.distance = Math.min(t0, t1); //assign distance.
         rayInfo.phit = getIntersectionPoint(ray.orig, ray.dir, rayInfo.distance); //assign hit point
         rayInfo.nhit = getIntersectionPointNormal(rayInfo.phit); //assign hit point normal from center
-        //material.color.shade(rayInfo.nhit, ray.orig.normalize());
+        material.color.shade(rayInfo.nhit, ray.orig.normalize());
 
         return rayInfo;
     }
@@ -125,7 +125,7 @@ public class Sphere implements IShape
     //TODO: UNDERSTAND THEN REFACTOR
     public void paint(int x, int y)
     {
-        material.color.shade(new Vector3D(-5, -1, 1.5), new Vector3D(-1, 6, 1.00), 0.126, 1.7473);
+        //material.color.shade(new Vector3D(-5, -1, 1.5), new Vector3D(-1, 6, 1.00), 0.126, 1.7473);
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
     }
 

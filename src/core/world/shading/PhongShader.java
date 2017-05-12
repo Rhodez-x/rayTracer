@@ -19,7 +19,7 @@ public class PhongShader
         return I.subtract(N.scalarMultiply(2 * I.dotProduct(N)));
     }
 
-    public Vector3D refract(Vector3D I, Vector3D N, double ior)
+      public Vector3D refract(Vector3D I, Vector3D N, double ior)
     {
         double cosi = clamp(-1, 1, I.dotProduct(N));
         double etai = 1;
