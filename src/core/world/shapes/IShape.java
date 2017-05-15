@@ -5,8 +5,8 @@ import core.world.ray.RayInfo;
 
 public interface IShape
 {
-    RayInfo intersects(Ray ray, double dist);
+    RayInfo intersects(Ray ray);
 
-    void paint(int x, int y);
+    RayInfo hit(Ray ray, double tMin, double tMax);
 
 }

@@ -14,4 +14,9 @@ public class Ray
         this.orig = shotpos;
         this.dir = dir;
     }
+
+    public Vector3D pointAtPerimeter(double t)
+    {
+        return orig.add(dir.scalarMultiply(t)); //p(t) = A + t*B where A = Orig and B is direction
+    }
 }

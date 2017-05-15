@@ -9,14 +9,15 @@ import core.world.ray.RayInfo;
 public class TriangulatedMesh implements IShape
 {
     @Override
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray)
     {
         return null;
     }
+    
 
     @Override
-    public void paint(int x, int y)
+    public RayInfo hit(Ray ray, double tmin, double t_max)
     {
-
+        return null;
     }
 }

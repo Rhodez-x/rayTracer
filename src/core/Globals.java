@@ -1,8 +1,6 @@
 package core;
 
 import core.gui.GUI;
-import core.world.shading.Color;
-import core.world.shading.Material;
 import core.world.shapes.IShape;
 
 import java.awt.image.BufferedImage;
@@ -22,8 +20,6 @@ public class Globals
     public static BufferedImage outputRenderedImage;
 
     public static ArrayList<IShape> shapeList = new ArrayList<>();
-
-    public static Material background = new Material(new Color(150, 70, 70)); //the material used for bkg
 
     public static GUI gui;
 }

@@ -1,9 +1,9 @@
 package core.world.shapes;
 
 import core.Globals;
+import core.world.math.VecMath;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
-import core.world.shading.Color;
 import core.world.shading.Material;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -15,21 +15,15 @@ public class Sphere implements IShape
 
     public Material material;
 
-    public Sphere(double x, double y, double z, double r, Color color)
-    {
-        this(new Vector3D(x, y, z), new Material(color));
-        this.radius = r;
-    }
-
-    public Sphere(Vector3D position, Material material)
+    public Sphere(Vector3D position, double radius, Material material)
     {
         this.position = position;
         this.material = material;
-        radius = 0;
+        this.radius = radius;
     }
 
     @Override
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray)
     {
         RayInfo rayInfo = new RayInfo();
 
@@ -75,10 +69,11 @@ public class Sphere implements IShape
         rayInfo.didIntersect = true;
 
         //Assignment. reset variables
-        rayInfo.distance = Math.min(t0, t1); //assign distance.
-        rayInfo.phit = getIntersectionPoint(ray.orig, ray.dir, rayInfo.distance); //assign hit point
-        rayInfo.nhit = getIntersectionPointNormal(rayInfo.phit); //assign hit point normal from center
-        material.color.shade(rayInfo.nhit, ray.orig.normalize());
+        rayInfo.t = Math.min(t0, t1); //assign distance.
+        rayInfo.point = getIntersectionPoint(ray.orig, ray.dir, rayInfo.t); //assign hit point
+        rayInfo.normal = getIntersectionPointNormal(rayInfo.point); //assign hit point normal from center
+        rayInfo.material = material;
+        //material.color.shade(rayInfo.normal, ray.orig.normalize());
 
         return rayInfo;
     }
@@ -128,5 +123,47 @@ public class Sphere implements IShape
         //material.color.shade(new Vector3D(-5, -1, 1.5), new Vector3D(-1, 6, 1.00), 0.126, 1.7473);
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
     }
+
+    @Override
+    public RayInfo hit(Ray ray, double tMin, double tMax) //intersection with min distance and max distance. useful for sorting objects by depth.
+    {
+        RayInfo rayInfo = new RayInfo();
+        Vector3D origin = ray.orig;
+        Vector3D direction = ray.dir;
+
+        Vector3D OC = origin.subtract(position);
+        double a = direction.dotProduct(direction);
+        double b = OC.dotProduct(direction);
+        double c = OC.dotProduct(OC) - (radius * radius);
+        double descriminant = (b * b) - (a * c);
+
+        if (descriminant > 0)
+        {
+            double temp = (-b - Math.sqrt(b * b - a * c)) / a;
+            if (temp < tMax && temp > tMin)
+            {
+                rayInfo.t = temp;
+                rayInfo.point = ray.pointAtPerimeter(rayInfo.t);
+                rayInfo.normal = VecMath.divide(rayInfo.point.subtract(position), radius);
+                rayInfo.didIntersect = true;
+            }
+            temp = (-b + Math.sqrt(b * b - a * c)) / a;
+            if (temp < tMax && temp > tMin)
+            {
+                rayInfo.t = temp;
+                rayInfo.point = ray.pointAtPerimeter(rayInfo.t);
+                rayInfo.normal = VecMath.divide(rayInfo.point.subtract(position), radius);
+                rayInfo.didIntersect = true;
+            }
+        } else
+        {
+            rayInfo.didIntersect = false;
+        }
+
+        rayInfo.material = material;
+
+        return rayInfo;
+    }
+
 
 }

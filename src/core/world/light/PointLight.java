@@ -1,6 +1,5 @@
 package core.world.light;
 
-import core.world.shading.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
@@ -11,12 +10,12 @@ public class PointLight
 
     public Vector3D position;
 
-    public Color intensity;
+    public Vector3D intensity;
 
     public PointLight()
     {
         this.position = new Vector3D(0, 0, 0);
-        this.intensity = new Color(1, 1, 1);
+        this.intensity = new Vector3D(1, 1, 1);
     }
 
     public void setPosition(Vector3D position)
@@ -25,7 +24,7 @@ public class PointLight
     }
 
 
-    public void setIntensity(Color intensity)
+    public void setIntensity(Vector3D intensity)
     {
         this.intensity = intensity;
     }

@@ -1,6 +1,5 @@
 package core.world.light;
 
-import core.world.shading.Color;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
@@ -12,9 +11,9 @@ public class ExpensiveLightSource
     double color = 1.0f;
     double intensity;
 
-    Color ambient;
-    Color diffuse;
-    Color specular;
+    Vector3D ambient;
+    Vector3D diffuse;
+    Vector3D specular;
 
     double constantAttenuation;
     double linearAttenuation;
@@ -22,15 +21,15 @@ public class ExpensiveLightSource
 
     public ExpensiveLightSource()
     {
-        setAllColors(new Color(255, 255, 255));
-        ambient = new Color(0, 0, 0);
+        setAllColors(new Vector3D(255, 255, 255));
+        ambient = new Vector3D(0, 0, 0);
 
         constantAttenuation = 1.0f;
         linearAttenuation = 0.0f;
         quadraticAttenuation = 0.0f;
     }
 
-    public ExpensiveLightSource(Vector3D position, Color ambient, Color diffuse, Color specular, double constantAttenuation, double linearAttenuation, double quadraticAttenuation)
+    public ExpensiveLightSource(Vector3D position, Vector3D ambient, Vector3D diffuse, Vector3D specular, double constantAttenuation, double linearAttenuation, double quadraticAttenuation)
     {
         this.position = position;
         this.ambient = ambient;
@@ -41,7 +40,7 @@ public class ExpensiveLightSource
         this.quadraticAttenuation = quadraticAttenuation;
     }
 
-    public void setAllColors(Color color)
+    public void setAllColors(Vector3D color)
     {
         this.ambient = color;
         this.diffuse = color;
