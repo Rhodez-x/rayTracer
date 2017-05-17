@@ -4,7 +4,9 @@ import core.gui.GUI;
 import core.world.camera.Camera;
 import core.world.ray.Ray;
 import core.world.shading.Color;
+import core.world.shading.Material;
 import core.world.shapes.IShape;
+import core.world.shapes.Plane;
 import core.world.shapes.Sphere;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -71,10 +73,12 @@ public class Main
         list[1] = new Vector3D(0.1,0.2,-100);
         list[2] = new Vector3D(0.2,0,-100);
         Triangle tri = new Triangle(list, new Material(new Color(50, 100, 250)));
-
         //shapeList.add(mySphere_1);
         //shapeList.add(mySphere_2);
         //shapeList.add(mySphere_3);
+
+        Plane p = new Plane(new Vector3D(0, 0, -5), new Material(new Color(0, 255, 0)));
+
         shapeList.add(tri);
     }
 
