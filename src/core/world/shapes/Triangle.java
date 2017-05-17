@@ -33,15 +33,10 @@ public class Triangle implements IShape
         Vector3D u, v, n = new Vector3D(0,0,0);
         double r, a, b;
         
+        // make a plane and find the normal vector for this plane.
         u = this.points[1].subtract(this.points[0]); 
         v = this.points[2].subtract(this.points[0]); 
-        n = u.crossProduct(v); // cross product
-        //System.out.println(VecMath.length(n));
-        
-        if (VecMath.length(n) == 0) {
-            rayInfo.didIntersect = false;
-            return rayInfo;
-        }
+        n = u.crossProduct(v); // cross product this is the normal vector for the pane. 
 
         b = n.dotProduct(ray.dir);
         
@@ -52,13 +47,14 @@ public class Triangle implements IShape
         
         double d = n.dotProduct(this.points[0]);
         
-        r = n.dotProduct(ray.orig) + d / b;
+        r = - (n.dotProduct(ray.orig) + d) / b;
+        System.out.println(r);
         if (r < 0.0) {
             rayInfo.didIntersect = false;
             return rayInfo; // triangle is beheind 
         }
         
-        Vector3D intersectPoint = new Vector3D(ray.orig.getX() + ray.dir.getX() * r, ray.orig.getY() + ray.dir.getY() * r, ray.orig.getY() + ray.dir.getY() * r);
+        Vector3D intersectPoint = new Vector3D(ray.orig.getX() + (ray.dir.getX() * r), ray.orig.getY() + (ray.dir.getY() * r), ray.orig.getY() + (ray.dir.getY() * r));
         
         Vector3D controlVector;
         
@@ -93,9 +89,9 @@ public class Triangle implements IShape
         }
         
         
-        rayInfo.distance = r;
+        rayInfo.distance = VecMath.length(ray.orig.subtract(intersectPoint));
         rayInfo.phit = intersectPoint; //assign hit point
-        rayInfo.nhit = n.normalize(); //assign hit point normal from center
+        rayInfo.nhit = n; //assign hit point normal from center
         rayInfo.didIntersect = true;
         
         
