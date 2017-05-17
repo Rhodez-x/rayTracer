@@ -86,9 +86,10 @@ public class Main
         Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 2.0, new Color(200, 150, 150));
         Sphere mySphere_3 = new Sphere(-4.0, 0.0, 1.5, 1.0, new Color(50, 100, 250));
         Vector3D[] list = new Vector3D[3];
-        list[0] = new Vector3D(0, 0, -1);
-        list[1] = new Vector3D(1, 1, 3);
-        list[2] = new Vector3D(2, 0, -1);
+
+        list[0] = new Vector3D(0,0, 3);
+        list[1] = new Vector3D(1, 1,3);
+        list[2] = new Vector3D(2,0, 3);
 
         Triangle tri = new Triangle(list, new Material(new Color(255, 255, 250)));
 

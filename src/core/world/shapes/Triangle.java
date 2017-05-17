@@ -29,10 +29,6 @@ public class Triangle implements IShape
     @Override
     public RayInfo intersects(Ray ray, double dist)
     {
-
-        Vector3D origin = ray.orig;
-        Vector3D direction = ray.dir.normalize();
-
         RayInfo rayInfo = new RayInfo();
         Vector3D u, v, n = new Vector3D(0, 0, 0);
         double r, a, b;
@@ -42,13 +38,8 @@ public class Triangle implements IShape
         n = u.crossProduct(v); // cross product
         //System.out.println(VecMath.length(n));
 
-        if (VecMath.length(n) == 0)
-        {
-            rayInfo.didIntersect = false;
-            return rayInfo;
-        }
 
-        b = n.dotProduct(direction);
+        b = n.dotProduct(ray.dir);
 
         if ((double) Math.abs(b) < 0.000000001)//why this low number?
         {
@@ -57,16 +48,16 @@ public class Triangle implements IShape
         }
 
         double d = n.dotProduct(this.points[0]);
-
-        r = n.dotProduct(ray.orig) + d / b;
-        if (r < 0.0)
-        {
+        
+        r = (n.dotProduct(ray.orig) + d) / b;
+        System.out.println(r);
+        if (r < 0.0) {
             rayInfo.didIntersect = false;
             return rayInfo; // triangle is beheind 
         }
-
-        Vector3D intersectPoint = new Vector3D(origin.getX() + direction.getX() * r, origin.getY() + direction.getY() * r, origin.getY() + direction.getY() * r);
-
+        
+        Vector3D intersectPoint = new Vector3D(ray.orig.getX() + (ray.dir.getX() * r), ray.orig.getY() + (ray.dir.getY() * r), ray.orig.getY() + (ray.dir.getY() * r));
+        
         Vector3D controlVector;
 
         Vector3D edge0 = this.points[1].subtract(this.points[0]);
@@ -102,10 +93,10 @@ public class Triangle implements IShape
             return rayInfo; // ray is on right side
         }
 
-
-        rayInfo.distance = r;
+        
+        rayInfo.distance = VecMath.length(ray.orig.subtract(intersectPoint));
         rayInfo.phit = intersectPoint; //assign hit point
-        rayInfo.nhit = calculateNormal(vp0, vp1, vp2); //assign hit point normal from center
+        rayInfo.nhit = n; //assign hit point normal from center
         rayInfo.didIntersect = true;
 
 
@@ -129,19 +120,5 @@ public class Triangle implements IShape
     {
         //N = (P_1 - P_0) X (P_2 - P_0) getting the plane in which the triangle lies within.
         return ((points[1].subtract(points[0])).crossProduct(points[2].subtract(points[0])));
-    }
-
-    public Vector3D calculateNormal(Vector3D p0, Vector3D p1, Vector3D p2)
-    {
-        Vector3D N;
-
-        Vector3D c1 = p1.subtract(p0);
-        Vector3D c2 = p2.subtract(p0);
-        Vector3D e = c1.crossProduct(c2);
-
-        double l = VecMath.length(e);
-
-        N = VecMath.divide(e, l);
-        return N;
     }
 }
