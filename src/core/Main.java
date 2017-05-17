@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 
 import static core.Globals.*;
+import core.world.shading.Material;
+import core.world.shapes.Triangle;
 
 public class Main
 {
@@ -61,13 +63,19 @@ public class Main
 
     public static void createAndAddObjects()
     {
-        Sphere mySphere_1 = new Sphere(0.0, 0.0, 2.5, 1.0, new Color(0, 255, 0));
-        Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 2.0, new Color(200, 150, 150));
-        Sphere mySphere_3 = new Sphere(-4.0, 0.0, 1.5, 1.0, new Color(50, 100, 250));
+        //Sphere mySphere_1 = new Sphere(0.0, 0.0, 2.5, 1.0, new Color(0, 255, 0));
+        //Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 2.0, new Color(200, 150, 150));
+        //Sphere mySphere_3 = new Sphere(-4.0, 0.0, 1.5, 1.0, new Color(50, 100, 250));
+        Vector3D[] list = new Vector3D[3];
+        list[0] = new Vector3D(0,0.1,-100);
+        list[1] = new Vector3D(0.1,0.2,-100);
+        list[2] = new Vector3D(0.2,0,-100);
+        Triangle tri = new Triangle(list, new Material(new Color(50, 100, 250)));
 
-        shapeList.add(mySphere_1);
-        shapeList.add(mySphere_2);
-        shapeList.add(mySphere_3);
+        //shapeList.add(mySphere_1);
+        //shapeList.add(mySphere_2);
+        //shapeList.add(mySphere_3);
+        shapeList.add(tri);
     }
 
 

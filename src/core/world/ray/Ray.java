@@ -14,4 +14,5 @@ public class Ray
         this.orig = shotpos;
         this.dir = dir;
     }
+    
 }
