@@ -10,7 +10,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 /**
  * Created by Gabriel Jadderson on 17-05-2017.
  */
-public class Plane implements IShape
+public class TPlane implements IShape
 {
 
     Material material;
@@ -19,7 +19,7 @@ public class Plane implements IShape
     double C;
     double D;
 
-    public Plane(Material material, double a, double b, double c, double d)
+    public TPlane(Material material, double a, double b, double c, double d)
     {
         this.material = material;
         this.A = a;
@@ -29,7 +29,6 @@ public class Plane implements IShape
     }
 
 
-    //KILDE: BOGEN - INTRODUCTION TO RAYTRACING side 50.
     @Override
     public RayInfo intersects(Ray ray, double dist)
     {

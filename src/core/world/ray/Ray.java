@@ -14,5 +14,10 @@ public class Ray
         this.orig = shotpos;
         this.dir = dir;
     }
-    
+
+    public Vector3D getPointaAt(double t)
+    {
+        return orig.add(dir.scalarMultiply(t));
+    }
+
 }

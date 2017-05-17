@@ -29,6 +29,10 @@ public class Triangle implements IShape
     @Override
     public RayInfo intersects(Ray ray, double dist)
     {
+
+        Vector3D origin = ray.orig;
+        Vector3D direction = ray.dir.normalize();
+
         RayInfo rayInfo = new RayInfo();
         Vector3D u, v, n = new Vector3D(0, 0, 0);
         double r, a, b;
@@ -44,7 +48,7 @@ public class Triangle implements IShape
             return rayInfo;
         }
 
-        b = n.dotProduct(ray.dir);
+        b = n.dotProduct(direction);
 
         if ((double) Math.abs(b) < 0.000000001)//why this low number?
         {
@@ -61,7 +65,7 @@ public class Triangle implements IShape
             return rayInfo; // triangle is beheind 
         }
 
-        Vector3D intersectPoint = new Vector3D(ray.orig.getX() + ray.dir.getX() * r, ray.orig.getY() + ray.dir.getY() * r, ray.orig.getY() + ray.dir.getY() * r);
+        Vector3D intersectPoint = new Vector3D(origin.getX() + direction.getX() * r, origin.getY() + direction.getY() * r, origin.getY() + direction.getY() * r);
 
         Vector3D controlVector;
 
@@ -101,7 +105,7 @@ public class Triangle implements IShape
 
         rayInfo.distance = r;
         rayInfo.phit = intersectPoint; //assign hit point
-        rayInfo.nhit = n.normalize(); //assign hit point normal from center
+        rayInfo.nhit = calculateNormal(vp0, vp1, vp2); //assign hit point normal from center
         rayInfo.didIntersect = true;
 
 
@@ -125,5 +129,19 @@ public class Triangle implements IShape
     {
         //N = (P_1 - P_0) X (P_2 - P_0) getting the plane in which the triangle lies within.
         return ((points[1].subtract(points[0])).crossProduct(points[2].subtract(points[0])));
+    }
+
+    public Vector3D calculateNormal(Vector3D p0, Vector3D p1, Vector3D p2)
+    {
+        Vector3D N;
+
+        Vector3D c1 = p1.subtract(p0);
+        Vector3D c2 = p2.subtract(p0);
+        Vector3D e = c1.crossProduct(c2);
+
+        double l = VecMath.length(e);
+
+        N = VecMath.divide(e, l);
+        return N;
     }
 }
