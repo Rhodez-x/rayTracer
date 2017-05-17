@@ -4,7 +4,9 @@ import core.gui.GUI;
 import core.world.camera.Camera;
 import core.world.ray.Ray;
 import core.world.shading.Color;
+import core.world.shading.Material;
 import core.world.shapes.IShape;
+import core.world.shapes.Plane;
 import core.world.shapes.Sphere;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -65,9 +67,13 @@ public class Main
         Sphere mySphere_2 = new Sphere(-3.0, -1.0, 2.5, 2.0, new Color(200, 150, 150));
         Sphere mySphere_3 = new Sphere(-4.0, 0.0, 1.5, 1.0, new Color(50, 100, 250));
 
-        shapeList.add(mySphere_1);
-        shapeList.add(mySphere_2);
-        shapeList.add(mySphere_3);
+        //shapeList.add(mySphere_1);
+        //shapeList.add(mySphere_2);
+        //shapeList.add(mySphere_3);
+
+        Plane p = new Plane(new Vector3D(0, 0, -5), new Material(new Color(0, 255, 0)));
+
+        shapeList.add(p);
     }
 
 

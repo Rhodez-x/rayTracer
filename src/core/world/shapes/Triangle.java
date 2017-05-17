@@ -45,12 +45,4 @@ public class Triangle implements IShape
         //N = (P_1 - P_0) X (P_2 - P_0) getting the plane in which the triangle lies within.
         return ((points[1].subtract(points[0])).crossProduct(points[2].subtract(points[0])));
     }
-
-    public Vector3D barycentricCoordinates()
-    {
-        //P = w_0*P_0 + w_1*P_1 + w_2*P_2 where w_0 + w_1 + w_2 = 1.
-        return null; //for now
-    }
-
-
 }
