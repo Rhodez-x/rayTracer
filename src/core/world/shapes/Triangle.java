@@ -48,16 +48,17 @@ public class Triangle implements IShape
         }
 
         double d = n.dotProduct(this.points[0]);
-        
+
         r = (n.dotProduct(ray.orig) + d) / b;
         System.out.println(r);
-        if (r < 0.0) {
+        if (r < 0.0)
+        {
             rayInfo.didIntersect = false;
             return rayInfo; // triangle is beheind 
         }
-        
+
         Vector3D intersectPoint = new Vector3D(ray.orig.getX() + (ray.dir.getX() * r), ray.orig.getY() + (ray.dir.getY() * r), ray.orig.getY() + (ray.dir.getY() * r));
-        
+
         Vector3D controlVector;
 
         Vector3D edge0 = this.points[1].subtract(this.points[0]);
@@ -93,7 +94,7 @@ public class Triangle implements IShape
             return rayInfo; // ray is on right side
         }
 
-        
+
         rayInfo.distance = VecMath.length(ray.orig.subtract(intersectPoint));
         rayInfo.phit = intersectPoint; //assign hit point
         rayInfo.nhit = n; //assign hit point normal from center

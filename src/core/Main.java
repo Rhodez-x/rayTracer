@@ -91,7 +91,7 @@ public class Main
         list[1] = new Vector3D(1, 1,3);
         list[2] = new Vector3D(2,0, 3);
 
-        Triangle tri = new Triangle(list, new Material(new Color(255, 255, 250)));
+        //Triangle tri = new Triangle(list, new Material(new Color(255, 255, 250)));
 
 
         //shapeList.add(mySphere_1);
