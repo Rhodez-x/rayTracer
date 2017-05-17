@@ -30,21 +30,23 @@ public class Triangle implements IShape
     public RayInfo intersects(Ray ray, double dist)
     {
         RayInfo rayInfo = new RayInfo();
-        Vector3D u, v, n = new Vector3D(0,0,0);
+        Vector3D u, v, n = new Vector3D(0, 0, 0);
         double r, a, b;
-        
-        // make a plane and find the normal vector for this plane.
-        u = this.points[1].subtract(this.points[0]); 
-        v = this.points[2].subtract(this.points[0]); 
-        n = u.crossProduct(v); // cross product this is the normal vector for the pane. 
+
+        u = this.points[1].subtract(this.points[0]);
+        v = this.points[2].subtract(this.points[0]);
+        n = u.crossProduct(v); // cross product
+        //System.out.println(VecMath.length(n));
+
 
         b = n.dotProduct(ray.dir);
-        
-        if ((double)Math.abs(b) < 0.000000001) {
+
+        if ((double) Math.abs(b) < 0.000000001)//why this low number?
+        {
             rayInfo.didIntersect = false;
             return rayInfo;
         }
-        
+
         double d = n.dotProduct(this.points[0]);
         
         r = - (n.dotProduct(ray.orig) + d) / b;
@@ -57,44 +59,47 @@ public class Triangle implements IShape
         Vector3D intersectPoint = new Vector3D(ray.orig.getX() + (ray.dir.getX() * r), ray.orig.getY() + (ray.dir.getY() * r), ray.orig.getY() + (ray.dir.getY() * r));
         
         Vector3D controlVector;
-        
+
         Vector3D edge0 = this.points[1].subtract(this.points[0]);
         Vector3D vp0 = intersectPoint.subtract(this.points[0]);
-        
+
         controlVector = edge0.crossProduct(vp0);
-        
-        if (n.dotProduct(controlVector) < 0 ) {
+
+        if (n.dotProduct(controlVector) < 0)
+        {
             rayInfo.didIntersect = false;
             return rayInfo; // ray is on right side
         }
-        
+
         Vector3D edge1 = this.points[2].subtract(this.points[1]);
         Vector3D vp1 = intersectPoint.subtract(this.points[1]);
-        
+
         controlVector = edge1.crossProduct(vp1);
-        
-        if (n.dotProduct(controlVector) < 0 ) {
+
+        if (n.dotProduct(controlVector) < 0)
+        {
             rayInfo.didIntersect = false;
             return rayInfo; // ray is on right side
         }
-        
+
         Vector3D edge2 = this.points[0].subtract(this.points[2]);
         Vector3D vp2 = intersectPoint.subtract(this.points[2]);
-        
+
         controlVector = edge2.crossProduct(vp2);
-        
-        if (n.dotProduct(controlVector) < 0 ) {
+
+        if (n.dotProduct(controlVector) < 0)
+        {
             rayInfo.didIntersect = false;
             return rayInfo; // ray is on right side
         }
-        
+
         
         rayInfo.distance = VecMath.length(ray.orig.subtract(intersectPoint));
         rayInfo.phit = intersectPoint; //assign hit point
         rayInfo.nhit = n; //assign hit point normal from center
         rayInfo.didIntersect = true;
-        
-        
+
+
         return rayInfo;
     }
 
