@@ -49,7 +49,7 @@ public class Triangle implements IShape
 
         double d = n.dotProduct(this.points[0]);
         
-        r = - (n.dotProduct(ray.orig) + d) / b;
+        r = (n.dotProduct(ray.orig) + d) / b;
         System.out.println(r);
         if (r < 0.0) {
             rayInfo.didIntersect = false;
