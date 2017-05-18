@@ -2,7 +2,6 @@ package core.world.shapes;
 
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
-import core.world.shapes.Plane;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
@@ -36,7 +35,14 @@ public class Disk implements IShape
     }
 
     @Override
-    public void paint(int x, int y) {
+    public void paint(int x, int y)
+    {
 
+    }
+
+    @Override
+    public RayInfo hit(Ray ray, double tmin, double tmax)
+    {
+        return null;
     }
 }

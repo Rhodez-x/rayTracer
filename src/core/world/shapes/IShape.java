@@ -9,4 +9,6 @@ public interface IShape
 
     void paint(int x, int y);
 
+    RayInfo hit(Ray ray, double tmin, double tmax);
+
 }

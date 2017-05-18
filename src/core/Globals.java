@@ -1,9 +1,8 @@
 package core;
 
 import core.gui.GUI;
-import core.world.shading.Color;
-import core.world.shading.Material;
 import core.world.shapes.IShape;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class Globals
 
     public static ArrayList<IShape> shapeList = new ArrayList<>();
 
-    public static Material background = new Material(new Color(150, 70, 70)); //the material used for bkg
+    public static Vector3D bkgColor = new Vector3D(0.8, 0.6, 0.6);
 
     public static GUI gui;
 }

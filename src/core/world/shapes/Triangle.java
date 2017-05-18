@@ -95,11 +95,11 @@ public class Triangle implements IShape
         }
 
 
-        rayInfo.distance = VecMath.length(ray.orig.subtract(intersectPoint));
-        rayInfo.phit = intersectPoint; //assign hit point
-        rayInfo.nhit = n; //assign hit point normal from center
+        rayInfo.t = VecMath.length(ray.orig.subtract(intersectPoint));
+        rayInfo.point = intersectPoint; //assign hit point
+        rayInfo.normal = n.normalize(); //assign hit point normal from center
         rayInfo.didIntersect = true;
-
+        rayInfo.material = material;
 
         return rayInfo;
     }
@@ -109,6 +109,12 @@ public class Triangle implements IShape
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
 
+    }
+
+    @Override
+    public RayInfo hit(Ray ray, double tmin, double tmax)
+    {
+        return null;
     }
 
     public double calculateArea()

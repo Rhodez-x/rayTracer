@@ -76,7 +76,7 @@ public class Box implements IShape
         }
 
         rayInfo.didIntersect = true;
-
+        rayInfo.material = material;
 
         return rayInfo;
     }
@@ -85,5 +85,11 @@ public class Box implements IShape
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
+    }
+
+    @Override
+    public RayInfo hit(Ray ray, double tmin, double tmax)
+    {
+        return null;
     }
 }

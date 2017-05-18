@@ -31,7 +31,7 @@ public class VecMath
 
 
     //returns the unit vector.
-    public static Vector3D unit_vector(Vector3D v)
+    public static Vector3D getUnitVector(Vector3D v)
     {
         double length = Math.sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());
         return divide(v, length);

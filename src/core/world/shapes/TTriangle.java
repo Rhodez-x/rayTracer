@@ -93,10 +93,10 @@ public class TTriangle implements IShape
         }
 
         t = edge2.dotProduct(qvec) * inv_det;
-        rayInfo.distance = t;
-        rayInfo.nhit = getNormal();
+        rayInfo.t = t;
+        rayInfo.normal = getNormal().normalize();
         rayInfo.didIntersect = true;
-
+        rayInfo.material = material;
 
         return rayInfo;
     }
@@ -105,6 +105,12 @@ public class TTriangle implements IShape
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
+    }
+
+    @Override
+    public RayInfo hit(Ray ray, double tmin, double tmax)
+    {
+        return null;
     }
 
     private Vector3D getNormal()

@@ -1,5 +1,6 @@
 package core.world.ray;
 
+import core.world.shading.Material;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
@@ -10,8 +11,9 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 public class RayInfo
 {
     public boolean didIntersect = false; //default false;
-    public Vector3D phit; //hit position
-    public Vector3D nhit; //normal of the hit
-    public double distance;
+    public Vector3D point; //hit position
+    public Vector3D normal; //normal of the hit
+    public double t;
+    public Material material;
 
 }

@@ -64,15 +64,16 @@ public class TPlane implements IShape
 
         if (vd < 0)
         {
-            rayInfo.nhit = planeNormal;
+            rayInfo.normal = planeNormal;
         } else
         {
-            rayInfo.nhit = planeNormal.negate();
+            rayInfo.normal = planeNormal.negate();
         }
 
-        rayInfo.distance = t;
-        rayInfo.phit = interSectionPoint;
+        rayInfo.t = t;
+        rayInfo.point = interSectionPoint;
         rayInfo.didIntersect = true;
+        rayInfo.material = material;
 
         return rayInfo;
     }
@@ -86,5 +87,11 @@ public class TPlane implements IShape
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
+    }
+
+    @Override
+    public RayInfo hit(Ray ray, double tmin, double tmax)
+    {
+        return null;
     }
 }

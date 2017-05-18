@@ -24,21 +24,21 @@ public class Camera
 
     public Camera(Vector3D lookfrom, Vector3D lookat, Vector3D vup, double vfov, double aspect, double aperture, double focus_dist)
     {
+
         lens_radius = aperture / 2;
         double theta = vfov * Math.PI / 180;
         double half_height = Math.tan(theta / 2);
         double half_width = aspect * half_height;
 
         origin = lookfrom;
-        w = VecMath.unit_vector(lookfrom.subtract(lookat));
-        u = VecMath.unit_vector(vup.crossProduct(w));
+        w = VecMath.getUnitVector(lookfrom.subtract(lookat));
+        u = VecMath.getUnitVector(vup.crossProduct(w));
         v = w.crossProduct(u);
 
         lower_left_corner = origin.subtract(u.scalarMultiply(half_width * focus_dist)).subtract(v.scalarMultiply(half_width * focus_dist)).subtract(w.scalarMultiply(focus_dist));
 
         horizontal = u.scalarMultiply((2 * half_width) * focus_dist);
         vertical = v.scalarMultiply((2 * half_height) * focus_dist);
-
 
     }
 
@@ -49,11 +49,17 @@ public class Camera
 
     public Ray getRay(double s, double t)
     {
+        /*/
         Vector3D rd = random_in_unit_disk().scalarMultiply(lens_radius);
 
         Vector3D offset = u.scalarMultiply(rd.getX()).add(v.scalarMultiply(rd.getY()));
 
         return new Ray(origin.add(offset), lower_left_corner.add(horizontal.scalarMultiply(s)).add(vertical.scalarMultiply(t)).subtract(origin).subtract(offset));
+    */
+
+
+        return new Ray(origin, (lower_left_corner.add(horizontal.scalarMultiply(s)).add(vertical.scalarMultiply(t)).subtract(origin)));
+
     }
 
     public Vector3D random_in_unit_disk()

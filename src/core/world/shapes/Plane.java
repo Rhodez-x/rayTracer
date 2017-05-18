@@ -18,14 +18,16 @@ public class Plane implements IShape
     double B;
     double C;
     double D;
+    Vector3D planeNormal;
 
-    public Plane(Material material, double a, double b, double c, double d)
+    public Plane(double a, double b, double c, double d, Material material)
     {
         this.material = material;
         this.A = a;
         this.B = b;
         this.C = c;
         this.D = d;
+        this.planeNormal = new Vector3D(A, B, C);
     }
 
 
@@ -34,17 +36,19 @@ public class Plane implements IShape
     public RayInfo intersects(Ray ray, double dist)
     {
         RayInfo rayInfo = new RayInfo();
+        rayInfo.material = material;
 
         Vector3D origin = ray.orig;
         Vector3D direction = ray.dir.normalize();
-
-        Vector3D planeNormal = getNormal();
 
         double vd = planeNormal.dotProduct(direction);
 
         if (vd == 0)
         { //return false because the ray is parallel to the plane and no intersection occurs.
             rayInfo.didIntersect = false;
+            rayInfo.t = 0;
+            rayInfo.point = Vector3D.ZERO;
+            rayInfo.normal = Vector3D.ZERO;
             return rayInfo;
         }
 
@@ -57,6 +61,9 @@ public class Plane implements IShape
         if (t < 0)
         {
             rayInfo.didIntersect = false;
+            rayInfo.t = 0;
+            rayInfo.point = Vector3D.ZERO;
+            rayInfo.normal = Vector3D.ZERO;
             return rayInfo;
         } else
         {
@@ -65,27 +72,29 @@ public class Plane implements IShape
 
         if (vd < 0)
         {
-            rayInfo.nhit = planeNormal;
+            rayInfo.normal = planeNormal;
         } else
         {
-            rayInfo.nhit = planeNormal.negate();
+            rayInfo.normal = planeNormal.negate();
         }
 
-        rayInfo.distance = t;
-        rayInfo.phit = interSectionPoint;
+        rayInfo.t = t;
+        rayInfo.point = interSectionPoint;
+        rayInfo.normal = rayInfo.normal.normalize();
         rayInfo.didIntersect = true;
 
         return rayInfo;
-    }
-
-    public Vector3D getNormal()
-    {
-        return new Vector3D(A, B, C);
     }
 
     @Override
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
+    }
+
+    @Override
+    public RayInfo hit(Ray ray, double tmin, double tmax)
+    {
+        return null;
     }
 }

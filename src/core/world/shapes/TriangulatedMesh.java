@@ -19,4 +19,10 @@ public class TriangulatedMesh implements IShape
     {
 
     }
+
+    @Override
+    public RayInfo hit(Ray ray, double tmin, double tmax)
+    {
+        return null;
+    }
 }
