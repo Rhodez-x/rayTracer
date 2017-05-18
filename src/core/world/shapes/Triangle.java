@@ -49,8 +49,7 @@ public class Triangle implements IShape
 
         double d = n.dotProduct(this.points[0]);
 
-        r = (n.dotProduct(ray.orig) + d) / b;
-        System.out.println(r);
+        r = - (n.dotProduct(ray.orig) + d) / b;
         if (r < 0.0)
         {
             rayInfo.didIntersect = false;
@@ -93,7 +92,6 @@ public class Triangle implements IShape
             rayInfo.didIntersect = false;
             return rayInfo; // ray is on right side
         }
-
 
         rayInfo.t = VecMath.length(ray.orig.subtract(intersectPoint));
         rayInfo.point = intersectPoint; //assign hit point

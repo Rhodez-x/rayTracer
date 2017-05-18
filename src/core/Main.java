@@ -108,20 +108,27 @@ public class Main
 
     public static void createAndAddObjects()
     {
-        Sphere mySphere_1 = new Sphere(new Vector3D(-1.0, 1, 2.5), 1.0, new Material(MaterialType.DIFFUSE, new Vector3D(0, 0.0, 0.3)));
+        Sphere mySphere_1 = new Sphere(new Vector3D(-2.0, -2, -2.5), 1.0, new Material(MaterialType.DIFFUSE, new Vector3D(0, 0.0, 0.3)));
         Sphere mySphere_4 = new Sphere(new Vector3D(0, 0, -1.0), 2.0, new Material(MaterialType.DIFFUSE, new Vector3D(0.5, 0, 0)));
         Sphere mySphere_2 = new Sphere(new Vector3D(-3.0, -1.0, -2.5), 2.0, new Material(MaterialType.DIFFUSE, new Vector3D(0.6, 0.4, 0.4)));
         Sphere mySphere_3 = new Sphere(new Vector3D(-4.0, 0.0, -1.5), 1.0, new Material(MaterialType.DIFFUSE, new Vector3D(0.1, 0.2, 0.6)));
         Vector3D[] list = new Vector3D[3];
 
-        list[0] = new Vector3D(0, 0, 3);
-        list[1] = new Vector3D(1, 1, 3);
-        list[2] = new Vector3D(2, 0, 3);
+        list[0] = new Vector3D(1, 1, 9);
+        list[1] = new Vector3D(2, -2, 8);
+        list[2] = new Vector3D(4, 1, 8);
 
         Triangle tri = new Triangle(list, new Material(MaterialType.DIFFUSE, new Vector3D(0.5, 0.5, 0)));
+        
+        Vector3D[] list2 = new Vector3D[3];
+        list2[0] = new Vector3D(4, 0, 3);
+        list2[1] = new Vector3D(2, 2, 3);
+        list2[2] = new Vector3D(7, 4, 0);
 
+        Triangle tri2 = new Triangle(list2, new Material(MaterialType.DIFFUSE, new Vector3D(0.5, 0.5, 0)));
+        
 
-        //shapeList.add(mySphere_1);
+        shapeList.add(mySphere_1);
         //shapeList.add(mySphere_2);
         //shapeList.add(mySphere_3);
 
@@ -130,9 +137,11 @@ public class Main
         Plane plane = new Plane(0, 1, 0, -3, new Material(MaterialType.DIFFUSE, new Vector3D(0.0, 1, 0.2)));
         TTriangle tTriangle = new TTriangle(new Vector3D(0, 0, -1), new Vector3D(1, 1, 3), new Vector3D(2, 0, -1), new Material(MaterialType.DIFFUSE, new Vector3D(0.0, 0.0, 1)));
 
-        shapeList.add(plane);
-        shapeList.add(mySphere_1);
-        shapeList.add(mySphere_4);
+        shapeList.add(tri);
+        //shapeList.add(tri2);
+        //shapeList.add(plane);
+        //shapeList.add(mySphere_1);
+        //shapeList.add(mySphere_4);
 
         oclusionObject = new OclusionObject(shapeList);
 
