@@ -99,7 +99,7 @@ public class Main
                 rgb[0] = ir;
                 rgb[1] = ig;
                 rgb[2] = ib;
-                Globals.outputRenderedImage.getRaster().setPixel(x, y, rgb);
+                Globals.outputRenderedImage.getRaster().setPixel(x, 599 - y , rgb);
 
             }
         }
@@ -108,15 +108,15 @@ public class Main
 
     public static void createAndAddObjects()
     {
-        Sphere mySphere_1 = new Sphere(new Vector3D(-1, -0.5, 0), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0, 0.0, 0.3)));
-        Sphere mySphere_4 = new Sphere(new Vector3D(0, 0, -2.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
+        Sphere mySphere_1 = new Sphere(new Vector3D(-3, 3, -3), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0, 0.0, 0.3)));
+        Sphere mySphere_4 = new Sphere(new Vector3D(-2, 2, -4.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
         Sphere mySphere_2 = new Sphere(new Vector3D(-3.0, -1.0, -2.5), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
         Sphere mySphere_3 = new Sphere(new Vector3D(-4.0, 0.0, -1.5), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.1, 0.2, 0.6)));
         Vector3D[] list = new Vector3D[3];
 
-        list[0] = new Vector3D(1, 1, 9);
-        list[1] = new Vector3D(2, -2, 8);
-        list[2] = new Vector3D(4, 1, 8);
+        list[0] = new Vector3D(0, 0, 7);
+        list[1] = new Vector3D(3, 3, 8);
+        list[2] = new Vector3D(6, 0, 8);
 
         Triangle tri = new Triangle(list, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
         
@@ -140,7 +140,8 @@ public class Main
 
         //shapeList.add(tri);
         //shapeList.add(tri2);
-        shapeList.add(plane);
+        //shapeList.add(plane);
+        shapeList.add(tri);
         shapeList.add(mySphere_1);
         shapeList.add(mySphere_4);
 
