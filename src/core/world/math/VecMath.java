@@ -37,6 +37,11 @@ public class VecMath
         return divide(v, length);
     }
 
+    public static Vector3D sqrt(Vector3D a)
+    {
+        return new Vector3D(Math.sqrt(a.getX()), Math.sqrt(a.getY()), Math.sqrt(a.getZ()));
+    }
+
 
     //Scalar math
     public static Vector3D divide(Vector3D v, double a)

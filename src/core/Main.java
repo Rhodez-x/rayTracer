@@ -2,6 +2,7 @@ package core;
 
 import core.gui.GUI;
 import core.world.camera.Camera;
+import core.world.light.Light;
 import core.world.math.VecMath;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
@@ -25,6 +26,8 @@ public class Main
 
     public static OclusionObject oclusionObject;
 
+    public static Light globalLight;
+
     public static void main(String[] args)
     {
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -33,7 +36,6 @@ public class Main
         double focusDistance = 10.0;
         double aperture = 0.1;
         double vfov = 50;
-        int sampleCount = 1; //for supersampling don't use for now.
 
         Vector3D startPos = new Vector3D(0, 4, 10);
         Vector3D lookDirection = new Vector3D(0, 0, 0);
@@ -54,42 +56,21 @@ public class Main
 
     public static void rayTrace(Camera camera)
     {
-
         for (int y = 0; y < HEIGHT; y++)
         {
             for (int x = 0; x < WIDTH; x++)
             {
 
-                Vector3D color = new Vector3D(0, 0, 0);
+                Vector3D color = Vector3D.ZERO;
+
 
                 double u = (x) / ((double) (WIDTH));
                 double v = (y) / ((double) (HEIGHT));
-
                 Ray ray = camera.getRay(u, v);
 
-                //ray.dir = Camera.projectToView(new Vector3D(x, y, 1));
-                //System.out.println(myRay.dir);
-                //System.out.println(myRay.orig);
+                color = doTrace(ray, oclusionObject, globalLight);
 
-                /*
-                for (IShape shape : shapeList)
-                {
-                    if (shape.intersects(ray, 1).didIntersect)
-                    {
-
-                        color = VecMath.plusEqual(color, Material.initShading(ray, shape, 0)); //intersection happens inside here.)
-                        //shape.paint(x, y);
-                    }
-                }
-                */
-
-
-                color = VecMath.plusEqual(color, color(ray, oclusionObject, 0)); //intersection happens inside here.)
-
-
-                color = VecMath.divideEqual(color, 1);
-                //square root for gamma correction also known as gamma 2
-                color = new Vector3D(Math.sqrt(color.getX()), Math.sqrt(color.getY()), Math.sqrt(color.getZ()));
+                color = VecMath.sqrt(color);
                 int ir = ((int) (255.99 * color.getX()));
                 int ig = ((int) (255.99 * color.getY()));
                 int ib = ((int) (255.99 * color.getZ()));
@@ -101,11 +82,18 @@ public class Main
 
             }
         }
+
     }
 
 
     public static void createAndAddObjects()
     {
+
+        globalLight = new Light();
+        globalLight.position = new Vector3D(10, 10, -2);
+        globalLight.ambience = 0.1;
+
+
         Sphere mySphere_1 = new Sphere(new Vector3D(-4, 1.0, 0), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
         Sphere mySphere_4 = new Sphere(new Vector3D(-2, 2, -4.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
         Sphere mySphere_2 = new Sphere(new Vector3D(1.8, 2, -10.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
@@ -126,13 +114,8 @@ public class Main
         Triangle tri2 = new Triangle(list2, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
 
 
-        //shapeList.add(mySphere_1);
-        //shapeList.add(mySphere_2);
-        //shapeList.add(mySphere_3);
 
-        //lane p = new Plane(new Vector3D(0, 0, -5), new Material(new Color(0, 255, 0)));
-
-        Plane plane = new Plane(0, 1, -0.01, 0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 1, 0.2)));
+        Plane plane = new Plane(0, 1, -0.1, 0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 0.2, 0.1)));
 
         //shapeList.add(tri);
         //shapeList.add(tri2);
@@ -144,7 +127,6 @@ public class Main
         shapeList.add(mySphere_3);
 
         oclusionObject = new OclusionObject(shapeList);
-
 
     }
 
@@ -161,41 +143,22 @@ public class Main
     }
 
 
-    public static Vector3D color(Ray ray, IShape mainShape, int recursionDepth)
+    public static Vector3D shade(RayInfo rayInfo, Light light)
+    {
+        Vector3D c;
+        double normalDotLightpos = rayInfo.normal.dotProduct(light.position.normalize());
+        double ambiance = light.ambience + ((1.0 - light.ambience) * Math.max(0.0, normalDotLightpos));
+        c = rayInfo.material.albedo.scalarMultiply(ambiance);
+        return c;
+    }
+
+    public static Vector3D doTrace(Ray ray, IShape mainShape, Light light)
     {
         double EPSILON = 0.000000000001;
-        RayInfo rayInfo = mainShape.hit(ray, EPSILON, Double.MAX_VALUE); //maybe implement a min and max intersection distance.
+        RayInfo rayInfo = mainShape.intersects(ray, EPSILON, Double.MAX_VALUE); //maybe implement a min and max intersection distance.
         if (rayInfo.didIntersect)
         {
-
-            /*
-            ScatterInfo scatterInfo;
-            if (recursionDepth < 10 && (scatterInfo = rayInfo.material.scatter(ray, rayInfo)).didScatter)
-            {
-                return VecMath.multiply(scatterInfo.attenuation, color(scatterInfo.scattered, mainShape, recursionDepth + 1));
-            } else
-            {
-                return new Vector3D(0, 0, 0);
-            }
-            */
-
-
-
-            if (recursionDepth < 100) //bigger recursion depth better quality
-            {
-                Vector3D target = rayInfo.point.add(rayInfo.normal).add(VecMath.random_in_unit_sphere());
-                return color(new Ray(rayInfo.point, target.subtract(rayInfo.point)), mainShape, recursionDepth + 1).scalarMultiply(0.5);
-            } else
-            {
-                return new Vector3D(0, 0, 0);
-            }
-
-
-
-
-            //check normalization, normalizing the vector here might improve shading?
-            //return new Vector3D(rayInfo.normal.getX() + 1.0, rayInfo.normal.getY() + 1.0, rayInfo.normal.getZ() + 1.0).scalarMultiply(0.5);
-
+            return shade(rayInfo, light);
         } else //else, lerp to create a gradient background.
         {
             Vector3D unitVectorDirection = VecMath.getUnitVector(ray.dir.normalize());

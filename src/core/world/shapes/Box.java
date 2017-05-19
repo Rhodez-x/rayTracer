@@ -30,7 +30,7 @@ public class Box implements IShape
 
     //doesn't work correctly missing PP planes and for loop
     @Override
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double min, double max)
     {
         RayInfo rayInfo = new RayInfo();
 
@@ -81,13 +81,12 @@ public class Box implements IShape
         return rayInfo;
     }
 
-    @Override
+
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
     }
 
-    @Override
     public RayInfo hit(Ray ray, double tmin, double tmax)
     {
         return null;

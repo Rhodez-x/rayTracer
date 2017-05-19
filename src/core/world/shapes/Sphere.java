@@ -22,8 +22,9 @@ public class Sphere implements IShape
     }
 
     @Override
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double min, double max)
     {
+        /*
         RayInfo rayInfo = new RayInfo();
 
         Vector3D origin = ray.orig;
@@ -61,10 +62,12 @@ public class Sphere implements IShape
         {
             t0 = t1;
             if (t0 < 0)
-            {
                 return rayInfo;
-            }
         }
+
+        if (!(t0 < max && t0 > min))
+            return rayInfo;
+
         rayInfo.didIntersect = true;
 
         //Assignment. reset variables
@@ -75,6 +78,9 @@ public class Sphere implements IShape
         rayInfo.material = material;
 
         return rayInfo;
+        */
+
+        return hit(ray, min, max);
     }
 
     public Vector3D getIntersectionPoint(Vector3D rayOrgin, Vector3D rayDirection, double t)
@@ -116,7 +122,6 @@ public class Sphere implements IShape
         return true;
     }
 
-    @Override
     public RayInfo hit(Ray ray, double tMin, double tMax) //intersection with min distance and max distance. useful for sorting objects by depth.
     {
         RayInfo rayInfo = new RayInfo();
@@ -156,6 +161,7 @@ public class Sphere implements IShape
 
         return rayInfo;
     }
+
 
     //TODO: UNDERSTAND THEN REFACTOR
     public void paint(int x, int y)

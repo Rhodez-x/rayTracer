@@ -1,43 +1,23 @@
 package core.world.light;
 
-import core.world.ray.Ray;
-import core.world.shapes.IShape;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import static core.Globals.*;
-
 /**
- * Created by Fred on 25-04-2017.
+ * Created by Gabriel Jadderson on 20-05-2017.
  */
 public class Light
 {
-    private Vector3D position;
-    public double fov;
+    public Vector3D position;
+    public double ambience;
 
-
-    public void Begin()
+    public Light()
     {
-        for (int y = 0; y < HEIGHT; y++)
-        {
-            for (int x = 0; x < WIDTH; x++)
-            {
-                //Vector3D startPos = new Vector3D(0, 200, 100);
-                //Vector3D direction = startPos.subtract(new Vector3D((double) x , (double) y , -1));
+        this(Vector3D.ZERO, 0);
+    }
 
-                Vector3D startPos = new Vector3D(0, 2, 0);
-                Vector3D direction = new Vector3D((double) x / WIDTH * VIEW_WIDTH - VIEW_WIDTH / 2.0, (double) y / HEIGHT * VIEW_HEIGHT - VIEW_HEIGHT / 2.0, 1);
-
-                Ray myRay = new Ray(startPos, direction);
-                //background.setPaint(x, y, background.color);
-                for (IShape shape : shapeList)
-                {
-                    if (shape.intersects(myRay, 1).didIntersect)
-                    {
-                        //System.out.println(shape.getDepth());
-                        //shape.getMaterial().setPaint(x, y, shape.getMaterial().getColor().calcDepth(shape.getDepth()));
-                    }
-                }
-            }
-        }
+    public Light(Vector3D position, double ambience)
+    {
+        this.position = position;
+        this.ambience = ambience;
     }
 }

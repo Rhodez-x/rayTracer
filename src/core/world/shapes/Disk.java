@@ -14,8 +14,8 @@ public class Disk implements IShape
     public Vector3D position;
     Plane plane;
 
-    @Override
-    public RayInfo intersects(Ray ray, double dist)
+
+    public RayInfo intersects(Ray ray, double min, double max)
     {
         float t = 0;
         RayInfo info = new RayInfo();
@@ -34,13 +34,12 @@ public class Disk implements IShape
         return info;
     }
 
-    @Override
     public void paint(int x, int y)
     {
 
     }
 
-    @Override
+
     public RayInfo hit(Ray ray, double tmin, double tmax)
     {
         return null;
