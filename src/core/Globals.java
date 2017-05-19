@@ -22,7 +22,7 @@ public class Globals
 
     public static ArrayList<IShape> shapeList = new ArrayList<>();
 
-    public static Vector3D bkgColor = new Vector3D(0.8, 0.6, 0.6);
+    public static Vector3D bkgColor = new Vector3D(0.5, 0.5, 0.5);
 
     public static GUI gui;
 }

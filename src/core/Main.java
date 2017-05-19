@@ -170,7 +170,7 @@ public class Main
 
             /*
             ScatterInfo scatterInfo;
-            if (recursionDepth < 100 && (scatterInfo = rayInfo.material.scatter(ray, rayInfo)).didScatter)
+            if (recursionDepth < 10 && (scatterInfo = rayInfo.material.scatter(ray, rayInfo)).didScatter)
             {
                 return VecMath.multiply(scatterInfo.attenuation, color(scatterInfo.scattered, mainShape, recursionDepth + 1));
             } else
@@ -178,6 +178,7 @@ public class Main
                 return new Vector3D(0, 0, 0);
             }
             */
+
 
 
             if (recursionDepth < 100) //bigger recursion depth better quality
@@ -188,6 +189,7 @@ public class Main
             {
                 return new Vector3D(0, 0, 0);
             }
+
 
 
 
