@@ -36,10 +36,10 @@ public class Main
         double vfov = 50;
         int sampleCount = 1; //for supersampling don't use for now.
 
-        Vector3D startPos = new Vector3D(0, 0, 10);
+        Vector3D startPos = new Vector3D(0, 0, -10);
         Vector3D lookDirection = new Vector3D(0, 0, 0);
 
-        camera = new Camera(startPos, lookDirection, new Vector3D(0, 1, 0), vfov, (((double) WIDTH) / ((double) HEIGHT)), aperture, focusDistance);
+        camera = new Camera(startPos, lookDirection, new Vector3D(0, -1, 0), vfov, (((double) WIDTH) / ((double) HEIGHT)), aperture, focusDistance);
 
 
         createAndAddObjects(); //creation of all objects happens here
@@ -55,8 +55,6 @@ public class Main
 
     public static void rayTrace(Camera camera)
     {
-        // Light light = new Light();
-        // light.Begin();
         for (int y = 0; y < HEIGHT; y++)
         {
             for (int x = 0; x < WIDTH; x++)
@@ -99,7 +97,7 @@ public class Main
                 rgb[0] = ir;
                 rgb[1] = ig;
                 rgb[2] = ib;
-                Globals.outputRenderedImage.getRaster().setPixel(x, 599 - y , rgb);
+                Globals.outputRenderedImage.getRaster().setPixel(x, y, rgb);
 
             }
         }
@@ -108,10 +106,10 @@ public class Main
 
     public static void createAndAddObjects()
     {
-        Sphere mySphere_1 = new Sphere(new Vector3D(-3, 3, -3), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0, 0.0, 0.3)));
-        Sphere mySphere_4 = new Sphere(new Vector3D(-2, 2, -4.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
-        Sphere mySphere_2 = new Sphere(new Vector3D(-3.0, -1.0, -2.5), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
-        Sphere mySphere_3 = new Sphere(new Vector3D(-4.0, 0.0, -1.5), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.1, 0.2, 0.6)));
+        Sphere mySphere_1 = new Sphere(new Vector3D(-3, 1, 3), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0, 0.0, 0.3)));
+        Sphere mySphere_4 = new Sphere(new Vector3D(-2, 2, 4.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
+        Sphere mySphere_2 = new Sphere(new Vector3D(-3.0, -1.0, 2.5), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
+        Sphere mySphere_3 = new Sphere(new Vector3D(-4.0, 0.0, 1.5), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.1, 0.2, 0.6)));
         Vector3D[] list = new Vector3D[3];
 
         list[0] = new Vector3D(0, 0, 7);
@@ -119,14 +117,14 @@ public class Main
         list[2] = new Vector3D(6, 0, 8);
 
         Triangle tri = new Triangle(list, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
-        
+
         Vector3D[] list2 = new Vector3D[3];
         list2[0] = new Vector3D(4, 0, 3);
         list2[1] = new Vector3D(2, 2, 3);
         list2[2] = new Vector3D(7, 4, 0);
 
         Triangle tri2 = new Triangle(list2, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
-        
+
 
         //shapeList.add(mySphere_1);
         //shapeList.add(mySphere_2);
