@@ -2,6 +2,7 @@ package core;
 
 import core.gui.GUI;
 import core.world.camera.Camera;
+import core.world.light.Light;
 import core.world.math.VecMath;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
@@ -24,6 +25,8 @@ public class Main
     public static Camera camera;
 
     public static OclusionObject oclusionObject;
+
+    public static Light globalLight;
 
     public static void main(String[] args)
     {
@@ -54,6 +57,7 @@ public class Main
 
     public static void rayTrace(Camera camera)
     {
+        int sampleCount = 100;
 
         for (int y = 0; y < HEIGHT; y++)
         {
@@ -62,10 +66,13 @@ public class Main
 
                 Vector3D color = new Vector3D(0, 0, 0);
 
+
+                /*
                 double u = (x) / ((double) (WIDTH));
                 double v = (y) / ((double) (HEIGHT));
 
                 Ray ray = camera.getRay(u, v);
+                */
 
                 //ray.dir = Camera.projectToView(new Vector3D(x, y, 1));
                 //System.out.println(myRay.dir);
@@ -83,11 +90,30 @@ public class Main
                 }
                 */
 
+                Vector3D deColor = new Vector3D(0, 0, 0);
 
-                color = VecMath.plusEqual(color, color(ray, oclusionObject, 0)); //intersection happens inside here.)
+                Ray ray;
+                for (int i = 0; i < sampleCount; i++)
+                {
+                    double u = (x + Math.random()) / ((double) (WIDTH));
+                    double v = (y + Math.random()) / ((double) (HEIGHT));
+                    ray = camera.getRay(u, v);
+                    if (i == 0) //performance increase
+                        deColor = deColor(ray, oclusionObject, globalLight);
+                    color = VecMath.plusEqual(color, color(ray, oclusionObject, 0));
+                }
+
+                color = VecMath.divideEqual(color, sampleCount);
 
 
-                color = VecMath.divideEqual(color, 1);
+                //color = VecMath.multiply(deColor, color);
+
+                //color = VecMath.plusEqual(color, color(ray, oclusionObject, 0)); //intersection happens inside here.)
+                //color = deColor(ray, oclusionObject, globalLight);
+                //color = color(ray, oclusionObject, 0);
+
+
+                //color = VecMath.divideEqual(color, sampleCount);
                 //square root for gamma correction also known as gamma 2
                 color = new Vector3D(Math.sqrt(color.getX()), Math.sqrt(color.getY()), Math.sqrt(color.getZ()));
                 int ir = ((int) (255.99 * color.getX()));
@@ -106,6 +132,12 @@ public class Main
 
     public static void createAndAddObjects()
     {
+
+        globalLight = new Light();
+        globalLight.position = new Vector3D(10, 10, -2);
+        globalLight.ambience = 0.2;
+
+
         Sphere mySphere_1 = new Sphere(new Vector3D(-4, 1.0, 0), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
         Sphere mySphere_4 = new Sphere(new Vector3D(-2, 2, -4.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
         Sphere mySphere_2 = new Sphere(new Vector3D(1.8, 2, -10.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
@@ -161,6 +193,32 @@ public class Main
     }
 
 
+    public static Vector3D interColor(RayInfo rayInfo, Light light)
+    {
+        Vector3D c;
+        double normalDotLightpos = rayInfo.normal.dotProduct(light.position.normalize());
+        double ambiance = light.ambience + ((1.0 - light.ambience) * Math.max(0.0, normalDotLightpos));
+        c = rayInfo.material.albedo.scalarMultiply(ambiance);
+        return c;
+    }
+
+    public static Vector3D deColor(Ray ray, IShape mainShape, Light light)
+    {
+        double EPSILON = 0.000000000001;
+        RayInfo rayInfo = mainShape.hit(ray, EPSILON, Double.MAX_VALUE); //maybe implement a min and max intersection distance.
+        if (rayInfo.didIntersect)
+        {
+            return interColor(rayInfo, light);
+        } else //else, lerp to create a gradient background.
+        {
+            Vector3D unitVectorDirection = VecMath.getUnitVector(ray.dir.normalize());
+            double multiplier = 0.9;
+            double t = multiplier * -unitVectorDirection.getY() + 1.0;
+            return lerp(new Vector3D(1.0, 1.0, 1.0), Globals.bkgColor, t);
+        }
+    }
+
+
     public static Vector3D color(Ray ray, IShape mainShape, int recursionDepth)
     {
         double EPSILON = 0.000000000001;
@@ -180,8 +238,7 @@ public class Main
             */
 
 
-
-            if (recursionDepth < 100) //bigger recursion depth better quality
+            if (recursionDepth < 1000) //bigger recursion depth better quality
             {
                 Vector3D target = rayInfo.point.add(rayInfo.normal).add(VecMath.random_in_unit_sphere());
                 return color(new Ray(rayInfo.point, target.subtract(rayInfo.point)), mainShape, recursionDepth + 1).scalarMultiply(0.5);
@@ -189,8 +246,6 @@ public class Main
             {
                 return new Vector3D(0, 0, 0);
             }
-
-
 
 
             //check normalization, normalizing the vector here might improve shading?

@@ -1,6 +1,7 @@
 package core.world.shapes;
 
 import core.Globals;
+import core.world.light.Light;
 import core.world.math.VecMath;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
@@ -163,6 +164,10 @@ public class Sphere implements IShape
         //material.color.shade(new Vector3D(-5, -1, 1.5), new Vector3D(-1, 6, 1.00), 0.126, 1.7473);
         //material.albedo = VecMath.plusEqual(material.albedo, Material.initShading(ray, this, 0));
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
+    }
+
+    public void shade(Ray ray, RayInfo rayInfo, Light light) {
+
     }
 
 }

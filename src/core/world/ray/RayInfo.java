@@ -17,12 +17,14 @@ public class RayInfo
     public Vector3D normal; //normal of the hit
     public double t; //distance
     public Material material; //mat of shape
+    public Vector3D shapePosition;
 
     public RayInfo()
     {
         didIntersect = false;
         point = Vector3D.ZERO;
         normal = Vector3D.ZERO;
+        shapePosition = Vector3D.ZERO;
         t = 0;
         material = new Material(MaterialType.LAMBERTIAN, new Vector3D(0, 0, 0));
     }
