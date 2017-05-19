@@ -41,6 +41,7 @@ public class Plane implements IShape
         Vector3D origin = ray.orig;
         Vector3D direction = ray.dir.normalize();
 
+
         double vd = planeNormal.dotProduct(direction);
 
         if (vd == 0)
@@ -95,6 +96,47 @@ public class Plane implements IShape
     @Override
     public RayInfo hit(Ray ray, double tmin, double tmax)
     {
-        return null;
+
+        RayInfo rayInfo = new RayInfo();
+        rayInfo.material = material;
+
+        Vector3D origin = ray.orig;
+        Vector3D direction = ray.dir.normalize();
+
+
+        double vd = planeNormal.dotProduct(direction);
+
+        if (vd == 0)//return false because the ray is parallel to the plane and no intersection occurs.
+            return rayInfo;
+
+
+        double v0 = -(planeNormal.dotProduct(origin) + D);
+
+        double t = v0 / vd;
+
+        Vector3D interSectionPoint;
+
+        if (t < 0)
+            return rayInfo;
+        else
+            interSectionPoint = new Vector3D(origin.getX() + direction.getX() * t, origin.getY() + direction.getY() * t, origin.getZ() + direction.getZ() * t);
+
+
+        if (!(t < tmax && t > tmin))
+            return rayInfo;
+
+
+        if (vd < 0)
+            rayInfo.normal = planeNormal;
+        else
+            rayInfo.normal = planeNormal.negate();
+
+
+        rayInfo.t = t;
+        rayInfo.point = interSectionPoint;
+        rayInfo.normal = rayInfo.normal.normalize();
+        rayInfo.didIntersect = true;
+
+        return rayInfo;
     }
 }

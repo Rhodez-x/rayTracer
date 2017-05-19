@@ -7,7 +7,6 @@ import core.world.ray.Ray;
 import core.world.ray.RayInfo;
 import core.world.shading.Material;
 import core.world.shading.MaterialType;
-import core.world.shading.ScatterInfo;
 import core.world.shapes.*;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -36,7 +35,7 @@ public class Main
         double vfov = 50;
         int sampleCount = 1; //for supersampling don't use for now.
 
-        Vector3D startPos = new Vector3D(0, 0, 10);
+        Vector3D startPos = new Vector3D(0, 4, 10);
         Vector3D lookDirection = new Vector3D(0, 0, 0);
 
         camera = new Camera(startPos, lookDirection, new Vector3D(0, 1, 0), vfov, (((double) WIDTH) / ((double) HEIGHT)), aperture, focusDistance);
@@ -107,13 +106,13 @@ public class Main
 
     public static void createAndAddObjects()
     {
-        Sphere mySphere_1 = new Sphere(new Vector3D(-3, 3, -3), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0, 0.0, 0.3)));
+        Sphere mySphere_1 = new Sphere(new Vector3D(-4, 1.0, 0), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
         Sphere mySphere_4 = new Sphere(new Vector3D(-2, 2, -4.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
-        Sphere mySphere_2 = new Sphere(new Vector3D(-3.0, -1.0, -2.5), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
-        Sphere mySphere_3 = new Sphere(new Vector3D(-4.0, 0.0, -1.5), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.1, 0.2, 0.6)));
+        Sphere mySphere_2 = new Sphere(new Vector3D(1.8, 2, -10.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
+        Sphere mySphere_3 = new Sphere(new Vector3D(4.0, 1.15, 1.5), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
         Vector3D[] list = new Vector3D[3];
 
-        list[0] = new Vector3D(0, 0, 7);
+        list[0] = new Vector3D(-1, 0, 7);
         list[1] = new Vector3D(3, 3, 8);
         list[2] = new Vector3D(6, 0, 8);
 
@@ -133,16 +132,16 @@ public class Main
 
         //lane p = new Plane(new Vector3D(0, 0, -5), new Material(new Color(0, 255, 0)));
 
-        Plane plane = new Plane(0, 1, 0, -3, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 1, 0.2)));
-
-        TTriangle tTriangle = new TTriangle(new Vector3D(0, 0, -1), new Vector3D(1, 1, 3), new Vector3D(2, 0, -1), new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 0.0, 1)));
+        Plane plane = new Plane(0, 1, -0.01, 0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 1, 0.2)));
 
         //shapeList.add(tri);
         //shapeList.add(tri2);
-        //shapeList.add(plane);
-        shapeList.add(tri);
+        shapeList.add(plane);
+        //shapeList.add(tri);
         shapeList.add(mySphere_1);
         shapeList.add(mySphere_4);
+        shapeList.add(mySphere_2);
+        shapeList.add(mySphere_3);
 
         oclusionObject = new OclusionObject(shapeList);
 
@@ -165,10 +164,11 @@ public class Main
     public static Vector3D color(Ray ray, IShape mainShape, int recursionDepth)
     {
         double EPSILON = 0.000000000001;
-        RayInfo rayInfo = mainShape.intersects(ray, 0); //maybe implement a min and max intersection distance.
+        RayInfo rayInfo = mainShape.hit(ray, EPSILON, Double.MAX_VALUE); //maybe implement a min and max intersection distance.
         if (rayInfo.didIntersect)
         {
 
+            /*
             ScatterInfo scatterInfo;
             if (recursionDepth < 100 && (scatterInfo = rayInfo.material.scatter(ray, rayInfo)).didScatter)
             {
@@ -177,17 +177,19 @@ public class Main
             {
                 return new Vector3D(0, 0, 0);
             }
+            */
 
-            /*
-            if (recursionDepth < 100)
+
+            if (recursionDepth < 100) //bigger recursion depth better quality
             {
                 Vector3D target = rayInfo.point.add(rayInfo.normal).add(VecMath.random_in_unit_sphere());
-                return color(new Ray(rayInfo.point, target.subtract(rayInfo.point)), shapeListl, recursionDepth + 1).scalarMultiply(0.5);
+                return color(new Ray(rayInfo.point, target.subtract(rayInfo.point)), mainShape, recursionDepth + 1).scalarMultiply(0.5);
             } else
             {
                 return new Vector3D(0, 0, 0);
             }
-            */
+
+
 
             //check normalization, normalizing the vector here might improve shading?
             //return new Vector3D(rayInfo.normal.getX() + 1.0, rayInfo.normal.getY() + 1.0, rayInfo.normal.getZ() + 1.0).scalarMultiply(0.5);

@@ -24,7 +24,6 @@ public class OclusionObject implements IShape
     @Override
     public RayInfo intersects(Ray ray, double dist)
     {
-
         HashMap<Double, RayInfo> rayInfoDoubleHashMap = new HashMap<>();
         RayInfo rayInfo = new RayInfo();
         for (IShape shape : shapes)
@@ -56,27 +55,30 @@ public class OclusionObject implements IShape
     }
 
     @Override
-    public RayInfo hit(Ray ray, double tmin, double tmax)
+    public RayInfo hit(Ray ray, double tmin, double tmax) //can be optimized
     {
+        HashMap<Double, RayInfo> rayInfoDoubleHashMap = new HashMap<>();
         RayInfo rayInfo = new RayInfo();
-        double min = Double.MAX_VALUE;
-        RayInfo shapeInfo = new RayInfo();
-
         for (IShape shape : shapes)
         {
-            if ((shapeInfo = shape.hit(ray, tmin, tmax)).didIntersect)
+            if ((rayInfo = shape.hit(ray, tmin, tmax)).didIntersect)
             {
-                if (shapeInfo.t < min)
-                {
-                    min = shapeInfo.t;
-                    rayInfo.point = shapeInfo.point;
-                    rayInfo.normal = shapeInfo.normal;
-                    rayInfo.material = shapeInfo.material;
-                    rayInfo.didIntersect = true;
-                }
+                rayInfoDoubleHashMap.put(rayInfo.t, rayInfo);
             }
         }
-        return hit(ray, tmin, min);
+
+        ArrayList<Double> mins = new ArrayList<>();
+        rayInfoDoubleHashMap.forEach((k, v) -> mins.add(k));
+
+        Collections.sort(mins);
+
+        if (rayInfoDoubleHashMap.size() > 0)
+        {
+            return rayInfoDoubleHashMap.get(mins.get(0));
+        } else
+        {
+            return rayInfo;
+        }
     }
 
 }
