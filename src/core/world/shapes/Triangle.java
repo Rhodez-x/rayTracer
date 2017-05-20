@@ -27,7 +27,7 @@ public class Triangle implements IShape
 
 
     @Override
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double min, double max)
     {
         RayInfo rayInfo = new RayInfo();
         Vector3D u, v, n = new Vector3D(0, 0, 0);
@@ -49,7 +49,7 @@ public class Triangle implements IShape
 
         double d = n.dotProduct(this.points[0]);
 
-        r = - (n.dotProduct(ray.orig) + d) / b;
+        r = -(n.dotProduct(ray.orig) + d) / b;
         if (r < 0.0)
         {
             rayInfo.didIntersect = false;
@@ -102,14 +102,13 @@ public class Triangle implements IShape
         return rayInfo;
     }
 
-    @Override
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
 
     }
 
-    @Override
+
     public RayInfo hit(Ray ray, double tmin, double tmax)
     {
         return null;

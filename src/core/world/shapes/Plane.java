@@ -1,7 +1,6 @@
 package core.world.shapes;
 
 
-import core.Globals;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
 import core.world.shading.Material;
@@ -32,25 +31,21 @@ public class Plane implements IShape
 
 
     //KILDE: BOGEN - INTRODUCTION TO RAYTRACING side 50.
-    @Override
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double min, double max)
     {
+
         RayInfo rayInfo = new RayInfo();
         rayInfo.material = material;
 
         Vector3D origin = ray.orig;
         Vector3D direction = ray.dir.normalize();
 
+
         double vd = planeNormal.dotProduct(direction);
 
-        if (vd == 0)
-        { //return false because the ray is parallel to the plane and no intersection occurs.
-            rayInfo.didIntersect = false;
-            rayInfo.t = 0;
-            rayInfo.point = Vector3D.ZERO;
-            rayInfo.normal = Vector3D.ZERO;
+        if (vd == 0)//return false because the ray is parallel to the plane and no intersection occurs.
             return rayInfo;
-        }
+
 
         double v0 = -(planeNormal.dotProduct(origin) + D);
 
@@ -59,24 +54,20 @@ public class Plane implements IShape
         Vector3D interSectionPoint;
 
         if (t < 0)
-        {
-            rayInfo.didIntersect = false;
-            rayInfo.t = 0;
-            rayInfo.point = Vector3D.ZERO;
-            rayInfo.normal = Vector3D.ZERO;
             return rayInfo;
-        } else
-        {
+        else
             interSectionPoint = new Vector3D(origin.getX() + direction.getX() * t, origin.getY() + direction.getY() * t, origin.getZ() + direction.getZ() * t);
-        }
+
+
+        if (!(t < max && t > min))
+            return rayInfo;
+
 
         if (vd < 0)
-        {
             rayInfo.normal = planeNormal;
-        } else
-        {
+        else
             rayInfo.normal = planeNormal.negate();
-        }
+
 
         rayInfo.t = t;
         rayInfo.point = interSectionPoint;
@@ -86,15 +77,4 @@ public class Plane implements IShape
         return rayInfo;
     }
 
-    @Override
-    public void paint(int x, int y)
-    {
-        Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
-    }
-
-    @Override
-    public RayInfo hit(Ray ray, double tmin, double tmax)
-    {
-        return null;
-    }
 }

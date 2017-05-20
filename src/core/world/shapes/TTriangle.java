@@ -30,7 +30,7 @@ public class TTriangle implements IShape
     //Möller-Trumbore algorithm ALSO https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/moller-trumbore-ray-triangle-intersection
 
     @Override //based on https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double min, double max)
     {
         RayInfo rayInfo = new RayInfo();
         Vector3D origin = ray.orig;
@@ -101,13 +101,12 @@ public class TTriangle implements IShape
         return rayInfo;
     }
 
-    @Override
+
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
     }
 
-    @Override
     public RayInfo hit(Ray ray, double tmin, double tmax)
     {
         return null;

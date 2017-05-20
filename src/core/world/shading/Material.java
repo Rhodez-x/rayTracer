@@ -28,15 +28,15 @@ public class Material
 
     public ScatterInfo scatter(Ray ray, RayInfo rayInfo)
     {
-        if (rayInfo.material.materialType.equals(MaterialType.DIFFUSE))
+        if (rayInfo.material.materialType.equals(MaterialType.LAMBERTIAN))
         {
-            return diffuseScattering(ray, rayInfo);
+            return LambertianShading(ray, rayInfo);
         }
         return null;
     }
 
 
-    private ScatterInfo diffuseScattering(Ray ray, RayInfo rayInfo)
+    private ScatterInfo LambertianShading(Ray ray, RayInfo rayInfo)
     {
         ScatterInfo scatterInfo = new ScatterInfo();
         Vector3D target = rayInfo.point.add(rayInfo.normal).add(VecMath.random_in_unit_sphere());

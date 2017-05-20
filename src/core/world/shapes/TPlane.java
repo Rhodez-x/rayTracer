@@ -30,7 +30,7 @@ public class TPlane implements IShape
 
 
     @Override
-    public RayInfo intersects(Ray ray, double dist)
+    public RayInfo intersects(Ray ray, double min, double max)
     {
         RayInfo rayInfo = new RayInfo();
 
@@ -83,13 +83,13 @@ public class TPlane implements IShape
         return new Vector3D(A, B, C);
     }
 
-    @Override
+
     public void paint(int x, int y)
     {
         Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
     }
 
-    @Override
+
     public RayInfo hit(Ray ray, double tmin, double tmax)
     {
         return null;

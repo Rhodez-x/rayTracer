@@ -6,5 +6,5 @@ package core.world.shading;
 public enum MaterialType
 {
     NONE,
-    DIFFUSE;
+    LAMBERTIAN;
 }
