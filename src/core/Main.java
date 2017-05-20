@@ -82,9 +82,7 @@ public class Main
 
             }
         }
-
     }
-
 
     public static void createAndAddObjects()
     {
@@ -117,9 +115,11 @@ public class Main
 
         Plane plane = new Plane(0, 1, -0.1, 0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 0.2, 0.1)));
 
+        Disk disk = new Disk(4, 0, -5,1, 3, 1, 2, 3, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.2, 0.4, 0.1)));
         //shapeList.add(tri);
         //shapeList.add(tri2);
         shapeList.add(plane);
+        shapeList.add(disk);
         //shapeList.add(tri);
         shapeList.add(mySphere_1);
         shapeList.add(mySphere_4);

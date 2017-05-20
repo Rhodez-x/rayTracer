@@ -2,6 +2,8 @@ package core.world.shapes;
 
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
+import core.world.shading.Material;
+import core.world.shading.MaterialType;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
@@ -9,27 +11,75 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  */
 public class Disk implements IShape
 {
-
     public double radius;
-    public Vector3D position;
-    Plane plane;
+    Material material;
+    double x;
+    double y;
+    double z;
+    double A;
+    double B;
+    double C;
+    double D;
+    Vector3D planeNormal;
 
+    public Disk(double x, double y, double z, double a, double b, double c, double d, double rad, Material material)
+    {
+        this.radius = rad;
+        this.material = material;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.A = a;
+        this.B = b;
+        this.C = c;
+        this.D = d;
+        this.planeNormal = new Vector3D(A, B, C);
+    }
+
+    private Vector3D get_center()
+    {
+        // A + (B/2)
+        // C + (D/2)
+
+        // Assuming:
+        //
+        // A ------- B
+        // |         |
+        // |         |
+        // |         |
+        // C ------- D
+        //
+        //Vector3D center =
+        return new Vector3D(x, y, z);
+    }
 
     public RayInfo intersects(Ray ray, double min, double max)
     {
-        float t = 0;
         RayInfo info = new RayInfo();
         info.didIntersect = false;
-        Vector3D l0 = ray.orig;
-        Vector3D l = ray.dir;
-        Vector3D p0 = position;
-        Vector3D n = new Vector3D(0, 0, 0); // TODO: Implement n as the plane normal
-       /* if (plane.intersectPlane(n, position, l0, l, t)) {
-            Vector3D p = l0.add(10, l.scalarMultiply(t)); //l0 + l.scalarMultiply(t);//l * t;
-            Vector3D v = p.subtract(p0);//p - p0;
-            float d2 = (float)v.dotProduct(v);//dot(v, v);
-            info.didIntersect = (Math.sqrt(d2) <= radius);
-        }*/
+        info.material = new Material(MaterialType.LAMBERTIAN, new Vector3D(255, 255, 255));
+        info.normal = new Vector3D(0, 0, 0);
+        info.point = new Vector3D(0, 0, 0);
+        info.t = 0.f;
+
+        Plane p = new Plane(A, B, C, D, material);
+        info = p.intersects(ray, min, max);
+        if(info.didIntersect)
+        {
+            //System.out.println("hit plane");
+            if(info.point.distance(get_center()) > radius)
+            {
+                //System.out.println("dst " + info.point.distance(get_center()));
+                info.didIntersect = false;
+                info.material = new Material(MaterialType.NONE, new Vector3D(0, 0, 0));
+                info.normal = new Vector3D(0, 0, 0);
+                info.point = new Vector3D(0, 0, 0);
+                info.t = 0.f;
+                return info;
+            }
+            //System.out.println("dst " + info.point.distance(get_center()));
+            return info;
+        }
 
         return info;
     }
