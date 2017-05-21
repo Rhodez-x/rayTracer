@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 
 import static core.Globals.*;
+import java.util.ArrayList;
+import javafx.geometry.BoundingBox;
 
 public class Main
 {
@@ -27,7 +29,9 @@ public class Main
     public static OclusionObject oclusionObject;
 
     public static Light globalLight;
-
+    
+    public static int conuter = 0;
+    
     public static void main(String[] args)
     {
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -42,7 +46,6 @@ public class Main
 
         camera = new Camera(startPos, lookDirection, new Vector3D(0, 1, 0), vfov, (((double) WIDTH) / ((double) HEIGHT)), aperture, focusDistance);
 
-
         createAndAddObjects(); //creation of all objects happens here
 
 
@@ -56,32 +59,45 @@ public class Main
 
     public static void rayTrace(Camera camera)
     {
+
         for (int y = 0; y < HEIGHT; y++)
         {
             for (int x = 0; x < WIDTH; x++)
             {
-
                 Vector3D color = Vector3D.ZERO;
 
 
                 double u = (x) / ((double) (WIDTH));
                 double v = (y) / ((double) (HEIGHT));
                 Ray ray = camera.getRay(u, v);
-
-                color = doTrace(ray, oclusionObject, globalLight);
-
-                color = VecMath.sqrt(color);
-                int ir = ((int) (255.99 * color.getX()));
-                int ig = ((int) (255.99 * color.getY()));
-                int ib = ((int) (255.99 * color.getZ()));
                 int[] rgb = new int[3];
-                rgb[0] = ir;
-                rgb[1] = ig;
-                rgb[2] = ib;
-                Globals.outputRenderedImage.getRaster().setPixel(x, 599 - y, rgb);
+                boolean someIntersection = false;
+                for (BoundingVol bound : boundingList) {
+                    if (bound.shape.intersects(ray, -8, 100).didIntersect) {
+                        someIntersection = true;
+                        conuter++;
+                        oclusionObject = new OclusionObject(bound.listOfShapes);
+                        color = doTrace(ray, oclusionObject, globalLight);
 
+                        color = VecMath.sqrt(color);
+                        int ir = ((int) (255.99 * color.getX()));
+                        int ig = ((int) (255.99 * color.getY()));
+                        int ib = ((int) (255.99 * color.getZ()));
+                        
+                        rgb[0] = ir;
+                        rgb[1] = ig;
+                        rgb[2] = ib;
+                    }
+                }
+                if (!someIntersection)  {
+                    rgb[0] = 255;
+                    rgb[1] = 0;
+                    rgb[2] = 0;
+                }
+                    Globals.outputRenderedImage.getRaster().setPixel(x, Globals.HEIGHT - 1 - y, rgb);
             }
         }
+        System.out.println(conuter);
     }
 
     public static void createAndAddObjects()
@@ -90,28 +106,54 @@ public class Main
         globalLight = new Light();
         globalLight.position = new Vector3D(10, 10, -2);
         globalLight.ambience = 0.1;
+        
+        // Bonding volume and objects for the first bounding box
+        Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2, 1.4, -8), 2.7, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
+        ArrayList<IShape> listForBoxOne = new ArrayList<>();
+        
+        Sphere mySphere_1 = new Sphere(new Vector3D(-3, 2, -8), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
+        Sphere mySphere_1_2 = new Sphere(new Vector3D(-2, 3, -7), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
+        Sphere mySphere_1_3 = new Sphere(new Vector3D(-2, 0, -7), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
 
 
-        Sphere mySphere_1 = new Sphere(new Vector3D(-4, 1.0, 0), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
-        Sphere mySphere_4 = new Sphere(new Vector3D(-2, 2, -4.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
-        Sphere mySphere_2 = new Sphere(new Vector3D(1.8, 2, -10.0), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
-        Sphere mySphere_3 = new Sphere(new Vector3D(4.0, 1.15, 1.5), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
-        Vector3D[] list = new Vector3D[3];
+        listForBoxOne.add(mySphere_1);
+        listForBoxOne.add(mySphere_1_2);
+        listForBoxOne.add(mySphere_1_3);
 
-        list[0] = new Vector3D(-1, 0, 7);
-        list[1] = new Vector3D(3, 3, 8);
-        list[2] = new Vector3D(6, 0, 8);
+        BoundingVol boxOne = new BoundingVol(boundingSphere_top_left, listForBoxOne);
+        boundingList.add(boxOne);
+        
+        // Bonding volume and objects for the second bounding box
+        Sphere boundingSphere_buttom_right = new Sphere(new Vector3D(3, -4, -8), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
+        ArrayList<IShape> listForBoxTwo = new ArrayList<>();
+        Sphere mySphere_2 = new Sphere(new Vector3D(3, -4, -8), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
+        listForBoxTwo.add(mySphere_2);
+        BoundingVol boxTwo = new BoundingVol(boundingSphere_buttom_right, listForBoxTwo);
+        boundingList.add(boxTwo);
+        
+        // For shapes theres is not in a bounding box (Checking for intersection every time.)
+        // a problem with depth if these objects are in the area of objects in a bounding box.
+        
+        
+        
+//        Vector3D[] list = new Vector3D[3];
+//
+//        list[0] = new Vector3D(-1, 0, 0);
+//        list[1] = new Vector3D(3, 3, 2);
+//        list[2] = new Vector3D(6, 0, 0);
+//
+//        Triangle tri = new Triangle(list, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
+//
+//        Vector3D[] list2 = new Vector3D[3];
+//        list2[0] = new Vector3D(3, 3, 2);
+//        list2[1] = new Vector3D(-1, 0, 0);
+//        list2[2] = new Vector3D(-4, 3, 0);
+//
+//        Triangle tri2 = new Triangle(list2, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
 
-        Triangle tri = new Triangle(list, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
-
-        Vector3D[] list2 = new Vector3D[3];
-        list2[0] = new Vector3D(4, 0, 3);
-        list2[1] = new Vector3D(2, 2, 3);
-        list2[2] = new Vector3D(7, 4, 0);
-
-        Triangle tri2 = new Triangle(list2, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
-
-
+        
+                
+        
 
         Plane plane = new Plane(0, 1, -0.1, 0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 0.2, 0.1)));
 
@@ -120,13 +162,14 @@ public class Main
         //shapeList.add(tri2);
         shapeList.add(plane);
         shapeList.add(disk);
-        //shapeList.add(tri);
-        shapeList.add(mySphere_1);
-        shapeList.add(mySphere_4);
-        shapeList.add(mySphere_2);
-        shapeList.add(mySphere_3);
+//        shapeList.add(tri);
+//        shapeList.add(tri2);
+//        
+//        
+//        shapeList.add(mySphere_1);
+//        shapeList.add(mySphere_2);
 
-        oclusionObject = new OclusionObject(shapeList);
+        //oclusionObject = new OclusionObject(shapeList);
 
     }
 

@@ -1,6 +1,7 @@
 package core;
 
 import core.gui.GUI;
+import core.world.shapes.BoundingVol;
 import core.world.shapes.IShape;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -21,6 +22,8 @@ public class Globals
     public static BufferedImage outputRenderedImage;
 
     public static ArrayList<IShape> shapeList = new ArrayList<>();
+    
+    public static ArrayList<BoundingVol> boundingList = new ArrayList<>();
 
     public static Vector3D bkgColor = new Vector3D(0.5, 0.5, 0.5);
 
