@@ -78,22 +78,22 @@ public class Main
                         conuter++;
                         oclusionObject = new OclusionObject(bound.listOfShapes);
                         color = doTrace(ray, oclusionObject, globalLight);
-
-                        color = VecMath.sqrt(color);
-                        int ir = ((int) (255.99 * color.getX()));
-                        int ig = ((int) (255.99 * color.getY()));
-                        int ib = ((int) (255.99 * color.getZ()));
-                        
-                        rgb[0] = ir;
-                        rgb[1] = ig;
-                        rgb[2] = ib;
                     }
                 }
                 if (!someIntersection)  {
-                    rgb[0] = 255;
-                    rgb[1] = 0;
-                    rgb[2] = 0;
+                    Vector3D unitVectorDirection = VecMath.getUnitVector(ray.dir.normalize());
+                    double multiplier = 0.9;
+                    double t = multiplier * -unitVectorDirection.getY() + 1.0;
+                    color = lerp(new Vector3D(1.0, 1.0, 1.0), Globals.bkgColor, t);
                 }
+                    color = VecMath.sqrt(color);
+                    int ir = ((int) (255.99 * color.getX()));
+                    int ig = ((int) (255.99 * color.getY()));
+                    int ib = ((int) (255.99 * color.getZ()));
+
+                    rgb[0] = ir;
+                    rgb[1] = ig;
+                    rgb[2] = ib;
                     Globals.outputRenderedImage.getRaster().setPixel(x, Globals.HEIGHT - 1 - y, rgb);
             }
         }
