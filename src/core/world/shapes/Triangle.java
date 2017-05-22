@@ -98,7 +98,7 @@ public class Triangle implements IShape
         rayInfo.didIntersect = true;
         rayInfo.material = material;
         
-        System.out.println(r + " - " + intersectPoint.toString() + " - " + n.normalize());
+        //System.out.println(r + " - " + intersectPoint.toString() + " - " + n.normalize());
 
         return rayInfo;
     }
