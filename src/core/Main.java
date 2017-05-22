@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import static core.Globals.*;
 import java.util.ArrayList;
-import javafx.geometry.BoundingBox;
+import org.w3c.dom.css.Counter;
 
 public class Main
 {
@@ -75,7 +75,6 @@ public class Main
                 for (BoundingVol bound : boundingList) {
                     if (bound.shape.intersects(ray, -8, 100).didIntersect) {
                         someIntersection = true;
-                        conuter++;
                         oclusionObject = new OclusionObject(bound.listOfShapes);
                         color = doTrace(ray, oclusionObject, globalLight);
                     }
@@ -121,7 +120,6 @@ public class Main
         listForBoxOne.add(mySphere_1_3);
 
         BoundingVol boxOne = new BoundingVol(boundingSphere_top_left, listForBoxOne);
-        boundingList.add(boxOne);
         
         // Bonding volume and objects for the second bounding box
         Sphere boundingSphere_buttom_right = new Sphere(new Vector3D(3, -4, -8), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
@@ -129,39 +127,100 @@ public class Main
         Sphere mySphere_2 = new Sphere(new Vector3D(3, -4, -8), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
         listForBoxTwo.add(mySphere_2);
         BoundingVol boxTwo = new BoundingVol(boundingSphere_buttom_right, listForBoxTwo);
-        boundingList.add(boxTwo);
+        
         
         // For shapes theres is not in a bounding box (Checking for intersection every time.)
         // a problem with depth if these objects are in the area of objects in a bounding box.
         
         
         
-//        Vector3D[] list = new Vector3D[3];
-//
-//        list[0] = new Vector3D(-1, 0, 0);
-//        list[1] = new Vector3D(3, 3, 2);
-//        list[2] = new Vector3D(6, 0, 0);
-//
-//        Triangle tri = new Triangle(list, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
-//
-//        Vector3D[] list2 = new Vector3D[3];
-//        list2[0] = new Vector3D(3, 3, 2);
-//        list2[1] = new Vector3D(-1, 0, 0);
-//        list2[2] = new Vector3D(-4, 3, 0);
-//
-//        Triangle tri2 = new Triangle(list2, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
+        Vector3D[] list = new Vector3D[3];
+
+        list[0] = new Vector3D(0, 0, 0);
+        list[1] = new Vector3D(1, 0, 0);
+        list[2] = new Vector3D(1, 3, 0);
+//        list[0] = new Vector3D(-2.43, -2.34, 5.46);
+//        list[1] = new Vector3D(2.56, 2, 3.56);
+//        list[2] = new Vector3D(1.78, 3.65, 2);
+
+        Triangle tri = new Triangle(list, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
+
+        Vector3D[] list2 = new Vector3D[3];
+        list2[0] = new Vector3D(0, 1, -0);
+        list2[1] = new Vector3D(0.5, 0.5, 1.6);
+        list2[2] = new Vector3D(1, 1, -0);
+        
+        Triangle tri2 = new Triangle(list2, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
 
         
-                
+        Vector3D[] list3 = new Vector3D[3];
+
+        list3[0] = new Vector3D(0, 0, -0);
+        list3[1] = new Vector3D(1, 1, -0);
+        list3[2] = new Vector3D(1, 0, -0);
+
+        Triangle tri3 = new Triangle(list3, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
+
+        Vector3D[] list4 = new Vector3D[3];
+        list4[0] = new Vector3D(0.5, 0.5, 1.6);
+        list4[1] = new Vector3D(0, 0, -0);
+        list4[2] = new Vector3D(1, 0, -0);
+        
+        Triangle tri4 = new Triangle(list4, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
+
+        Vector3D[] list5 = new Vector3D[3];
+
+        list5[0] = new Vector3D(0, 1, -0);
+        list5[1] = new Vector3D(0, 0, -0);
+        list5[2] = new Vector3D(0.5, 0.5, 1.6);
+
+        Triangle tri5 = new Triangle(list5, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
+
+        Vector3D[] list6 = new Vector3D[3];
+        list6[0] = new Vector3D(0, 0, -0);
+        list6[1] = new Vector3D(0, 1, -0);
+        list6[2] = new Vector3D(1, 1, -0);
+
+        Triangle tri6 = new Triangle(list6, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
+        
+        ArrayList<IShape> listForGlobalBox = new ArrayList<>();
+        Sphere globalSphere = new Sphere(new Vector3D(3, -4, -8), 10.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
+        
+        Disk disk = new Disk(4, 0, -5,1, 3, 1, 2, 3, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.2, 0.4, 0.1)));
+        for (int i = -5; i < 5; i++) {
+            for (int j = -5; j < 5; j++) {
+                if (i == 0 && j == 0) {
+                    
+                }else {
+                Sphere onecirkle = new Sphere(new Vector3D(i, j, 4), 0.1, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
+                listForGlobalBox.add(onecirkle);
+                    
+                }
+            }
+        }
+        
+
+        listForGlobalBox.add(tri);
+        //listForGlobalBox.add(tri2);
+        //listForGlobalBox.add(tri3);
+        //listForGlobalBox.add(tri4);
+        //listForGlobalBox.add(tri5);
+        //listForGlobalBox.add(tri6);
+
+        //listForGlobalBox.add(disk);
+
+        BoundingVol globalBox = new BoundingVol(globalSphere, listForGlobalBox);
+        boundingList.add(globalBox);        
+        //boundingList.add(boxOne);
+        //boundingList.add(boxTwo);
+        
         
 
         Plane plane = new Plane(0, 1, -0.1, 0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.0, 0.2, 0.1)));
 
-        Disk disk = new Disk(4, 0, -5,1, 3, 1, 2, 3, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.2, 0.4, 0.1)));
         //shapeList.add(tri);
         //shapeList.add(tri2);
         shapeList.add(plane);
-        shapeList.add(disk);
 //        shapeList.add(tri);
 //        shapeList.add(tri2);
 //        
@@ -199,6 +258,7 @@ public class Main
     {
         double EPSILON = 0.000000000001;
         RayInfo rayInfo = mainShape.intersects(ray, EPSILON, Double.MAX_VALUE); //maybe implement a min and max intersection distance.
+        conuter++;
         if (rayInfo.didIntersect)
         {
             return shade(rayInfo, light);
