@@ -12,17 +12,6 @@ public class VecMath
         return Math.sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());
     }
 
-    public static Vector3D random_in_unit_sphere()
-    {
-        Vector3D p;
-        do
-        {
-            Vector3D randVec = new Vector3D(Math.random(), Math.random(), Math.random());
-            Vector3D oneVec = new Vector3D(1, 1, 1);
-            p = randVec.scalarMultiply(2.0).subtract(oneVec);
-        } while (squared_length(p) >= 1.0);
-        return p;
-    }
 
     public static double squared_length(Vector3D e)
     {
@@ -81,6 +70,37 @@ public class VecMath
         return new Vector3D(v.getX() * v1.getX(), v.getY() * v1.getY(), v.getZ() * v1.getZ());
     }
 
+
+    //directions
+    public static Vector3D up()
+    {
+        return new Vector3D(0, 1, 0);
+    }
+
+    public static Vector3D down()
+    {
+        return new Vector3D(0, -1, 0);
+    }
+
+    public static Vector3D left()
+    {
+        return new Vector3D(-1, 0, 0);
+    }
+
+    public static Vector3D right()
+    {
+        return new Vector3D(1, 0, 0);
+    }
+
+    public static Vector3D forward()
+    {
+        return new Vector3D(0, 0, 1);
+    }
+
+    public static Vector3D back()
+    {
+        return new Vector3D(0, 0, -1);
+    }
 
     //assign math.
     public static Vector3D plusEqual(Vector3D v, Vector3D v1)

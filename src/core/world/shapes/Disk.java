@@ -3,7 +3,6 @@ package core.world.shapes;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
 import core.world.shading.Material;
-import core.world.shading.MaterialType;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
@@ -56,22 +55,17 @@ public class Disk implements IShape
     public RayInfo intersects(Ray ray, double min, double max)
     {
         RayInfo info = new RayInfo();
-        info.didIntersect = false;
-        info.material = new Material(MaterialType.LAMBERTIAN, new Vector3D(255, 255, 255));
-        info.normal = new Vector3D(0, 0, 0);
-        info.point = new Vector3D(0, 0, 0);
-        info.t = 0.f;
 
         Plane p = new Plane(A, B, C, D, material);
         info = p.intersects(ray, min, max);
-        if(info.didIntersect)
+        if (info.didIntersect)
         {
             //System.out.println("hit plane");
-            if(info.point.distance(get_center()) > radius)
+            if (info.point.distance(get_center()) > radius)
             {
                 //System.out.println("dst " + info.point.distance(get_center()));
                 info.didIntersect = false;
-                info.material = new Material(MaterialType.NONE, new Vector3D(0, 0, 0));
+                info.material = new Material(new Vector3D(0, 0, 0));
                 info.normal = new Vector3D(0, 0, 0);
                 info.point = new Vector3D(0, 0, 0);
                 info.t = 0.f;
@@ -84,14 +78,4 @@ public class Disk implements IShape
         return info;
     }
 
-    public void paint(int x, int y)
-    {
-
-    }
-
-
-    public RayInfo hit(Ray ray, double tmin, double tmax)
-    {
-        return null;
-    }
 }

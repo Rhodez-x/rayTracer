@@ -1,7 +1,6 @@
 package core.world.shapes;
 
 
-import core.Globals;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
 import core.world.shading.Material;
@@ -83,15 +82,4 @@ public class TPlane implements IShape
         return new Vector3D(A, B, C);
     }
 
-
-    public void paint(int x, int y)
-    {
-        Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
-    }
-
-
-    public RayInfo hit(Ray ray, double tmin, double tmax)
-    {
-        return null;
-    }
 }

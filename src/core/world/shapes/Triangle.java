@@ -1,7 +1,5 @@
 package core.world.shapes;
 
-import core.Globals;
-import core.world.math.VecMath;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
 import core.world.shading.Material;
@@ -56,7 +54,7 @@ public class Triangle implements IShape
             return rayInfo; // triangle is beheind 
         }
 
-        Vector3D intersectPoint = new Vector3D(ray.orig.getX() + (ray.dir.getX() * r), ray.orig.getY() + (ray.dir.getY() * r), - (ray.orig.getZ() + (ray.dir.getZ() * r)));
+        Vector3D intersectPoint = new Vector3D(ray.orig.getX() + (ray.dir.getX() * r), ray.orig.getY() + (ray.dir.getY() * r), -(ray.orig.getZ() + (ray.dir.getZ() * r)));
 
         Vector3D controlVector;
 
@@ -98,22 +96,10 @@ public class Triangle implements IShape
         rayInfo.normal = n.normalize(); //assign hit point normal from center
         rayInfo.didIntersect = true;
         rayInfo.material = material;
-        
-        System.out.println(r + " - " + intersectPoint.toString() + " - " + n.normalize());
+
+        // System.out.println(r + " - " + intersectPoint.toString() + " - " + n.normalize());
 
         return rayInfo;
-    }
-
-    public void paint(int x, int y)
-    {
-        Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
-
-    }
-
-
-    public RayInfo hit(Ray ray, double tmin, double tmax)
-    {
-        return null;
     }
 
     public double calculateArea()

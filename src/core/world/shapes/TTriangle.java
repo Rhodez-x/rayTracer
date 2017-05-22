@@ -1,6 +1,5 @@
 package core.world.shapes;
 
-import core.Globals;
 import core.world.math.VecMath;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
@@ -99,17 +98,6 @@ public class TTriangle implements IShape
         rayInfo.material = material;
 
         return rayInfo;
-    }
-
-
-    public void paint(int x, int y)
-    {
-        Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
-    }
-
-    public RayInfo hit(Ray ray, double tmin, double tmax)
-    {
-        return null;
     }
 
     private Vector3D getNormal()
