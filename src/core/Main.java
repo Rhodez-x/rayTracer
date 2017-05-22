@@ -84,10 +84,10 @@ public class Main
         ArrayList<IShape> listForGlobalBox = new ArrayList<>();
 
         // Bonding volume and objects for the first bounding box
-        Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 1.5, -8), 4, new Material( new Vector3D(0.5, 0, 0)));
+        Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 4.5, -8), 4, new Material( new Vector3D(0.5, 0, 0)));
         ArrayList<IShape> listForBoxOne = new ArrayList<>();
         for (int i = -5; i < 1; i++) {
-            for (int j = -1; j < 5; j++) {
+            for (int j = 2; j < 8; j++) {
                 Sphere mySphere_1 = new Sphere(new Vector3D(i, j, -8), 0.1, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
                 listForGlobalBox.add(mySphere_1);
                 listForBoxOne.add(mySphere_1);
@@ -97,10 +97,10 @@ public class Main
         BoundingVol boxOne = new BoundingVol(boundingSphere_top_left, listForBoxOne);
         
         // Bonding volume and objects for the second bounding box
-        Sphere boundingSphere_buttom_right = new Sphere(new Vector3D(3.5, -6.5, -8), 4, new Material( new Vector3D(0.5, 0, 0)));
+        Sphere boundingSphere_buttom_right = new Sphere(new Vector3D(3.5, -4.5, -8), 4, new Material( new Vector3D(0.5, 0, 0)));
         ArrayList<IShape> listForBoxTwo = new ArrayList<>();
         for (int i = 1; i < 7; i++) {
-            for (int j = -9; j < -3; j++) {
+            for (int j = -7; j < -1; j++) {
                 Sphere mySphere_1 = new Sphere(new Vector3D(i, j, -8), 0.1, new Material( new Vector3D(Math.random(), Math.random(), Math.random())));
                 listForGlobalBox.add(mySphere_1);
                 listForBoxTwo.add(mySphere_1);
