@@ -49,14 +49,14 @@ public class Triangle implements IShape
 
         double d = n.dotProduct(this.points[0]);
 
-        r = (n.dotProduct(ray.orig) + d) / Math.abs(b);
+        r = - (n.dotProduct(ray.orig) + d) / b;
         if (r < 0.0)
         {
             rayInfo.didIntersect = false;
             return rayInfo; // triangle is beheind 
         }
-
-        Vector3D intersectPoint = new Vector3D(ray.orig.getX() + (ray.dir.getX() * r), ray.orig.getY() + (ray.dir.getY() * r), - (ray.orig.getZ() + (ray.dir.getZ() * r)));
+        
+        Vector3D intersectPoint = new Vector3D((ray.orig.getX() + (ray.dir.getX() * r)), ray.orig.getY() + (ray.dir.getY() * r), - (ray.orig.getZ() + (ray.dir.getZ() * r)));
 
         Vector3D controlVector;
 

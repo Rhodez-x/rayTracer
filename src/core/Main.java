@@ -52,7 +52,7 @@ public class Main
         //Vector3D startPos = new Vector3D(0, 0, -8);
         //Ray myRay = new Ray(startPos, new Vector3D(0, 0, 0));
 
-        rayTrace(camera);
+        doAndMeasure("Uden boundig volumes: ", () -> {rayTrace(camera);});
 
         SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
     }
@@ -84,6 +84,7 @@ public class Main
                     double multiplier = 0.9;
                     double t = multiplier * -unitVectorDirection.getY() + 1.0;
                     color = lerp(new Vector3D(1.0, 1.0, 1.0), Globals.bkgColor, t);
+                    color = Vector3D.ZERO;
                 }
                     color = VecMath.sqrt(color);
                     int ir = ((int) (255.99 * color.getX()));
@@ -105,29 +106,34 @@ public class Main
         globalLight = new Light();
         globalLight.position = new Vector3D(10, 10, -2);
         globalLight.ambience = 0.1;
-        
+        ArrayList<IShape> listForGlobalBox = new ArrayList<>();
+
         // Bonding volume and objects for the first bounding box
-        Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2, 1.4, -8), 2.7, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
+        Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 1.5, -8), 4, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
         ArrayList<IShape> listForBoxOne = new ArrayList<>();
-        
-        Sphere mySphere_1 = new Sphere(new Vector3D(-3, 2, -8), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
-        Sphere mySphere_1_2 = new Sphere(new Vector3D(-2, 3, -7), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
-        Sphere mySphere_1_3 = new Sphere(new Vector3D(-2, 0, -7), 1.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
-
-
-        listForBoxOne.add(mySphere_1);
-        listForBoxOne.add(mySphere_1_2);
-        listForBoxOne.add(mySphere_1_3);
+        for (int i = -5; i < 1; i++) {
+            for (int j = -1; j < 5; j++) {
+                Sphere mySphere_1 = new Sphere(new Vector3D(i, j, -8), 0.1, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
+                listForGlobalBox.add(mySphere_1);
+                listForBoxOne.add(mySphere_1);
+            }
+        }
 
         BoundingVol boxOne = new BoundingVol(boundingSphere_top_left, listForBoxOne);
         
         // Bonding volume and objects for the second bounding box
-        Sphere boundingSphere_buttom_right = new Sphere(new Vector3D(3, -4, -8), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
+        Sphere boundingSphere_buttom_right = new Sphere(new Vector3D(3.5, -6.5, -8), 4, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0, 0)));
         ArrayList<IShape> listForBoxTwo = new ArrayList<>();
-        Sphere mySphere_2 = new Sphere(new Vector3D(3, -4, -8), 2.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
-        listForBoxTwo.add(mySphere_2);
+        for (int i = 1; i < 7; i++) {
+            for (int j = -9; j < -3; j++) {
+                Sphere mySphere_1 = new Sphere(new Vector3D(i, j, -8), 0.1, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
+                listForGlobalBox.add(mySphere_1);
+                listForBoxTwo.add(mySphere_1);
+            }
+        }
+
         BoundingVol boxTwo = new BoundingVol(boundingSphere_buttom_right, listForBoxTwo);
-        
+
         
         // For shapes theres is not in a bounding box (Checking for intersection every time.)
         // a problem with depth if these objects are in the area of objects in a bounding box.
@@ -136,18 +142,18 @@ public class Main
         
         Vector3D[] list = new Vector3D[3];
 
-        list[0] = new Vector3D(0, 0, 0);
-        list[1] = new Vector3D(1, 0, 0);
-        list[2] = new Vector3D(1, 3, 0);
-//        list[0] = new Vector3D(-2.43, -2.34, 5.46);
-//        list[1] = new Vector3D(2.56, 2, 3.56);
-//        list[2] = new Vector3D(1.78, 3.65, 2);
+        list[0] = new Vector3D(0, 0, 5);
+        list[1] = new Vector3D(1, 0, 5);
+        list[2] = new Vector3D(1, 3, 5);
+        list[0] = new Vector3D(-2.43, -2.34, 5.46);
+        list[1] = new Vector3D(2.56, 2, 3.56);
+        list[2] = new Vector3D(1.78, 3.65, 2);
 
         Triangle tri = new Triangle(list, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
 
         Vector3D[] list2 = new Vector3D[3];
         list2[0] = new Vector3D(0, 1, -0);
-        list2[1] = new Vector3D(0.5, 0.5, 1.6);
+        list2[1] = new Vector3D(0.5, 0.5, -1.6);
         list2[2] = new Vector3D(1, 1, -0);
         
         Triangle tri2 = new Triangle(list2, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
@@ -162,7 +168,7 @@ public class Main
         Triangle tri3 = new Triangle(list3, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
 
         Vector3D[] list4 = new Vector3D[3];
-        list4[0] = new Vector3D(0.5, 0.5, 1.6);
+        list4[0] = new Vector3D(0.5, 0.5, -1.6);
         list4[1] = new Vector3D(0, 0, -0);
         list4[2] = new Vector3D(1, 0, -0);
         
@@ -172,7 +178,7 @@ public class Main
 
         list5[0] = new Vector3D(0, 1, -0);
         list5[1] = new Vector3D(0, 0, -0);
-        list5[2] = new Vector3D(0.5, 0.5, 1.6);
+        list5[2] = new Vector3D(0.5, 0.5, -1.6);
 
         Triangle tri5 = new Triangle(list5, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
 
@@ -183,36 +189,35 @@ public class Main
 
         Triangle tri6 = new Triangle(list6, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.5, 0.5, 0)));
         
-        ArrayList<IShape> listForGlobalBox = new ArrayList<>();
-        Sphere globalSphere = new Sphere(new Vector3D(3, -4, -8), 10.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
+        Sphere globalSphere = new Sphere(new Vector3D(3, -4, -8), 100.0, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.6, 0.4, 0.4)));
         
         Disk disk = new Disk(4, 0, -5,1, 3, 1, 2, 3, new Material(MaterialType.LAMBERTIAN, new Vector3D(0.2, 0.4, 0.1)));
-        for (int i = -5; i < 5; i++) {
-            for (int j = -5; j < 5; j++) {
-                if (i == 0 && j == 0) {
-                    
-                }else {
-                Sphere onecirkle = new Sphere(new Vector3D(i, j, 4), 0.1, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
-                listForGlobalBox.add(onecirkle);
-                    
-                }
-            }
-        }
+//        for (int i = -5; i < 5; i++) {
+//            for (int j = -5; j < 5; j++) {
+//                if (i == 0 && j == 0) {
+//                    
+//                }else {
+//                Sphere onecirkle = new Sphere(new Vector3D(i, j, -5), 0.1, new Material(MaterialType.LAMBERTIAN, new Vector3D(Math.random(), Math.random(), Math.random())));
+//                listForGlobalBox.add(onecirkle);
+//                    
+//                }
+//            }
+//        }
         
 
-        listForGlobalBox.add(tri);
-        //listForGlobalBox.add(tri2);
-        //listForGlobalBox.add(tri3);
-        //listForGlobalBox.add(tri4);
-        //listForGlobalBox.add(tri5);
-        //listForGlobalBox.add(tri6);
+        //listForGlobalBox.add(tri);
+//        listForGlobalBox.add(tri2);
+//        listForGlobalBox.add(tri3);
+//        listForGlobalBox.add(tri4);
+//        listForGlobalBox.add(tri5);
+//        listForGlobalBox.add(tri6);
 
         //listForGlobalBox.add(disk);
 
         BoundingVol globalBox = new BoundingVol(globalSphere, listForGlobalBox);
-        boundingList.add(globalBox);        
-        //boundingList.add(boxOne);
-        //boundingList.add(boxTwo);
+        //boundingList.add(globalBox);        
+        boundingList.add(boxOne);
+        boundingList.add(boxTwo);
         
         
 
@@ -283,5 +288,10 @@ public class Main
     {
         return startValue.scalarMultiply(1.0 - t).add(endValue.scalarMultiply(t));
     }
+            public static void doAndMeasure( String caption, Runnable runnable ) {
+            long tStart = System.currentTimeMillis();
+            runnable.run();
+            System.out.println( caption + " took " + (System.currentTimeMillis() - tStart) + "ms" );
+}
 
 }
