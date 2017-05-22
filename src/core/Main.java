@@ -226,7 +226,7 @@ public class Main
             }
         }
         // if (!someIntersection)
-        return applyBackground(new Vector3D(1,1,1)); //ray.dir);
+        return applyBackground(ray.dir);
     }
 
     public static Vector3D doTrace(Ray ray, IShape mainShape, Light light)
