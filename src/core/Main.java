@@ -18,6 +18,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static core.Globals.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Arrays;
 
 public class Main
 {
@@ -30,7 +34,7 @@ public class Main
 
     public static int conuter = 0;
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         long startTime = System.nanoTime();
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -75,21 +79,48 @@ public class Main
     }
 
 
-    public static void createAndAddObjects()
+    public static void createAndAddObjects() throws FileNotFoundException, IOException
     {
 
         globalLight = new Light();
         globalLight.position = new Vector3D(10, 10, -2);
         globalLight.ambience = 0.1;
         ArrayList<IShape> listForGlobalBox = new ArrayList<>();
+        
+        ArrayList<Vector3D> pointList = new ArrayList<>(600);
+        BufferedReader br = new BufferedReader(new FileReader("/home/rhodez-x/Desktop/tea.obj"));
+        try {
+            String line = br.readLine();
 
+            while (line != null) {
+                if(line.startsWith("v")) {
+                    String[] strSplit = line.split("\\s+");
+                    System.out.println(Arrays.toString(strSplit));
+                    pointList.add(new Vector3D(Double.parseDouble(strSplit[1]), Double.parseDouble(strSplit[2]), Double.parseDouble(strSplit[3]) - 150)); // have to be a minus z axe.
+                } else if (line.startsWith("f")){
+                   String[] strSplit = line.split("\\s+");
+                   System.out.println(Arrays.toString(strSplit));
+                   Vector3D[] newTriangle = new Vector3D[3];
+                   newTriangle[0] = pointList.get((Integer.parseInt(strSplit[1]) - 1));
+                   newTriangle[1] = pointList.get((Integer.parseInt(strSplit[2]) - 1));
+                   newTriangle[2] = pointList.get((Integer.parseInt(strSplit[3]) - 1));
+                   
+                   listForGlobalBox.add(new Triangle(newTriangle, new Material( new Vector3D(0.5, 0, 0))));
+                }
+                line = br.readLine();
+            }
+        } finally {
+            br.close();
+        }
+        
+        
         // Bonding volume and objects for the first bounding box
         Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 4.5, -8), 4, new Material( new Vector3D(0.5, 0, 0)));
         ArrayList<IShape> listForBoxOne = new ArrayList<>();
         for (int i = -5; i < 1; i++) {
             for (int j = 2; j < 8; j++) {
                 Sphere mySphere_1 = new Sphere(new Vector3D(i, j, -8), 0.1, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-                listForGlobalBox.add(mySphere_1);
+                //listForGlobalBox.add(mySphere_1);
                 listForBoxOne.add(mySphere_1);
             }
         }
@@ -102,7 +133,7 @@ public class Main
         for (int i = 1; i < 7; i++) {
             for (int j = -7; j < -1; j++) {
                 Sphere mySphere_1 = new Sphere(new Vector3D(i, j, -8), 0.1, new Material( new Vector3D(Math.random(), Math.random(), Math.random())));
-                listForGlobalBox.add(mySphere_1);
+                //listForGlobalBox.add(mySphere_1);
                 listForBoxTwo.add(mySphere_1);
             }
         }
@@ -117,50 +148,47 @@ public class Main
         
         Vector3D[] list = new Vector3D[3];
 
-        list[0] = new Vector3D(0, 0, 5);
-        list[1] = new Vector3D(1, 0, 5);
-        list[2] = new Vector3D(1, 3, 5);
-        list[0] = new Vector3D(-2.43, -2.34, 5.46);
-        list[1] = new Vector3D(2.56, 2, 3.56);
-        list[2] = new Vector3D(1.78, 3.65, 2);
+        list[0] = new Vector3D(1, 1, -5);
+        list[1] = new Vector3D(1, 2, -5);
+        list[2] = new Vector3D(2, 1, -5);
 
         Triangle tri = new Triangle(list, new Material(new Vector3D(0.5, 0.5, 0)));
 
         Vector3D[] list2 = new Vector3D[3];
-        list2[0] = new Vector3D(0, 1, -0);
-        list2[1] = new Vector3D(0.5, 0.5, -1.6);
-        list2[2] = new Vector3D(1, 1, -0);
+        list2[0] = new Vector3D(1, 1, -5);
+        list2[1] = new Vector3D(1, 1, -5);
+        list2[2] = new Vector3D(1, 2, -5);
         
         Triangle tri2 = new Triangle(list2, new Material( new Vector3D(0.5, 0.5, 0)));
 
         
         Vector3D[] list3 = new Vector3D[3];
 
-        list3[0] = new Vector3D(0, 0, -0);
-        list3[1] = new Vector3D(1, 1, -0);
-        list3[2] = new Vector3D(1, 0, -0);
+        list3[0] = new Vector3D(1, 1, -5);
+        list3[1] = new Vector3D(2, 1, -5);
+        list3[2] = new Vector3D(1, 1, -6);
 
         Triangle tri3 = new Triangle(list3, new Material( new Vector3D(0.5, 0.5, 0)));
 
         Vector3D[] list4 = new Vector3D[3];
-        list4[0] = new Vector3D(0.5, 0.5, -1.6);
-        list4[1] = new Vector3D(0, 0, -0);
-        list4[2] = new Vector3D(1, 0, -0);
+        list4[0] = new Vector3D(2, 1, -5);
+        list4[1] = new Vector3D(1, 2, -5);
+        list4[2] = new Vector3D(1, 1, -6);
         
         Triangle tri4 = new Triangle(list4, new Material( new Vector3D(0.5, 0.5, 0)));
 
         Vector3D[] list5 = new Vector3D[3];
 
-        list5[0] = new Vector3D(0, 1, -0);
-        list5[1] = new Vector3D(0, 0, -0);
-        list5[2] = new Vector3D(0.5, 0.5, -1.6);
+        list5[0] = new Vector3D(0, 1, -5);
+        list5[1] = new Vector3D(0, 0, -5);
+        list5[2] = new Vector3D(0.5, 0.5, -6.6);
 
         Triangle tri5 = new Triangle(list5, new Material( new Vector3D(0.5, 0.5, 0)));
 
         Vector3D[] list6 = new Vector3D[3];
-        list6[0] = new Vector3D(0, 0, -0);
-        list6[1] = new Vector3D(0, 1, -0);
-        list6[2] = new Vector3D(1, 1, -0);
+        list6[0] = new Vector3D(0, 0, -5);
+        list6[1] = new Vector3D(0, 1, -5);
+        list6[2] = new Vector3D(1, 1, -5);
 
         Triangle tri6 = new Triangle(list6, new Material( new Vector3D(0.5, 0.5, 0)));
         
@@ -181,18 +209,18 @@ public class Main
         
 
         //listForGlobalBox.add(tri);
-//        listForGlobalBox.add(tri2);
-//        listForGlobalBox.add(tri3);
-//        listForGlobalBox.add(tri4);
-//        listForGlobalBox.add(tri5);
-//        listForGlobalBox.add(tri6);
+        //listForGlobalBox.add(tri2);
+        //listForGlobalBox.add(tri3);
+        //listForGlobalBox.add(tri4);
+        //listForGlobalBox.add(tri5);
+        //listForGlobalBox.add(tri6);
 
         //listForGlobalBox.add(disk);
 
         BoundingVol globalBox = new BoundingVol(globalSphere, listForGlobalBox);
-        //boundingList.add(globalBox);        
-        boundingList.add(boxOne);
-        boundingList.add(boxTwo);
+        boundingList.add(globalBox);        
+        //boundingList.add(boxOne);
+        //boundingList.add(boxTwo);
         
         
 
