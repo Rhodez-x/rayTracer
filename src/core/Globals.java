@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class Globals
 {
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 1000;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 500;
     public static final int VIEW_WIDTH = 1;
     public static final int VIEW_HEIGHT = 1;
     public static final float FOV = 90;

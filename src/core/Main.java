@@ -88,18 +88,36 @@ public class Main
         ArrayList<IShape> listForGlobalBox = new ArrayList<>();
         
         ArrayList<Vector3D> pointList = new ArrayList<>(600);
-        BufferedReader br = new BufferedReader(new FileReader("/home/rhodez-x/Desktop/tea.obj"));
+        BufferedReader br = new BufferedReader(new FileReader("/home/rhodez-x/Desktop/wt_teapot.obj"));
         try {
             String line = br.readLine();
 
             while (line != null) {
                 if(line.startsWith("v")) {
                     String[] strSplit = line.split("\\s+");
+                    int spaceIndexOne = strSplit[1].indexOf("/");
+                    if (spaceIndexOne != -1) {
+                        strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
+                    }
+                    int spaceIndexTwo = strSplit[2].indexOf("/");
+                    if (spaceIndexOne != -1) {
+                        strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
+                    }
+                    int spaceIndexThree = strSplit[3].indexOf("/");
+                    if (spaceIndexOne != -1) {
+                        strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
+                    }
                     System.out.println(Arrays.toString(strSplit));
                     pointList.add(new Vector3D(Double.parseDouble(strSplit[1]), Double.parseDouble(strSplit[2]), Double.parseDouble(strSplit[3]) - 150)); // have to be a minus z axe.
                 } else if (line.startsWith("f")){
                    String[] strSplit = line.split("\\s+");
                    System.out.println(Arrays.toString(strSplit));
+                    int spaceIndexOne = strSplit[1].indexOf("/");
+                    strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
+                    int spaceIndexTwo = strSplit[2].indexOf("/");
+                    strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
+                    int spaceIndexThree = strSplit[3].indexOf("/");
+                    strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
                    Vector3D[] newTriangle = new Vector3D[3];
                    newTriangle[0] = pointList.get((Integer.parseInt(strSplit[1]) - 1));
                    newTriangle[1] = pointList.get((Integer.parseInt(strSplit[2]) - 1));
