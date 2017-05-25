@@ -13,20 +13,18 @@ import java.util.ArrayList;
  */
 public class Globals
 {
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 600;
-    public static final int VIEW_WIDTH = 1;
-    public static final int VIEW_HEIGHT = 1;
-    public static final float FOV = 90;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 500;
     public static final double EPSILON = 0.000000001;
 
     public static BufferedImage outputRenderedImage;
 
     public static ArrayList<IShape> shapeList = new ArrayList<>();
-    
+
     public static ArrayList<BoundingVol> boundingList = new ArrayList<>();
 
-    public static Vector3D bkgColor = new Vector3D(0.5, 0.5, 0.5);
+    //public static Vector3D bkgColor = new Vector3D(0.5, 0.5, 0.5);
+    public static Vector3D bkgColor = new Vector3D(0.8, 0.8, 0.4);
 
     public static GUI gui;
 }

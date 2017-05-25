@@ -9,8 +9,6 @@ import core.world.math.VecMath;
 import core.world.ray.Ray;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import static core.Globals.*;
-
 /**
  * Based on Peter Shirley's book, Ray Tracing in one weekend (Ray Tracing Minibooks Book 1)
  * https://www.amazon.com/Ray-Tracing-Weekend-Minibooks-Book-ebook/dp/B01B5AODD8
@@ -38,11 +36,6 @@ public class Camera
         projectedHeight = dy.scalarMultiply((2 * hh) * zoom);
 
         lc = origin.subtract(dx.scalarMultiply(hw * zoom)).subtract(dy.scalarMultiply(hw * zoom)).subtract(OD.scalarMultiply(zoom));
-    }
-
-    public static Vector3D projectToView(Vector3D position)
-    {
-        return new Vector3D(position.getX() / WIDTH * VIEW_WIDTH - VIEW_WIDTH / 2.0, position.getY() / HEIGHT * VIEW_HEIGHT - VIEW_HEIGHT / 2.0, position.getZ());
     }
 
     public Ray calculateRayAt(double x, double y)
