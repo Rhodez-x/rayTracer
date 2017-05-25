@@ -18,6 +18,7 @@ public class Globals
     public static final int VIEW_WIDTH = 1;
     public static final int VIEW_HEIGHT = 1;
     public static final float FOV = 90;
+    public static final double EPSILON = 0.000000001;
 
     public static BufferedImage outputRenderedImage;
 

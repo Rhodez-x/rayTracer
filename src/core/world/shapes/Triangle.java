@@ -40,7 +40,7 @@ public class Triangle implements IShape
 
         double b = n.dotProduct(ray.dir);
 
-        if ((double) Math.abs(b) < 0.000000001)
+        if ((double) Math.abs(b) < Globals.EPSILON)
         {
             rayInfo.didIntersect = false;
             return rayInfo;

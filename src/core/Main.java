@@ -40,7 +40,7 @@ public class Main
         outputRenderedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
         double zoom = 10.0;
-        double viewWidth = 60;
+        double viewWidth = 45;
 
         Vector3D origin = new Vector3D(0, 0, 0);
         Vector3D direction = new Vector3D(0, 0, -10);
@@ -63,10 +63,10 @@ public class Main
 
         for (int y = 0; y < HEIGHT; y++)
         {
+            System.out.println("pixelrow: " + conuter);
             for (int x = 0; x < WIDTH; x++)
             {
                 
-                //System.out.println("pixel: " + conuter);
                 Vector3D color = Vector3D.ZERO;
 
                 Ray ray = camera.calculateRayAt(x / (double) WIDTH, y / (double) HEIGHT);
@@ -76,8 +76,9 @@ public class Main
 
 
                 renderColor(color, x, y);
-                conuter++;
             }
+            conuter++;
+
         }
     }
 
@@ -90,9 +91,7 @@ public class Main
         globalLight.ambience = 0.1;
             
         
-        createObjObject("rayTracer/wt_teapot.obj", -1.7, 0, -5);
-        createObjObject("rayTracer/test.obj", 0.5, 1, -5);
-        createObjObject("rayTracer/test3.obj", 0, -2, -5);
+        createObjObject("/Users/Rhodez-x/Downloads/wolf.obj", 0, 0, -350);
 
 
         // Bonding volume and objects for the first bounding box
@@ -304,6 +303,7 @@ public class Main
             }
         } finally {
             br.close();
+            System.out.println(filename + " is loaded");
         }
         double centerX = ((minX + maxX) / 2);
         double centerY = ((minY + maxY) / 2);

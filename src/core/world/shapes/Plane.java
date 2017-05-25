@@ -1,6 +1,7 @@
 package core.world.shapes;
 
 
+import core.Globals;
 import core.world.ray.Ray;
 import core.world.ray.RayInfo;
 import core.world.shading.Material;
@@ -43,7 +44,7 @@ public class Plane implements IShape
 
         double vd = planeNormal.dotProduct(direction);
 
-        if (vd == 0)//return false because the ray is parallel to the plane and no intersection occurs.
+        if (vd == Globals.EPSILON)//return false because the ray is parallel to the plane and no intersection occurs.
             return rayInfo;
 
 
