@@ -33,7 +33,7 @@ public class Main
     public static Light globalLight;
 
     public static int conuter = 0;
-
+    public static ArrayList<IShape> listForGlobalBox = new ArrayList<>(); 
     public static void main(String[] args) throws IOException
     {
         long startTime = System.nanoTime();
@@ -42,8 +42,8 @@ public class Main
         double zoom = 10.0;
         double viewWidth = 60;
 
-        Vector3D origin = new Vector3D(0, 0, 10);
-        Vector3D direction = new Vector3D(0, 0, 0);
+        Vector3D origin = new Vector3D(0, 0, 0);
+        Vector3D direction = new Vector3D(0, 0, -10);
 
         camera = new Camera(origin, direction, viewWidth, WIDTH, HEIGHT, zoom);
 
@@ -65,6 +65,8 @@ public class Main
         {
             for (int x = 0; x < WIDTH; x++)
             {
+                
+                //System.out.println("pixel: " + conuter);
                 Vector3D color = Vector3D.ZERO;
 
                 Ray ray = camera.calculateRayAt(x / (double) WIDTH, y / (double) HEIGHT);
@@ -74,6 +76,7 @@ public class Main
 
 
                 renderColor(color, x, y);
+                conuter++;
             }
         }
     }
@@ -85,9 +88,13 @@ public class Main
         globalLight = new Light();
         globalLight.position = new Vector3D(10, 10, -2);
         globalLight.ambience = 0.1;
-        ArrayList<IShape> listForGlobalBox = new ArrayList<>();     
+            
         
-        createObjObject("src/wt_teapot.obj", 0, 0, -5);
+        createObjObject("rayTracer/wt_teapot.obj", -1.7, 0, -5);
+        createObjObject("rayTracer/test.obj", 0.5, 1, -5);
+        createObjObject("rayTracer/test3.obj", 0, -2, -5);
+
+
         // Bonding volume and objects for the first bounding box
         Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 4.5, -8), 4, new Material( new Vector3D(0.5, 0, 0)));
         ArrayList<IShape> listForBoxOne = new ArrayList<>();
@@ -122,9 +129,9 @@ public class Main
         
         Vector3D[] list = new Vector3D[3];
 
-        list[0] = new Vector3D(0, 0, -13);
-        list[1] = new Vector3D(0, 1, -13);
-        list[2] = new Vector3D(1, 0, -13);
+        list[0] = new Vector3D(0, 0, 15);
+        list[1] = new Vector3D(0, 1, 15);
+        list[2] = new Vector3D(1, 0, 15);
 
         Triangle tri = new Triangle(list, new Material(new Vector3D(0.5, 0.5, 0)));
 
@@ -190,10 +197,10 @@ public class Main
         //listForGlobalBox.add(tri6);
 
         //listForGlobalBox.add(disk);
-        Sphere onecirkle = new Sphere(new Vector3D(0, 0, -3), 1, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        Sphere onecirkle = new Sphere(new Vector3D(0, 0, 15), 1, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
         listForGlobalBox.add(onecirkle);
         BoundingVol globalBox = new BoundingVol(globalSphere, listForGlobalBox);
-        //boundingList.add(globalBox);        
+        boundingList.add(globalBox);        
         //boundingList.add(boxOne);
         //boundingList.add(boxTwo);
         
@@ -226,7 +233,7 @@ public class Main
         
         double maxX = Double.MIN_VALUE;
         double maxY = Double.MIN_VALUE;
-        double maxZ = Double.MIN_VALUE;
+        double maxZ = -100000;
         
         BufferedReader br = new BufferedReader(new FileReader(filename));
         try {
@@ -237,12 +244,11 @@ public class Main
                 
                 if(strSplit[0].equals("v")) {
                     
-                    int spaceIndexOne = strSplit[1].indexOf("//");
+                    int spaceIndexOne = strSplit[1].indexOf("/");
                     if (spaceIndexOne != -1) {
                         strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
                     }
                     double checkDob = Double.parseDouble(strSplit[1]);
-                    System.out.println(checkDob);
 
                     if (minX > checkDob) {
                         minX = checkDob;
@@ -250,7 +256,7 @@ public class Main
                     if (maxX < checkDob) {
                         maxX = checkDob;
                     }
-                    int spaceIndexTwo = strSplit[2].indexOf("//");
+                    int spaceIndexTwo = strSplit[2].indexOf("/");
                     if (spaceIndexOne != -1) {
                         strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
                     }
@@ -261,26 +267,31 @@ public class Main
                     if (maxY < checkDob) {
                         maxY = checkDob;
                     }
-                    int spaceIndexThree = strSplit[3].indexOf("//");
+                    int spaceIndexThree = strSplit[3].indexOf("/");
                     if (spaceIndexOne != -1) {
                         strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
                     }
                     checkDob = Double.parseDouble(strSplit[3]);
-                    if (minZ > checkDob) {
-                        minZ = checkDob;
-                    }
                     if (maxZ < checkDob) {
                         maxZ = checkDob;
                     }
-                    System.out.println(Arrays.toString(strSplit));
+                    if (minZ > checkDob) {
+                        minZ = checkDob;
+                    }
                     pointList.add(new Vector3D(Double.parseDouble(strSplit[1]) + x, Double.parseDouble(strSplit[2]) + y, Double.parseDouble(strSplit[3]) + z)); // have to be a minus z axe.
                 } else if (strSplit[0].equals("f")){
-                    int spaceIndexOne = strSplit[1].indexOf("//");
-                    strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
-                    int spaceIndexTwo = strSplit[2].indexOf("//");
-                    strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
-                    int spaceIndexThree = strSplit[3].indexOf("//");
-                    strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
+                    int spaceIndexOne = strSplit[1].indexOf("/");
+                    if (spaceIndexOne != -1) {
+                        strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
+                    }
+                    int spaceIndexTwo = strSplit[2].indexOf("/");
+                    if (spaceIndexTwo != -1) {
+                        strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
+                    }
+                    int spaceIndexThree = strSplit[3].indexOf("/");
+                    if (spaceIndexOne != -1) {
+                        strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
+                    }
 
                     Vector3D[] newTriangle = new Vector3D[3];
                     newTriangle[0] = pointList.get((Integer.parseInt(strSplit[1]) - 1));
@@ -297,30 +308,8 @@ public class Main
         double centerX = ((minX + maxX) / 2);
         double centerY = ((minY + maxY) / 2);
         double centerZ = ((minZ + maxZ) / 2);
-        
-        double radius = maxX - centerX;
-        System.out.println(radius);
-        if (radius < maxY - centerY) {
-            radius = maxY - centerY;
-                    System.out.println(radius);
-
-        }
-        if (radius < maxZ - centerZ) {
-            radius = maxZ - centerZ;
-                    System.out.println(radius);
-
-        }
-        System.out.println(centerX);
-        System.out.println(centerY);
-        System.out.println(centerZ);
-        System.out.println(maxX);
-        System.out.println(maxY);
-        System.out.println(minY);
-        System.out.println(maxZ);
-        Vector3D tempVec = new Vector3D(maxX, maxY, maxZ);
-        System.out.println(VecMath.length(tempVec));
-        System.out.println(radius);
-        Sphere localBoundingSphere = new Sphere(new Vector3D(centerX + x, centerY + y, centerZ + z ), VecMath.length(tempVec) * 5 + 0.1, new Material(new Vector3D(0.0, 0.2, 0.1)));
+        Vector3D tempVec = new Vector3D(centerX - maxX,  centerY - maxY, centerZ -maxZ);
+        Sphere localBoundingSphere = new Sphere(new Vector3D(centerX + x, centerY + y, centerZ + z ), VecMath.length(tempVec) + 0.01, new Material(new Vector3D(0.0, 0.2, 0.1)));
         BoundingVol localBounding = new BoundingVol(localBoundingSphere, localList);
         boundingList.add(localBounding);
     }
@@ -338,7 +327,7 @@ public class Main
             }
         }
         // if (!someIntersection)
-        return applyBackground(new Vector3D(1, 1, 1)); //ray.dir);
+        return applyBackground(ray.dir);
     }
 
     public static Vector3D doTrace(Ray ray, IShape mainShape, Light light)
