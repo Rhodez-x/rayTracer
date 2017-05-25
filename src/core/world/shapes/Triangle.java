@@ -56,7 +56,7 @@ public class Triangle implements IShape
         }
 
         Vector3D intersectPoint = new Vector3D(0 + (ray.dir.getX() * r), 0 + (ray.dir.getY() * r), (0 + (ray.dir.getZ() * r)));
-
+        
         Vector3D controlVector;
 
         Vector3D edge0 = this.points[1].subtract(this.points[0]);

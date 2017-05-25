@@ -42,7 +42,7 @@ public class Main
         double zoom = 10.0;
         double viewWidth = 60;
 
-        Vector3D origin = new Vector3D(0, -1, 10);
+        Vector3D origin = new Vector3D(0, 0, 10);
         Vector3D direction = new Vector3D(0, 0, 0);
 
         camera = new Camera(origin, direction, viewWidth, WIDTH, HEIGHT, zoom);
@@ -85,56 +85,9 @@ public class Main
         globalLight = new Light();
         globalLight.position = new Vector3D(10, 10, -2);
         globalLight.ambience = 0.1;
-        ArrayList<IShape> listForGlobalBox = new ArrayList<>();
+        ArrayList<IShape> listForGlobalBox = new ArrayList<>();     
         
-        ArrayList<Vector3D> pointList = new ArrayList<>(600);
-        BufferedReader br = new BufferedReader(new FileReader("src/wt_teapot.obj"));
-        try {
-            String line = br.readLine();
-
-            while (line != null) {
-                String[] strSplit = line.split("\\s+");
-                
-                if(strSplit[0].equals("v")) {
-                    
-                    int spaceIndexOne = strSplit[1].indexOf("//");
-                    if (spaceIndexOne != -1) {
-                        strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
-                    }
-                    int spaceIndexTwo = strSplit[2].indexOf("//");
-                    if (spaceIndexOne != -1) {
-                        strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
-                    }
-                    int spaceIndexThree = strSplit[3].indexOf("//");
-                    if (spaceIndexOne != -1) {
-                        strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
-                    }
-                    System.out.println(Arrays.toString(strSplit));
-                    pointList.add(new Vector3D(Double.parseDouble(strSplit[1]), Double.parseDouble(strSplit[2]) - 0.5, Double.parseDouble(strSplit[3]) - 2)); // have to be a minus z axe.
-                } else if (strSplit[0].equals("f")){
-                    int spaceIndexOne = strSplit[1].indexOf("//");
-                    System.out.println(spaceIndexOne);
-                    strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
-                    int spaceIndexTwo = strSplit[2].indexOf("//");
-                    strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
-                    int spaceIndexThree = strSplit[3].indexOf("//");
-                    strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
-                                       System.out.println(Arrays.toString(strSplit));
-
-                   Vector3D[] newTriangle = new Vector3D[3];
-                   newTriangle[0] = pointList.get((Integer.parseInt(strSplit[1]) - 1));
-                   newTriangle[1] = pointList.get((Integer.parseInt(strSplit[2]) - 1));
-                   newTriangle[2] = pointList.get((Integer.parseInt(strSplit[3]) - 1));
-                   
-                   listForGlobalBox.add(new Triangle(newTriangle, new Material( new Vector3D(0.5, 0, 0))));
-                }
-                line = br.readLine();
-            }
-        } finally {
-            br.close();
-        }
-        
-        
+        createObjObject("src/wt_teapot.obj", 0, 0, -5);
         // Bonding volume and objects for the first bounding box
         Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 4.5, -8), 4, new Material( new Vector3D(0.5, 0, 0)));
         ArrayList<IShape> listForBoxOne = new ArrayList<>();
@@ -169,9 +122,9 @@ public class Main
         
         Vector3D[] list = new Vector3D[3];
 
-        list[0] = new Vector3D(1, 1, -5);
-        list[1] = new Vector3D(1, 2, -5);
-        list[2] = new Vector3D(2, 1, -5);
+        list[0] = new Vector3D(0, 0, -13);
+        list[1] = new Vector3D(0, 1, -13);
+        list[2] = new Vector3D(1, 0, -13);
 
         Triangle tri = new Triangle(list, new Material(new Vector3D(0.5, 0.5, 0)));
 
@@ -229,7 +182,7 @@ public class Main
 //        }
         
 
-        //listForGlobalBox.add(tri);
+        listForGlobalBox.add(tri);
         //listForGlobalBox.add(tri2);
         //listForGlobalBox.add(tri3);
         //listForGlobalBox.add(tri4);
@@ -237,9 +190,10 @@ public class Main
         //listForGlobalBox.add(tri6);
 
         //listForGlobalBox.add(disk);
-
+        Sphere onecirkle = new Sphere(new Vector3D(0, 0, -3), 1, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        listForGlobalBox.add(onecirkle);
         BoundingVol globalBox = new BoundingVol(globalSphere, listForGlobalBox);
-        boundingList.add(globalBox);        
+        //boundingList.add(globalBox);        
         //boundingList.add(boxOne);
         //boundingList.add(boxTwo);
         
@@ -261,7 +215,116 @@ public class Main
 
     }
 
+    
+    public static void createObjObject(String filename, double x, double y, double z) throws FileNotFoundException, IOException {
+        ArrayList<Vector3D> pointList = new ArrayList<>(600);
+        ArrayList<IShape> localList = new ArrayList<>();
+        
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+        double minZ = Double.MAX_VALUE;
+        
+        double maxX = Double.MIN_VALUE;
+        double maxY = Double.MIN_VALUE;
+        double maxZ = Double.MIN_VALUE;
+        
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        try {
+            String line = br.readLine();
 
+            while (line != null) {
+                String[] strSplit = line.split("\\s+");
+                
+                if(strSplit[0].equals("v")) {
+                    
+                    int spaceIndexOne = strSplit[1].indexOf("//");
+                    if (spaceIndexOne != -1) {
+                        strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
+                    }
+                    double checkDob = Double.parseDouble(strSplit[1]);
+                    System.out.println(checkDob);
+
+                    if (minX > checkDob) {
+                        minX = checkDob;
+                    }
+                    if (maxX < checkDob) {
+                        maxX = checkDob;
+                    }
+                    int spaceIndexTwo = strSplit[2].indexOf("//");
+                    if (spaceIndexOne != -1) {
+                        strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
+                    }
+                    checkDob = Double.parseDouble(strSplit[2]);
+                    if (minY > checkDob) {
+                        minY = checkDob;
+                    }
+                    if (maxY < checkDob) {
+                        maxY = checkDob;
+                    }
+                    int spaceIndexThree = strSplit[3].indexOf("//");
+                    if (spaceIndexOne != -1) {
+                        strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
+                    }
+                    checkDob = Double.parseDouble(strSplit[3]);
+                    if (minZ > checkDob) {
+                        minZ = checkDob;
+                    }
+                    if (maxZ < checkDob) {
+                        maxZ = checkDob;
+                    }
+                    System.out.println(Arrays.toString(strSplit));
+                    pointList.add(new Vector3D(Double.parseDouble(strSplit[1]) + x, Double.parseDouble(strSplit[2]) + y, Double.parseDouble(strSplit[3]) + z)); // have to be a minus z axe.
+                } else if (strSplit[0].equals("f")){
+                    int spaceIndexOne = strSplit[1].indexOf("//");
+                    strSplit[1] = strSplit[1].substring(0, spaceIndexOne);
+                    int spaceIndexTwo = strSplit[2].indexOf("//");
+                    strSplit[2] = strSplit[2].substring(0, spaceIndexTwo);
+                    int spaceIndexThree = strSplit[3].indexOf("//");
+                    strSplit[3] = strSplit[3].substring(0, spaceIndexThree);
+
+                    Vector3D[] newTriangle = new Vector3D[3];
+                    newTriangle[0] = pointList.get((Integer.parseInt(strSplit[1]) - 1));
+                    newTriangle[1] = pointList.get((Integer.parseInt(strSplit[2]) - 1));
+                    newTriangle[2] = pointList.get((Integer.parseInt(strSplit[3]) - 1));
+                   
+                    localList.add(new Triangle(newTriangle, new Material( new Vector3D(0.5, 0, 0))));
+                }
+                line = br.readLine();
+            }
+        } finally {
+            br.close();
+        }
+        double centerX = ((minX + maxX) / 2);
+        double centerY = ((minY + maxY) / 2);
+        double centerZ = ((minZ + maxZ) / 2);
+        
+        double radius = maxX - centerX;
+        System.out.println(radius);
+        if (radius < maxY - centerY) {
+            radius = maxY - centerY;
+                    System.out.println(radius);
+
+        }
+        if (radius < maxZ - centerZ) {
+            radius = maxZ - centerZ;
+                    System.out.println(radius);
+
+        }
+        System.out.println(centerX);
+        System.out.println(centerY);
+        System.out.println(centerZ);
+        System.out.println(maxX);
+        System.out.println(maxY);
+        System.out.println(minY);
+        System.out.println(maxZ);
+        Vector3D tempVec = new Vector3D(maxX, maxY, maxZ);
+        System.out.println(VecMath.length(tempVec));
+        System.out.println(radius);
+        Sphere localBoundingSphere = new Sphere(new Vector3D(centerX + x, centerY + y, centerZ + z ), VecMath.length(tempVec) * 5 + 0.1, new Material(new Vector3D(0.0, 0.2, 0.1)));
+        BoundingVol localBounding = new BoundingVol(localBoundingSphere, localList);
+        boundingList.add(localBounding);
+    }
+    
     public static Vector3D traceBoundingVolumes(Ray ray)
     {
         //boolean someIntersection = false;
@@ -275,7 +338,7 @@ public class Main
             }
         }
         // if (!someIntersection)
-        return applyBackground(ray.dir);
+        return applyBackground(new Vector3D(1, 1, 1)); //ray.dir);
     }
 
     public static Vector3D doTrace(Ray ray, IShape mainShape, Light light)
