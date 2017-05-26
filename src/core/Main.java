@@ -47,8 +47,9 @@ public class Main
         createAndAddObjects(); //creation of all objects happens here
 
         Main main = new Main(); //i don't like this but i was not allowed to use "this"
-        ConcurrentRayTracer concurrentRayTracer = new ConcurrentRayTracer(camera, main); //HOLY SHIT
-        //rayTrace(camera);
+               
+        //ConcurrentRayTracer concurrentRayTracer = new ConcurrentRayTracer(camera, main); //HOLY SHIT
+        rayTrace(camera);
 
         long endTime = System.nanoTime();
 
@@ -91,23 +92,23 @@ public class Main
 
 
         //createObjObject("Nefertiti_small_moved_10k.obj", -0.2, -2.2, -8, new Material(new Vector3D(0.5, 0.5, 0.5)));
-        //createObjObject("Wolf_xxsmall.obj", -0.2, -0.8, -4, new Material(new Vector3D(0.5, 0.0, 0.0)));
+        //createObjObject("rayTracer/Wolf_xxsmall.obj", -0.2, -0.8, -4, new Material(new Vector3D(0.5, 0.0, 0.0)));
 
         //createObjObject("r2d2.obj", -0.2, -1.5, -10, new Material(new Vector3D(0.5, 0.0, 0.0)));
 
 
 
-        createObjObject("wt_teapot.obj", -2.5, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 2.5, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 0.01, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("rayTracer/wt_teapot.obj", 1.5, -0.2, -13, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("rayTracer/wt_teapot.obj", -2.5, -0.2, -13, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("rayTracer/wt_teapot.obj", 0.01, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
 
-        createObjObject("wt_teapot.obj", -2.5, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 2.5, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 0.01, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        //createObjObject("rayTracer/wt_teapot.obj", -2.5, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        //createObjObject("rayTracer/wt_teapot.obj", 2.5, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        //createObjObject("rayTracer/wt_teapot.obj", 0.01, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
 
-        createObjObject("wt_teapot.obj", -2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 0.01, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        //createObjObject("rayTracer/wt_teapot.obj", -2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        //createObjObject("rayTracer/wt_teapot.obj", 2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        //createObjObject("rayTracer/wt_teapot.obj", 0.01, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
         
 
         // Bonding volume and objects for the first bounding box
@@ -215,19 +216,19 @@ public class Main
         //listForGlobalBox.add(tri6);
 
         //listForGlobalBox.add(disk);
+        Plane plane = new Plane(0, -1, 0.1, 0, new Material(new Vector3D(0.0, 0.2, 0.1)));
+        shapeList.add(plane);
         Sphere onecirkle = new Sphere(new Vector3D(0, 0, 15), 1, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        listForGlobalBox.add(onecirkle);
+        listForGlobalBox.add(plane);
         BoundingVol globalBox = new BoundingVol(globalSphere, listForGlobalBox);
         boundingList.add(globalBox);
         //boundingList.add(boxOne);
         //boundingList.add(boxTwo);
 
 
-        Plane plane = new Plane(0, 1, -0.1, 0, new Material(new Vector3D(0.0, 0.2, 0.1)));
 
         //shapeList.add(tri);
         //shapeList.add(tri2);
-        shapeList.add(plane);
 //        shapeList.add(tri);
 //        shapeList.add(tri2);
 //        
@@ -352,15 +353,29 @@ public class Main
 
     public static Vector3D traceBoundingVolumes(Ray ray)
     {
+        RayInfo closestRayInfo = null;
         for (BoundingVol bound : boundingList)
         {
-            if (bound.shape.intersects(ray, EPSILON, Double.MAX_VALUE).didIntersect)
+            RayInfo tempInfo = bound.shape.intersects(ray, EPSILON, Double.MAX_VALUE);
+            
+            if (tempInfo.didIntersect)
             {
                 oclusionObject = new OclusionObject(bound.listOfShapes);
-                return doTrace(ray, oclusionObject, globalLight);
+                RayInfo rayInfo = oclusionObject.intersects(ray, EPSILON, Double.MAX_VALUE); //maybe implement a min and max intersection distance.
+                if (rayInfo.didIntersect)
+                {
+                    if (closestRayInfo == null || closestRayInfo.t > rayInfo.t) {
+                        closestRayInfo = rayInfo;
+                    }
+                }
             }
         }
-        return Vector3D.ZERO; //it never reaches this point??
+        if (closestRayInfo != null) {
+            return shade(closestRayInfo, globalLight);
+
+        } else {
+            return applyBackground(ray.dir); //it never reaches this point?? 
+        }
     }
 
     public static Vector3D doTrace(Ray ray, IShape mainShape, Light light)

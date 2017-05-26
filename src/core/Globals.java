@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class Globals
 {
-    public static final int WIDTH = 300;
-    public static final int HEIGHT = 300;
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 600;
     public static final double EPSILON = 0.0000000001;
 
     public static BufferedImage outputRenderedImage;
