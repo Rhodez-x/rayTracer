@@ -93,6 +93,10 @@ public class Main
         //createObjObject("Nefertiti_small_moved_10k.obj", -0.2, -2.2, -8, new Material(new Vector3D(0.5, 0.5, 0.5)));
         //createObjObject("Wolf_xxsmall.obj", -0.2, -0.8, -4, new Material(new Vector3D(0.5, 0.0, 0.0)));
 
+        //createObjObject("r2d2.obj", -0.2, -1.5, -10, new Material(new Vector3D(0.5, 0.0, 0.0)));
+
+
+
         createObjObject("wt_teapot.obj", -2.5, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
         createObjObject("wt_teapot.obj", 2.5, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
         createObjObject("wt_teapot.obj", 0.01, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
@@ -104,7 +108,7 @@ public class Main
         createObjObject("wt_teapot.obj", -2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
         createObjObject("wt_teapot.obj", 2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
         createObjObject("wt_teapot.obj", 0.01, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-
+        
 
         // Bonding volume and objects for the first bounding box
         Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 4.5, -8), 4, new Material(new Vector3D(0.5, 0, 0)));
