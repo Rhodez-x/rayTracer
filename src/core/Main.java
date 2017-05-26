@@ -1,7 +1,7 @@
 package core;
 
 import core.concurrency.ConcurrentRayTracer;
-import core.gui.GUI;
+import core.util.Util;
 import core.world.camera.Camera;
 import core.world.light.Light;
 import core.world.math.VecMath;
@@ -12,7 +12,6 @@ import core.world.shapes.*;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -54,7 +53,8 @@ public class Main
 
         System.out.println("Took: " + (endTime - startTime) / 1e9 + " seconds.");
 
-        SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
+        //SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
+        Util.takeScreenShot();
     }
 
     public static void rayTrace(Camera camera)
@@ -86,29 +86,26 @@ public class Main
     {
 
         globalLight = new Light();
-        globalLight.shadowRayDirection = new Vector3D(10, 10, 15);
+        globalLight.position = new Vector3D(10, 10, 15);
         globalLight.ambience = 0.02;
 
 
         //createObjObject("Nefertiti_small_moved_10k.obj", -0.2, -2.2, -8, new Material(new Vector3D(0.5, 0.5, 0.5)));
         //createObjObject("Wolf_xxsmall.obj", -0.2, -0.8, -4, new Material(new Vector3D(0.5, 0.0, 0.0)));
 
-        //createObjObject("r2d2.obj", -0.2, -1.5, -10, new Material(new Vector3D(0.5, 0.0, 0.0)));
 
+        createObjObject("bunny.obj", -2.6, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("suzanne.obj", 2.7, 0.35, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 0.01, 0.01, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
 
-
-        createObjObject("wt_teapot.obj", -2.5, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 2.5, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 0.01, -0.2, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-
-        createObjObject("wt_teapot.obj", -2.5, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 2.5, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("suzanne.obj", -2.6, 2.4, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("dragon.obj", 2.6, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
         createObjObject("wt_teapot.obj", 0.01, 2.3, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
 
-        createObjObject("wt_teapot.obj", -2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 2.5, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        createObjObject("wt_teapot.obj", 0.01, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
-        
+        createObjObject("dragon.obj", -2.6, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 2.6, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("bunny.obj", 0.01, -2.7, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+
 
         // Bonding volume and objects for the first bounding box
         Sphere boundingSphere_top_left = new Sphere(new Vector3D(-2.5, 4.5, -8), 4, new Material(new Vector3D(0.5, 0, 0)));
@@ -420,7 +417,7 @@ public class Main
     public static Vector3D shade(RayInfo rayInfo, Light light)
     {
         Vector3D c;
-        double normalDotLightpos = rayInfo.normal.dotProduct(light.shadowRayDirection.normalize());
+        double normalDotLightpos = rayInfo.normal.dotProduct(light.position.normalize());
         double ambiance = light.ambience + ((1.0 - light.ambience) * Math.max(0.0, normalDotLightpos));
         c = rayInfo.material.albedo.scalarMultiply(ambiance);
         return c;
