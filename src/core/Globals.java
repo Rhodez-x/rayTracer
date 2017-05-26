@@ -15,7 +15,7 @@ public class Globals
 {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 500;
-    public static final double EPSILON = 0.000000001;
+    public static final double EPSILON = 0.0000000001;
 
     public static BufferedImage outputRenderedImage;
 

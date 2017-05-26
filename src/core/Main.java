@@ -86,12 +86,24 @@ public class Main
     {
 
         globalLight = new Light();
-        globalLight.position = new Vector3D(10, 10, 22);
-        globalLight.ambience = 0.25;
+        globalLight.position = new Vector3D(10, 10, 15);
+        globalLight.ambience = 0.02;
 
 
-        //createObjObject("Wolf_xxsmall.obj", -0.2, -0.8, -4);
-        createObjObject("Nefertiti_small_moved_10k.obj", -0.2, -2.2, -8);
+        //createObjObject("Nefertiti_small_moved_10k.obj", -0.2, -2.2, -8, new Material(new Vector3D(0.5, 0.5, 0.5)));
+        //createObjObject("Wolf_xxsmall.obj", -0.2, -0.8, -4, new Material(new Vector3D(0.5, 0.0, 0.0)));
+
+        createObjObject("wt_teapot.obj", -2.5, 0, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 2.5, 0, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 0.0, 0, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+
+        createObjObject("wt_teapot.obj", -2.5, 2.5, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 2.5, 2.5, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 0.0, 2.5, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+
+        createObjObject("wt_teapot.obj", -2.5, -2.5, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 2.5, -2.5, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
+        createObjObject("wt_teapot.obj", 0.0, -2.5, -10, new Material(new Vector3D(Math.random(), Math.random(), Math.random())));
 
 
         // Bonding volume and objects for the first bounding box
@@ -224,7 +236,7 @@ public class Main
     }
 
 
-    public static void createObjObject(String filename, double x, double y, double z) throws FileNotFoundException, IOException
+    public static void createObjObject(String filename, double x, double y, double z, Material mat) throws FileNotFoundException, IOException
     {
         ArrayList<Vector3D> pointList = new ArrayList<>(600);
         ArrayList<IShape> localList = new ArrayList<>();
@@ -316,7 +328,7 @@ public class Main
                     newTriangle[1] = pointList.get((Integer.parseInt(strSplit[2]) - 1));
                     newTriangle[2] = pointList.get((Integer.parseInt(strSplit[3]) - 1));
 
-                    localList.add(new Triangle(newTriangle, new Material(new Vector3D(0.5, 0, 0))));
+                    localList.add(new Triangle(newTriangle, mat));
                 }
                 line = br.readLine();
             }
@@ -336,23 +348,19 @@ public class Main
 
     public static Vector3D traceBoundingVolumes(Ray ray)
     {
-        //boolean someIntersection = false;
         for (BoundingVol bound : boundingList)
         {
-            if (bound.shape.intersects(ray, 0.000000000001, Double.MAX_VALUE).didIntersect)
+            if (bound.shape.intersects(ray, EPSILON, Double.MAX_VALUE).didIntersect)
             {
-                // someIntersection = true;
                 oclusionObject = new OclusionObject(bound.listOfShapes);
                 return doTrace(ray, oclusionObject, globalLight);
             }
         }
-        // if (!someIntersection)
-        return applyBackground(ray.dir);
+        return Vector3D.ZERO; //it never reaches this point??
     }
 
     public static Vector3D doTrace(Ray ray, IShape mainShape, Light light)
     {
-        double EPSILON = 0.000000000001;
         RayInfo rayInfo = mainShape.intersects(ray, EPSILON, Double.MAX_VALUE); //maybe implement a min and max intersection distance.
         if (rayInfo.didIntersect)
         {

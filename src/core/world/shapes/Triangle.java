@@ -13,8 +13,6 @@ public class Triangle implements IShape
 {
 
     public Vector3D[] points = new Vector3D[3];
-    public int[] vertices = new int[2];
-    public int[] faces = new int[2];
     public Material material;
 
     public Triangle(Vector3D[] position, Material material)
@@ -56,7 +54,7 @@ public class Triangle implements IShape
         }
 
         Vector3D intersectPoint = new Vector3D(0 + (ray.dir.getX() * r), 0 + (ray.dir.getY() * r), (0 + (ray.dir.getZ() * r)));
-        
+
         Vector3D controlVector;
 
         Vector3D edge0 = this.points[1].subtract(this.points[0]);
@@ -97,33 +95,10 @@ public class Triangle implements IShape
         rayInfo.normal = n.normalize(); //assign hit point normal from center
         rayInfo.didIntersect = true;
         rayInfo.material = material;
-        
+
         //System.out.println(r + " - " + intersectPoint.toString() + " - " + n.normalize());
 
         return rayInfo;
     }
 
-    public void paint(int x, int y)
-    {
-        Globals.outputRenderedImage.getRaster().setPixel(x, y, material.getRGBArray());
-
-    }
-
-
-    public RayInfo hit(Ray ray, double tmin, double tmax)
-    {
-        return null;
-    }
-
-    public double calculateArea()
-    {
-        //A = 1/2*(||(v2 -v1) cross (v3 - v1)||)
-        return 0.5 * normalize().getNorm();
-    }
-
-    public Vector3D normalize()
-    {
-        //N = (P_1 - P_0) X (P_2 - P_0) getting the plane in which the triangle lies within.
-        return ((points[1].subtract(points[0])).crossProduct(points[2].subtract(points[0])));
-    }
 }
