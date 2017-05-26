@@ -86,7 +86,7 @@ public class Main
     {
 
         globalLight = new Light();
-        globalLight.position = new Vector3D(10, 10, 15);
+        globalLight.shadowRayDirection = new Vector3D(10, 10, 15);
         globalLight.ambience = 0.02;
 
 
@@ -420,7 +420,7 @@ public class Main
     public static Vector3D shade(RayInfo rayInfo, Light light)
     {
         Vector3D c;
-        double normalDotLightpos = rayInfo.normal.dotProduct(light.position.normalize());
+        double normalDotLightpos = rayInfo.normal.dotProduct(light.shadowRayDirection.normalize());
         double ambiance = light.ambience + ((1.0 - light.ambience) * Math.max(0.0, normalDotLightpos));
         c = rayInfo.material.albedo.scalarMultiply(ambiance);
         return c;
