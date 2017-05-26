@@ -1,6 +1,7 @@
 package core;
 
-import core.gui.GUI;
+import core.concurrency.ConcurrentRayTracer;
+import core.util.Util;
 import core.world.camera.Camera;
 import core.world.light.Light;
 import core.world.math.VecMath;
@@ -11,7 +12,6 @@ import core.world.shapes.*;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -45,13 +45,16 @@ public class Main
 
         createAndAddObjects(); //creation of all objects happens here
 
-        rayTrace(camera);
+        Main main = new Main(); //i don't like this but i was not allowed to use "this"
+        ConcurrentRayTracer concurrentRayTracer = new ConcurrentRayTracer(camera, main); //HOLY SHIT
+        //rayTrace(camera);
 
         long endTime = System.nanoTime();
 
-        System.out.println("Took: " + (endTime - startTime) / 1e6 + " ms.");
+        System.out.println("Took: " + (endTime - startTime) / 1e9 + " seconds.");
 
-        SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
+        //SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
+        Util.takeScreenShot();
     }
 
     public static void rayTrace(Camera camera)
@@ -59,7 +62,7 @@ public class Main
 
         for (int y = 0; y < HEIGHT; y++)
         {
-            // System.out.println("pixelrow: " + conuter);
+            System.out.println("pixelrow: " + conuter);
             for (int x = 0; x < WIDTH; x++)
             {
 
@@ -87,7 +90,8 @@ public class Main
         globalLight.ambience = 0.25;
 
 
-        createObjObject("Wolf_xxsmall.obj", -0.2, -0.8, -4);
+        //createObjObject("Wolf_xxsmall.obj", -0.2, -0.8, -4);
+        createObjObject("Nefertiti_small_moved_10k.obj", -0.2, -2.2, -8);
 
 
         // Bonding volume and objects for the first bounding box
