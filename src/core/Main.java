@@ -1,7 +1,7 @@
 package core;
 
 import core.concurrency.ConcurrentRayTracer;
-import core.util.Util;
+import core.gui.GUI;
 import core.world.camera.Camera;
 import core.world.light.Light;
 import core.world.math.VecMath;
@@ -12,6 +12,7 @@ import core.world.shapes.*;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -53,8 +54,7 @@ public class Main
 
         System.out.println("Took: " + (endTime - startTime) / 1e9 + " seconds.");
 
-        //SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
-        Util.takeScreenShot();
+        SwingUtilities.invokeLater(() -> Globals.gui = new GUI());
     }
 
     public static void rayTrace(Camera camera)
