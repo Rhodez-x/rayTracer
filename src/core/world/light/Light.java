@@ -7,7 +7,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  */
 public class Light
 {
-    public Vector3D shadowRayDirection;
+    public Vector3D position;
     public double ambience;
 
     public Light()
@@ -15,9 +15,9 @@ public class Light
         this(Vector3D.ZERO, 0);
     }
 
-    public Light(Vector3D shadowRayDirection, double ambience)
+    public Light(Vector3D position, double ambience)
     {
-        this.shadowRayDirection = shadowRayDirection;
+        this.position = position;
         this.ambience = ambience;
     }
 }
